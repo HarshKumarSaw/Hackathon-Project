@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Send data to backend for compliance validation
         try {
-            const response = await fetch("http://localhost:5000/api/submit-shipment", {
+            const response = await fetch("https://hackathon-project-5oha.onrender.com/api/submit-shipment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ productName, category, destination, weight })
