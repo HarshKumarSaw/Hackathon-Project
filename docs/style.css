@@ -12,6 +12,30 @@ body {
     height: 100vh; /* Ensures everything is centered vertically */
 }
 
+/* Improved Dashboard Button */
+.dashboard-button {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #4f46e5, #6d28d9); /* Gradient effect */
+    color: white;
+    text-decoration: none;
+    border-radius: 50px; /* More rounded button */
+    font-weight: bold;
+    font-size: 1rem;
+    width: 260px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.15); /* Slight elevation */
+}
+
+/* Hover Effect */
+.dashboard-button:hover {
+    background: linear-gradient(135deg, #4338ca, #5b21b6);
+    transform: scale(1.08);
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.2);
+}
+
 /* Center the entire form properly */
 form {
     background: white;
