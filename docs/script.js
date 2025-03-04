@@ -6,25 +6,20 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const productName = document.getElementById("product-name").value;
-        const category = document.getElementById("category").value.toLowerCase();
-        const destination = document.getElementById("destination").value.toLowerCase();
-        const weight = parseFloat(document.getElementById("weight").value);
+        const formData = new FormData();
+        formData.append("productName", document.getElementById("product-name").value);
+        formData.append("category", document.getElementById("category").value.toLowerCase());
+        formData.append("destination", document.getElementById("destination").value.toLowerCase());
+        formData.append("weight", parseFloat(document.getElementById("weight").value));
+        formData.append("invoice", document.getElementById("invoice").files[0]);
 
         resultsDiv.innerHTML = "";
         resultsDiv.className = "";
 
-        if (!productName || !category || !destination || !weight) {
-            resultsDiv.className = "red";
-            resultsDiv.innerHTML = "⚠️ Please fill in all fields.";
-            return;
-        }
-
         try {
             const response = await fetch("https://hackathon-project-5oha.onrender.com/api/submit-shipment", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ productName, category, destination, weight })
+                body: formData
             });
 
             const result = await response.json();
@@ -63,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         Destination: ${shipment.destination}<br>
                         Weight: ${shipment.weight}kg<br>
                         Date: ${new Date(shipment.date).toLocaleString()}<br>
+                        Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
                         <hr>
                     </div>
                 `;
