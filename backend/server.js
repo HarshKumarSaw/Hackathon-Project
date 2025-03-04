@@ -1,9 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const { Low } = require("lowdb");
-const { JSONFile } = require("lowdb/node"); // ✅ Correct import for new lowdb versions
+const { JSONFile } = require("lowdb/node");
 const fs = require("fs");
 const path = require("path");
+const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +30,20 @@ initializeDB();
 
 app.use(express.json());
 app.use(cors());
+app.use("/uploads", express.static("uploads")); // Serve uploaded invoices publicly
+
+// Multer Setup for Invoice Uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = "uploads/";
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir); // Create uploads folder if missing
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
 // API Route to Get Shipment History
 app.get("/api/shipments", async (req, res) => {
@@ -36,15 +51,24 @@ app.get("/api/shipments", async (req, res) => {
     res.json(db.data.shipments || []);
 });
 
-// API Route to Submit a Shipment
-app.post("/api/submit-shipment", async (req, res) => {
+// API Route to Submit a Shipment with Invoice Upload
+app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
     const { productName, category, destination, weight } = req.body;
+    const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (!productName || !category || !destination || !weight) {
         return res.status(400).json({ message: "All fields are required." });
     }
 
-    const shipment = { productName, category, destination, weight, date: new Date().toISOString() };
+    const shipment = {
+        productName,
+        category,
+        destination,
+        weight,
+        invoice: invoicePath,
+        date: new Date().toISOString()
+    };
+
     db.data.shipments.push(shipment);
     await db.write();
 
