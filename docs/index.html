@@ -9,7 +9,7 @@
 <body>
     <h1>Cross-Border Shipment Compliance Checker</h1>
     
-    <form>
+    <form enctype="multipart/form-data">
         <label>Product Name:</label>
         <input type="text" id="product-name" required><br>
 
@@ -21,6 +21,9 @@
 
         <label>Weight (kg):</label>
         <input type="number" id="weight" required><br>
+
+        <label>Invoice Upload:</label>
+        <input type="file" id="invoice"><br>
 
         <button type="submit">Check Compliance</button>
     </form>
