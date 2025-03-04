@@ -118,27 +118,28 @@ button:hover {
     border-radius: 8px;
 }
 
-/* Compliance Results (Fix for Red Errors) */
-#compliance-results {
+/* Compliance Results (Fix for Red #compliance-results {
     margin-top: 20px;
     font-weight: bold;
     padding: 12px;
     border-radius: 8px;
-    display: none; /* Initially hidden until a message is shown */
+    display: block; /* ✅ Ensure it always shows when needed */
 }
 
-/* Error Messages (Red Background) */
+/* Fix for Red Error Messages */
 #compliance-results.red {
-    color: #b91c1c;
-    background: #fee2e2;
-    display: block; /* Show the error */
+    color: #b91c1c !important; /* ✅ Force Red Text */
+    background: #fee2e2 !important; /* ✅ Force Red Background */
+    border: 1px solid #b91c1c !important;
+    display: block !important;
 }
 
-/* Success Messages (Green Background) */
+/* Fix for Green Success Messages */
 #compliance-results.green {
-    color: #047857;
-    background: #d1fae5;
-    display: block; /* Show success */
+    color: #047857 !important; /* ✅ Force Green Text */
+    background: #d1fae5 !important; /* ✅ Force Green Background */
+    border: 1px solid #047857 !important;
+    display: block !important;
 }
 
 /* Responsive Design */
