@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         totalShipments.textContent = shipments.length;
 
         let compliant = 0, nonCompliant = 0;
-        let categories = {};
+        let categories = {}, destinations = {};
 
         shipments.forEach(shipment => {
             if (shipment.weight > 50 || ["north korea", "iran"].includes(shipment.destination.toLowerCase()) || 
@@ -21,12 +21,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             categories[shipment.category] = (categories[shipment.category] || 0) + 1;
+            destinations[shipment.destination] = (destinations[shipment.destination] || 0) + 1;
         });
 
         compliantShipments.textContent = compliant;
         nonCompliantShipments.textContent = nonCompliant;
 
-        // Draw the Shipment Chart
+        // Shipment Compliance Chart
         new Chart(document.getElementById("shipmentChart"), {
             type: "doughnut",
             data: {
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
 
-        // Draw the Category Chart
+        // Category Chart
         new Chart(document.getElementById("categoryChart"), {
             type: "bar",
             data: {
@@ -51,6 +52,23 @@ document.addEventListener("DOMContentLoaded", async function () {
                     label: "Most Shipped Categories",
                     data: Object.values(categories),
                     backgroundColor: "#3B82F6"
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Destination Chart
+        new Chart(document.getElementById("destinationChart"), {
+            type: "bar",
+            data: {
+                labels: Object.keys(destinations),
+                datasets: [{
+                    label: "Top Destinations",
+                    data: Object.values(destinations),
+                    backgroundColor: "#F59E0B"
                 }]
             },
             options: {
