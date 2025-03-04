@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shipment Dashboard</title>
+    <link rel="stylesheet" href="style.css">
     <!-- Load Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>📊 Shipment Dashboard</h1>
@@ -15,8 +15,13 @@
         <p><strong>Total Shipments:</strong> <span id="total-shipments">0</span></p>
         <p><strong>Compliant Shipments:</strong> <span id="compliant-shipments">0</span></p>
         <p><strong>Non-Compliant Shipments:</strong> <span id="noncompliant-shipments">0</span></p>
-        <p><strong>Top 3 Destinations:</strong> <span id="top-destinations">Loading...</span></p>
-        <p><strong>Most Shipped Categories:</strong> <span id="top-categories">Loading...</span></p>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="shipmentChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="categoryChart"></canvas>
     </div>
 
     <a href="index.html" class="dashboard-button">⬅️ Back to Form</a>
