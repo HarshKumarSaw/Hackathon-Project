@@ -1,32 +1,45 @@
-// Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevents page refresh on form submission
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-        // Get form values
         const productName = document.getElementById("product-name").value;
         const category = document.getElementById("category").value;
-        const destination = document.getElementById("destination").value;
-        const weight = document.getElementById("weight").value;
-        const invoice = document.getElementById("invoice").files[0];
+        const destination = document.getElementById("destination").value.toLowerCase();
+        const weight = parseFloat(document.getElementById("weight").value);
 
-        // Basic validation
-        if (!productName || !category || !destination || !weight || !invoice) {
-            alert("Please fill in all fields and upload an invoice.");
+        if (!productName || !category || !destination || !weight) {
+            alert("Please fill in all fields.");
             return;
         }
 
-        // Display entered data in the console (simulating a backend request)
-        console.log("Shipment Details:");
-        console.log("Product Name:", productName);
-        console.log("Category:", category);
-        console.log("Destination:", destination);
-        console.log("Weight:", weight);
-        console.log("Invoice Uploaded:", invoice.name);
+        // Basic Compliance Rules
+        let issues = [];
 
-        // Simulate success message (later, we will send this to a backend)
-        alert("Shipment details submitted successfully! (Next: Compliance Check)");
+        // 🚫 Rule 1: Restricted Countries (Example: North Korea, Iran)
+        const restrictedCountries = ["north korea", "iran"];
+        if (restrictedCountries.includes(destination)) {
+            issues.push("Shipping to this country is restricted.");
+        }
+
+        // 🚫 Rule 2: Weight Limit (Example: Max 50kg)
+        if (weight > 50) {
+            issues.push("Shipment weight exceeds the allowed limit (50kg max).");
+        }
+
+        // 🚫 Rule 3: Prohibited Categories (Example: Explosives, Drugs)
+        const prohibitedCategories = ["explosives", "drugs", "firearms"];
+        if (prohibitedCategories.includes(category.toLowerCase())) {
+            issues.push(`"${category}" is a prohibited item and cannot be shipped.`);
+        }
+
+        // Display Compliance Check Results
+        if (issues.length > 0) {
+            alert("⚠️ Compliance Issues Found:\n\n" + issues.join("\n"));
+            return;
+        }
+
+        alert("✅ Shipment is compliant! Proceeding with submission.");
     });
 });
