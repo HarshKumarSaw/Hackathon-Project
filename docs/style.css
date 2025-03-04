@@ -45,3 +45,21 @@ button {
 button:hover {
     background: #218838;
 }
+
+/* Styling for compliance result messages */
+#compliance-results {
+    margin-top: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#compliance-results.red {
+    color: red;
+    background: #ffcccc;
+}
+
+#compliance-results.green {
+    color: green;
+    background: #ccffcc;
+}
