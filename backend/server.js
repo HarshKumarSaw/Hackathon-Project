@@ -1,41 +1,55 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
+const express = require("express");
+const cors = require("cors");
 
-    form.addEventListener("submit", async function (event) {
-        event.preventDefault();
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-        const productName = document.getElementById("product-name").value;
-        const category = document.getElementById("category").value;
-        const destination = document.getElementById("destination").value;
-        const weight = document.getElementById("weight").value;
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-        if (!productName || !category || !destination || !weight) {
-            alert("Please fill in all fields.");
-            return;
-        }
+// Compliance Checking Function
+function checkCompliance(productName, category, destination, weight) {
+    let issues = [];
 
-        const shipmentData = {
-            productName,
-            category,
-            destination,
-            weight
-        };
+    // 🚫 Rule 1: Restricted Countries
+    const restrictedCountries = ["north korea", "iran"];
+    if (restrictedCountries.includes(destination.toLowerCase())) {
+        issues.push("Shipping to this country is restricted.");
+    }
 
-        try {
-            const response = await fetch("http://localhost:5000/api/submit-shipment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(shipmentData)
-            });
+    // 🚫 Rule 2: Weight Limit (Max 50kg)
+    if (weight > 50) {
+        issues.push("Shipment weight exceeds the allowed limit (50kg max).");
+    }
 
-            const result = await response.json();
-            alert(result.message);
-            console.log("Server Response:", result);
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Failed to submit shipment details.");
-        }
-    });
+    // 🚫 Rule 3: Prohibited Categories
+    const prohibitedCategories = ["explosives", "drugs", "firearms"];
+    if (prohibitedCategories.includes(category.toLowerCase())) {
+        issues.push(`"${category}" is a prohibited item and cannot be shipped.`);
+    }
+
+    return issues;
+}
+
+// API Route to Receive and Validate Shipment Data
+app.post("/api/submit-shipment", (req, res) => {
+    const { productName, category, destination, weight } = req.body;
+
+    if (!productName || !category || !destination || !weight) {
+        return res.status(400).json({ message: "All fields are required." });
+    }
+
+    const complianceIssues = checkCompliance(productName, category, destination, weight);
+
+    if (complianceIssues.length > 0) {
+        return res.status(400).json({ message: "⚠️ Compliance Issues Found", issues: complianceIssues });
+    }
+
+    res.json({ message: "✅ Shipment is compliant! Proceeding with submission." });
+});
+
+// Start Server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
