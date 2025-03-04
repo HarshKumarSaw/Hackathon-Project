@@ -7,3 +7,4 @@ Hackathon-Project/
 │── backend/  
 │   ├── server.js  (Backend server setup - will be used later)  
 │── README.md  (Project description)
+
