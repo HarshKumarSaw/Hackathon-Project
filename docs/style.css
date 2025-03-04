@@ -1,47 +1,96 @@
-/* Center the form properly */
+/* Global Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #eef2ff, #c7d2fe);
+    color: #333;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ensures everything is centered vertically */
+}
+
+/* Center the entire form properly */
 form {
     background: white;
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     max-width: 400px;
-    width: 90%; /* Ensures it scales properly on smaller screens */
-    margin: 20px auto; /* Centers the form */
-    text-align: left; /* Aligns labels properly */
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Ensures everything is perfectly centered */
+    align-items: center;
+    justify-content: center;
 }
 
-/* Ensure inputs, file upload, and button are aligned */
-input, button {
-    width: 100%; /* Full width */
-    max-width: 350px; /* Prevents stretching */
-    box-sizing: border-box; /* Prevents extra padding from affecting width */
+/* Labels */
+label {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
 }
 
-/* File input needs extra styling */
+/* Inputs */
+input {
+    width: 100%;
+    max-width: 350px;
+    padding: 10px;
+    border: 2px solid #c7d2fe;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Ensure File Input is Centered */
 input[type="file"] {
+    width: 100%;
+    max-width: 350px;
     text-align: center;
     display: flex;
     justify-content: center;
-    width: 100%;
-    max-width: 350px;
-    border: none; /* Remove default border */
-    background: white;
+    border: none;
 }
 
 /* Fix button alignment */
 button {
-    display: block;
-    margin-top: 10px;
     width: 100%;
     max-width: 350px;
+    background: #1e40af;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
 }
 
-/* Label Alignment */
-label {
-    width: 100%;
-    max-width: 350px;
-    text-align: left;
+button:hover {
+    background: #1e3a8a;
+}
+
+/* Fix Compliance Results */
+#compliance-results {
+    margin-top: 20px;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* Shipment History */
+#shipment-history {
+    margin-top: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsive Fixes */
+@media (max-width: 600px) {
+    form {
+        max-width: 90%;
+    }
 }
