@@ -45,11 +45,26 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// API Route to Get Shipment History
-app.get("/api/shipments", async (req, res) => {
-    await db.read();
-    res.json(db.data.shipments || []);
-});
+// 🚫 Compliance Checking Function (Blocks Restricted Shipments)
+function checkCompliance(productName, category, destination, weight) {
+    let issues = [];
+
+    const restrictedCountries = ["north korea", "iran"];
+    if (restrictedCountries.includes(destination.toLowerCase())) {
+        issues.push("Shipping to this country is restricted.");
+    }
+
+    const prohibitedCategories = ["explosives", "drugs", "firearms"];
+    if (prohibitedCategories.includes(category.toLowerCase())) {
+        issues.push(`"${category}" is a prohibited item and cannot be shipped.`);
+    }
+
+    if (weight > 50) {
+        issues.push("Shipment weight exceeds the allowed limit (50kg max).");
+    }
+
+    return issues;
+}
 
 // API Route to Submit a Shipment with Invoice Upload
 app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
@@ -60,6 +75,13 @@ app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
         return res.status(400).json({ message: "All fields are required." });
     }
 
+    // 🚫 Check Compliance Before Saving
+    const complianceIssues = checkCompliance(productName, category, destination, weight);
+    if (complianceIssues.length > 0) {
+        return res.status(400).json({ message: "⚠️ Compliance Issues Found", issues: complianceIssues });
+    }
+
+    // ✅ Save Shipment Only If Compliant
     const shipment = {
         productName,
         category,
@@ -73,6 +95,12 @@ app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
     await db.write();
 
     res.json({ message: "✅ Shipment saved successfully!", shipment });
+});
+
+// API Route to Get Shipment History
+app.get("/api/shipments", async (req, res) => {
+    await db.read();
+    res.json(db.data.shipments || []);
 });
 
 // Start Server
