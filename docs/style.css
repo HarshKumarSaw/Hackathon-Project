@@ -45,6 +45,20 @@ button {
 button:hover {
     background: #218838;
 }
+.dashboard-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.dashboard-button:hover {
+    background-color: #0056b3;
+}
 
 /* Styling for compliance result messages */
 #compliance-results {
