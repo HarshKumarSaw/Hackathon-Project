@@ -20,33 +20,27 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        let issues = [];
+        // Send data to backend for compliance validation
+        try {
+            const response = await fetch("http://localhost:5000/api/submit-shipment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ productName, category, destination, weight })
+            });
 
-        // 🚫 Rule 1: Restricted Countries
-        const restrictedCountries = ["north korea", "iran"];
-        if (restrictedCountries.includes(destination)) {
-            issues.push("Shipping to this country is restricted.");
-        }
+            const result = await response.json();
 
-        // 🚫 Rule 2: Weight Limit (Max 50kg)
-        if (weight > 50) {
-            issues.push("Shipment weight exceeds the allowed limit (50kg max).");
-        }
-
-        // 🚫 Rule 3: Prohibited Categories
-        const prohibitedCategories = ["explosives", "drugs", "firearms"];
-        if (prohibitedCategories.includes(category)) {
-            issues.push(`"${category}" is a prohibited item and cannot be shipped.`);
-        }
-
-        // Display Compliance Issues in the Page
-        if (issues.length > 0) {
+            if (response.status === 400) {
+                resultsDiv.className = "red";
+                resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
+            } else {
+                resultsDiv.className = "green";
+                resultsDiv.innerHTML = "✅ " + result.message;
+            }
+        } catch (error) {
             resultsDiv.className = "red";
-            resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + issues.join("<br>");
-            return;
+            resultsDiv.innerHTML = "❌ Error connecting to the server. Please try again later.";
+            console.error("Backend Error:", error);
         }
-
-        resultsDiv.className = "green";
-        resultsDiv.innerHTML = "✅ Shipment is compliant! Proceeding with submission.";
     });
 });
