@@ -6,7 +6,6 @@ body {
     background: linear-gradient(to bottom, #eef2ff, #c7d2fe);
     color: #333;
     text-align: center;
-    display: block; /* ✅ Ensures everything flows vertically */
 }
 
 /* Header */
@@ -46,10 +45,8 @@ form {
     max-width: 400px;
     margin: auto;
     margin-top: 20px;
-    display: block; /* ✅ Ensures the form is vertically aligned */
 }
 
-/* Labels & Inputs */
 label {
     display: block;
     margin: 10px 0 5px;
@@ -98,16 +95,24 @@ button:hover {
     border-radius: 8px;
 }
 
+#compliance-results.red {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+#compliance-results.green {
+    color: #047857;
+    background: #d1fae5;
+}
+
 /* Shipment History */
 #shipment-history {
     margin-top: 30px;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
-    display: block; /* ✅ Ensures shipment history stays below the form */
 }
 
-/* Shipment Entry Box */
 .shipment-entry {
     background: white;
     padding: 15px;
