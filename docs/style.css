@@ -334,3 +334,36 @@ select {
     font-size: 1.2rem;
     margin-right: 8px;
 }
+
+/* 📂 Modern File Upload Button */
+.file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #4f46e5;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.file-upload:hover {
+    background-color: #4338ca;
+    transform: scale(1.05);
+}
+
+/* Hide default input */
+#invoice {
+    display: none;
+}
+
+/* Display selected file name */
+#file-name {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #374151;
+}
