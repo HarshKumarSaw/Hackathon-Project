@@ -226,4 +226,57 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("invoice").addEventListener("change", function () {
         document.getElementById("file-name").textContent = this.files.length > 0 ? this.files[0].name : "No file chosen";
     });
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const chatbotContainer = document.getElementById("chatbot-container");
+    const closeChatbot = document.getElementById("close-chatbot");
+    const chatbotMessages = document.getElementById("chatbot-messages");
+    const chatbotInput = document.getElementById("chatbot-input");
+    const sendChatbot = document.getElementById("send-chatbot");
+
+    const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"; // Replace with your actual key
+
+    // 🔹 Show/Hide Chatbot
+    chatbotToggle.addEventListener("click", () => chatbotContainer.style.display = "flex");
+    closeChatbot.addEventListener("click", () => chatbotContainer.style.display = "none");
+
+    // 🔹 Send Message
+    sendChatbot.addEventListener("click", async () => {
+        let userMessage = chatbotInput.value.trim();
+        if (!userMessage) return;
+
+        // Display User Message
+        chatbotMessages.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+        chatbotInput.value = "";
+
+        // Call ChatGPT API
+        try {
+            let response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "system", content: "You are a helpful trade compliance assistant." }, 
+                               { role: "user", content: userMessage }]
+                })
+            });
+
+            let data = await response.json();
+            let aiResponse = data.choices[0].message.content;
+
+            // Display AI Response
+            chatbotMessages.innerHTML += `<div><strong>AI:</strong> ${aiResponse}</div>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
+        } catch (error) {
+            chatbotMessages.innerHTML += `<div><strong>AI:</strong> ❌ Error fetching response.</div>`;
+            console.error("Chatbot Error:", error);
+        }
+    });
+
+    // Allow Enter Key Submission
+    chatbotInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") sendChatbot.click();
+    });
 });
