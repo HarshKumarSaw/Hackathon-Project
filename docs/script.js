@@ -193,6 +193,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadShipmentHistory();
 
+    async function fetchTariff(category, destination) {
+        if (!category || !destination) return; // Skip if selection is empty
+        try {
+            const response = await fetch("https://hackathon-project-5oha.onrender.com/api/tariffs");
+            const tariffData = await response.json();
+            if (tariffData[destination] && tariffData[destination][category]) {
+            tariffDisplay.innerHTML = `📌 <strong>Tariff Rate:</strong> ${tariffData[destination][category]}%`;
+            } else {
+                tariffDisplay.innerHTML = "⚠️ No tariff data available for this selection.";
+            }
+        }
+        catch (error) {
+            console.error("Error fetching tariff data:", error);
+            tariffDisplay.innerHTML = "❌ Error loading tariff data.";
+        }
+    }
+
     function calculateRiskScore(category, destination, weight) {
         let riskScore = 0;
         if (highRiskCountries.includes(destination)) riskScore += 3;
