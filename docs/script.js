@@ -88,7 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
-                resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
+                resultsDiv.innerHTML = `
+    <span class="success-icon">✅✅</span> ${result.message}
+    <span class="risk-message">${riskMessage}</span>
+`;
                 loadShipmentHistory(); // Refresh shipment history
             }
         } catch (error) {
