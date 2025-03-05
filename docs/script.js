@@ -277,9 +277,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // ✅ Calculate Total Import Tax
                 const totalImportTax = (tariffRate * taxMultiplier).toFixed(2); // Keep 2 decimal places
                 // ✅ Display Total Tax with Explanation
-                const additionalTax = (tariffRate * (riskMultiplier - 1)).toFixed(2); // Additional tax percentage
-                tariffDisplay.innerHTML = `📌 <strong>Total Import Tax:</strong> ${totalTax.toFixed(2)}%
-                (Tariff: ${tariffRate.toFixed(2)}%, <strong>Additional Taxes:</strong> ${additionalTax}%)`;
+                tariffDisplay.innerHTML = `📌 <strong>Total Import Tax:</strong> ${totalImportTax}% 
+                <br> (Tariff: ${tariffRate}%, Additional Tax: ${totalImportTax - tariffRate} based on risk)`;
             } else {
                 tariffDisplay.innerHTML = "⚠️ No tax data available for this selection.";
             }
