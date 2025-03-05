@@ -78,6 +78,51 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    const categorySelect = document.getElementById("category");
+    const categoryRiskIndicator = document.getElementById("category-risk");
+
+// 🌍 Full International Trade Categories with Risk Levels
+    const categoryRiskLevels = {
+        "Live Animals & Animal Products": "Medium", "Vegetable Products": "Low", "Foodstuffs": "Low",
+        "Mineral Products": "Medium", "Chemical & Pharmaceutical Products": "High", "Plastics & Rubber": "Medium",
+        "Leather & Fur": "Low", "Wood & Paper Products": "Low", "Textiles & Clothing": "Medium",
+        "Footwear, Headgear, Umbrellas": "Medium", "Stone, Glass, & Ceramics": "Low", "Metals & Metal Products": "Medium",
+        "Machinery & Electrical Equipment": "Medium", "Transport Vehicles": "Medium", "Optical, Medical Instruments": "Medium",
+        "Arms & Ammunition": "High", "Miscellaneous Manufactured Articles": "Low", "Art, Collectibles, & Antiques": "Low",
+        "Special Transactions": "High", "Energy & Environmental Goods": "Medium", "Unclassified Trade Goods": "Medium"
+};
+
+// ✅ Populate Category Dropdown Alphabetically
+    function populateCategoryDropdown() {
+        categorySelect.innerHTML = '<option value="">-- Select Category --</option>';
+        Object.keys(categoryRiskLevels).sort().forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+    });
+}
+    populateCategoryDropdown();
+
+// ✅ Show Risk Indicator Below Dropdown
+    categorySelect.addEventListener("change", function () {
+        const selectedCategory = categorySelect.value;
+        const riskLevel = categoryRiskLevels[selectedCategory];
+        
+        if (riskLevel === "High") {
+            categoryRiskIndicator.innerHTML = "🔴 <strong>High Risk:</strong> Requires strict regulations and approval.";
+            categoryRiskIndicator.style.color = "#b91c1c";
+        } else if (riskLevel === "Medium") {
+            categoryRiskIndicator.innerHTML = "🟡 <strong>Medium Risk:</strong> Some restrictions apply, check compliance.";
+            categoryRiskIndicator.style.color = "#b45309";
+        } else if (riskLevel === "Low") {
+            categoryRiskIndicator.innerHTML = "🟢 <strong>Low Risk:</strong> Minimal compliance issues.";
+            categoryRiskIndicator.style.color = "#047857";
+        } else {
+            categoryRiskIndicator.innerHTML = "";
+    }
+});
+
     // 🛠 Ensure Form Submission Works
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
