@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         shipments.forEach(shipment => {
             let riskLevel = calculateRiskScore(shipment.category, shipment.destination, shipment.weight);
 
+            // Compliance check
             if (shipment.weight > 50 || ["North Korea", "Iran"].includes(shipment.destination) || 
                 ["explosives", "drugs", "firearms"].includes(shipment.category.toLowerCase())) {
                 nonCompliant++;
@@ -23,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 compliant++;
             }
 
-            // Track Risk Levels
+            // Risk Level Classification
             if (riskLevel === "LOW") lowRisk++;
             else if (riskLevel === "MEDIUM") mediumRisk++;
             else if (riskLevel === "HIGH") highRisk++;
@@ -33,82 +34,48 @@ document.addEventListener("DOMContentLoaded", async function () {
             destinations[shipment.destination] = (destinations[shipment.destination] || 0) + 1;
         });
 
+        // Update HTML counters
         compliantShipments.textContent = compliant;
         nonCompliantShipments.textContent = nonCompliant;
 
-        // 📊 Risk Trends Chart
-        new Chart(document.getElementById("riskChart"), {
-            type: "bar",
-            data: {
-                labels: ["Low Risk", "Medium Risk", "High Risk"],
-                datasets: [{
-                    label: "Number of Shipments",
-                    data: [lowRisk, mediumRisk, highRisk],
-                    backgroundColor: ["#047857", "#b45309", "#b91c1c"]
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: { y: { beginAtZero: true } }
-            }
-        });
+        // 📊 Generate Charts
+        generateChart("riskChart", "bar", ["Low Risk", "Medium Risk", "High Risk"], 
+            [lowRisk, mediumRisk, highRisk], ["#047857", "#b45309", "#b91c1c"], "Number of Shipments");
 
-        // 📦 Shipment Compliance Chart
-        new Chart(document.getElementById("shipmentChart"), {
-            type: "doughnut",
-            data: {
-                labels: ["Compliant Shipments", "Non-Compliant Shipments"],
-                datasets: [{
-                    data: [compliant, nonCompliant],
-                    backgroundColor: ["#10B981", "#EF4444"]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: "top" } }
-            }
-        });
+        generateChart("shipmentChart", "doughnut", ["Compliant Shipments", "Non-Compliant Shipments"], 
+            [compliant, nonCompliant], ["#10B981", "#EF4444"]);
 
-        // 📦 Most Shipped Categories Chart
-        new Chart(document.getElementById("categoryChart"), {
-            type: "bar",
-            data: {
-                labels: Object.keys(categories),
-                datasets: [{
-                    label: "Most Shipped Categories",
-                    data: Object.values(categories),
-                    backgroundColor: "#3B82F6"
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } }
-            }
-        });
+        generateChart("categoryChart", "bar", Object.keys(categories), Object.values(categories), "#3B82F6", "Most Shipped Categories");
 
-        // 🌍 Top Destination Chart
-        new Chart(document.getElementById("destinationChart"), {
-            type: "bar",
-            data: {
-                labels: Object.keys(destinations),
-                datasets: [{
-                    label: "Top Destinations",
-                    data: Object.values(destinations),
-                    backgroundColor: "#F59E0B"
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } }
-            }
-        });
+        generateChart("destinationChart", "bar", Object.keys(destinations), Object.values(destinations), "#F59E0B", "Top Destinations");
 
     } catch (error) {
         console.error("Error loading shipment data:", error);
     }
 });
 
-// Function to calculate risk level
+// 📊 Function to Generate Charts Dynamically
+function generateChart(canvasId, type, labels, data, colors, labelText = "") {
+    const ctx = document.getElementById(canvasId).getContext("2d");
+    new Chart(ctx, {
+        type: type,
+        data: {
+            labels: labels,
+            datasets: [{
+                label: labelText,
+                data: data,
+                backgroundColor: Array.isArray(colors) ? colors : [colors]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: "top" } },
+            scales: type === "bar" ? { y: { beginAtZero: true } } : {}
+        }
+    });
+}
+
+// 🚨 Compliance & Risk Level Calculation
 function calculateRiskScore(category, destination, weight) {
     const highRiskCountries = ["Russia", "Iran", "North Korea", "Syria"];
     const mediumRiskCountries = ["China", "Brazil", "Mexico"];
@@ -122,6 +89,7 @@ function calculateRiskScore(category, destination, weight) {
     return riskScore >= 4 ? "HIGH" : riskScore >= 2 ? "MEDIUM" : "LOW";
 }
 
+// 📥 Generate PDF Report
 document.getElementById("download-pdf").addEventListener("click", async function () {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
