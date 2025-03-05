@@ -24,25 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Populate Dropdown
     function populateCountryDropdown() {
-        const groupings = [
-            { label: "🚨 High-Risk Countries", countries: highRiskCountries },
-            { label: "⚠️ Medium-Risk Countries", countries: mediumRiskCountries },
-            { label: "✅ Low-Risk Countries", countries: lowRiskCountries },
-            { label: "🌍 Other Countries", countries: allCountries.filter(c => 
-                !highRiskCountries.includes(c) && !mediumRiskCountries.includes(c) && !lowRiskCountries.includes(c)) }
-        ];
-
         destinationSelect.innerHTML = '<option value="">-- Select Country --</option>';
-        groupings.forEach(group => {
-            const optGroup = document.createElement("optgroup");
-            optGroup.label = group.label;
-            group.countries.forEach(country => {
-                const option = document.createElement("option");
-                option.value = country;
-                option.textContent = country;
-                optGroup.appendChild(option);
-            });
-            destinationSelect.appendChild(optGroup);
+        allCountries.forEach(country => {
+            const option = document.createElement("option");
+            option.value = country;
+            option.textContent = country;
+            destinationSelect.appendChild(option);
         });
     }
     populateCountryDropdown();
@@ -89,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 resultsDiv.className = "green";
                 resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
-                loadShipmentHistory(); // Refresh shipment history
+                loadShipmentHistory();
             }
         } catch (error) {
             resultsDiv.className = "red";
@@ -98,39 +85,86 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Load Shipment History
+    // Load Shipment History (with Edit & Delete Buttons)
     async function loadShipmentHistory() {
         try {
             const response = await fetch("https://hackathon-project-5oha.onrender.com/api/shipments");
             const shipments = await response.json();
+            historyDiv.innerHTML = shipments.length === 0 ? "<p>No shipments recorded yet.</p>" : "";
 
-            if (shipments.length === 0) {
-                historyDiv.innerHTML = "No shipments recorded yet.";
-                return;
-            }
-
-            historyDiv.innerHTML = "<h2>Shipment History</h2>";
             shipments.forEach(shipment => {
-                historyDiv.innerHTML += `
-                    <div class="shipment-entry">
-                        <strong>${shipment.productName}</strong> (${shipment.category})<br>
-                        Destination: ${shipment.destination}<br>
-                        Weight: ${shipment.weight}kg<br>
-                        Date: ${new Date(shipment.date).toLocaleString()}<br>
-                        Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
-                        <hr>
-                    </div>
+                const shipmentEntry = document.createElement("div");
+                shipmentEntry.classList.add("shipment-entry");
+                shipmentEntry.innerHTML = `
+                    <strong>${shipment.productName}</strong> (${shipment.category})<br>
+                    Destination: ${shipment.destination}<br>
+                    Weight: ${shipment.weight}kg<br>
+                    Date: ${new Date(shipment.date).toLocaleString()}<br>
+                    Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
+                    <button class="edit-btn" onclick="editShipment('${shipment.id}')">✏️ Edit</button>
+                    <button class="delete-btn" onclick="deleteShipment('${shipment.id}')">🗑️ Delete</button>
+                    <hr>
                 `;
+                historyDiv.appendChild(shipmentEntry);
             });
-
-            // Generate Risk Trends Chart
-            generateRiskChart(shipments);
         } catch (error) {
             console.error("Error loading shipment history:", error);
         }
     }
 
     loadShipmentHistory(); // Load history on page load
+
+    // 📝 Edit Shipment
+    async function editShipment(shipmentId) {
+        const newProductName = prompt("Enter new product name:");
+        const newCategory = prompt("Enter new category:");
+        const newDestination = prompt("Enter new destination:");
+        const newWeight = prompt("Enter new weight (kg):");
+
+        if (newProductName && newCategory && newDestination && newWeight) {
+            try {
+                const response = await fetch(`https://hackathon-project-5oha.onrender.com/api/shipments/${shipmentId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        productName: newProductName,
+                        category: newCategory,
+                        destination: newDestination,
+                        weight: parseFloat(newWeight)
+                    })
+                });
+
+                if (response.ok) {
+                    alert("Shipment updated successfully!");
+                    loadShipmentHistory();
+                } else {
+                    alert("Failed to update shipment.");
+                }
+            } catch (error) {
+                console.error("Error updating shipment:", error);
+            }
+        }
+    }
+
+    // ❌ Delete Shipment
+    async function deleteShipment(shipmentId) {
+        if (confirm("Are you sure you want to delete this shipment?")) {
+            try {
+                const response = await fetch(`https://hackathon-project-5oha.onrender.com/api/shipments/${shipmentId}`, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                    alert("Shipment deleted successfully!");
+                    loadShipmentHistory();
+                } else {
+                    alert("Failed to delete shipment.");
+                }
+            } catch (error) {
+                console.error("Error deleting shipment:", error);
+            }
+        }
+    }
 
     // 📊 Function to Generate Risk Analytics Chart
     function generateRiskChart(shipments) {
@@ -144,9 +178,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const ctx = document.getElementById("riskChart").getContext("2d");
-        
+
         if (window.riskChart) {
-            window.riskChart.destroy(); // Destroy previous chart if it exists
+            window.riskChart.destroy();
         }
 
         window.riskChart = new Chart(ctx, {
@@ -159,28 +193,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     backgroundColor: ["#047857", "#b45309", "#b91c1c"]
                 }]
             },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
         });
-    }
-
-    function calculateRiskScore(category, destination, weight) {
-        let riskScore = 0;
-        if (highRiskCountries.includes(destination)) riskScore += 3;
-        if (mediumRiskCountries.includes(destination)) riskScore += 2;
-        if (["firearms", "explosives", "drugs", "alcohol"].includes(category)) return "HIGH";
-        if (weight > 30) riskScore += 2;
-        if (weight > 10) riskScore += 1;
-        return riskScore >= 4 ? "HIGH" : riskScore >= 2 ? "MEDIUM" : "LOW";
     }
 
     // Show selected file name
     document.getElementById("invoice").addEventListener("change", function () {
-        const fileNameDisplay = document.getElementById("file-name");
-        fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : "No file chosen";
-});
+        document.getElementById("file-name").textContent = this.files.length > 0 ? this.files[0].name : "No file chosen";
+    });
 });
