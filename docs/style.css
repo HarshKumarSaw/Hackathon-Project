@@ -535,3 +535,40 @@ canvas {
 #send-chatbot:hover {
     background: #4338ca;
 }
+
+/* 🟢 Chat Input Box - Align Send Button Inline */
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background: white;
+}
+
+/* Chat Input Box */
+.chat-input {
+    flex: 1; /* Takes up available space */
+    padding: 10px;
+    border: 1px solid #c7d2fe;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Send Button */
+.chat-send-btn {
+    margin-left: 10px; /* Space between input and button */
+    padding: 10px 15px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.chat-send-btn:hover {
+    background: #4338ca;
+    transform: scale(1.05);
+}
