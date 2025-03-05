@@ -33,33 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const result = await response.json();
 
+            let riskMessage = `<span class="risk-message risk-low">🟢 Low Risk: Shipment is safe for compliance.</span>`;
+
+            if (riskLevel === "HIGH") {
+                riskMessage = `<span class="risk-message risk-high">🔴 High Risk: This shipment may be rejected! Double-check compliance.</span>`;
+                resultsDiv.classList.add("red");
+            } else if (riskLevel === "MEDIUM") {
+                riskMessage = `<span class="risk-message risk-medium">🟡 Medium Risk: Some restrictions apply. Review before shipping.</span>`;
+                resultsDiv.classList.add("yellow");
+            } else {
+                resultsDiv.classList.add("green");
+            }
+
             if (response.status === 400) {
                 resultsDiv.className = "red";
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
-                let riskMessage = `<span class="risk-message risk-low">🟢 Low Risk: Shipment is safe for compliance.</span>`;
-
-if (riskLevel === "HIGH") {
-    riskMessage = `<span class="risk-message risk-high">🔴 High Risk: This shipment may be rejected! Double-check compliance.</span>`;
-    resultsDiv.classList.add("red");
-} else if (riskLevel === "MEDIUM") {
-    riskMessage = `<span class="risk-message risk-medium">🟡 Medium Risk: Some restrictions apply. Review before shipping.</span>`;
-    resultsDiv.classList.add("yellow");
-} else {
-    resultsDiv.classList.add("green");
-}
-
-resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
-
-                if (riskLevel === "HIGH") {
-                    resultsDiv.classList.add("red"); // High-risk shipments in red
-                } else if (riskLevel === "MEDIUM") {
-                    resultsDiv.classList.add("yellow"); // Medium risk (yellow)
-                } else {
-                    resultsDiv.classList.add("green"); // Low risk (green)
-                }
-
+                resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
                 loadShipmentHistory(); // Refresh shipment history
             }
         } catch (error) {
