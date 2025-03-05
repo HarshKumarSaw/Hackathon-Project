@@ -143,7 +143,7 @@ document.getElementById("download-pdf").addEventListener("click", async function
             let y = 50; // Start position for text
 
             doc.setFontSize(14);
-            doc.text("📦 Shipment Details:", 20, y);
+            doc.text("Shipment Details:", 20, y);
             y += 10;
 
             shipments.forEach((shipment, index) => {
