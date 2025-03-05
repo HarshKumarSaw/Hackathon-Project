@@ -1,50 +1,64 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const chatbotToggle = document.getElementById("chatbot-toggle");
     const chatbotContainer = document.getElementById("chatbot-container");
+    const chatbotToggle = document.getElementById("chatbot-toggle");
     const closeChatbot = document.getElementById("close-chatbot");
     const chatbotMessages = document.getElementById("chatbot-messages");
     const chatbotInput = document.getElementById("chatbot-input");
     const sendChatbot = document.getElementById("send-chatbot");
 
-    const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"; // Replace with your actual key
+    let userApiKey = null; // 🔐 API key stored only in memory
 
-    // 🔹 Show/Hide Chatbot
-    chatbotToggle.addEventListener("click", () => chatbotContainer.style.display = "flex");
-    closeChatbot.addEventListener("click", () => chatbotContainer.style.display = "none");
+    // 🌟 Show chatbot and ask for API key
+    chatbotToggle.addEventListener("click", function () {
+        chatbotContainer.style.display = "block";
 
-    // 🔹 Send Message
-    sendChatbot.addEventListener("click", async () => {
-        let userMessage = chatbotInput.value.trim();
+        // If no API key has been set, ask for it
+        if (!userApiKey) {
+            userApiKey = prompt("🔑 Please enter your OpenAI API key:");
+            if (!userApiKey) {
+                alert("⚠️ API key is required to use the chatbot.");
+                chatbotContainer.style.display = "none";
+                return;
+            }
+        }
+    });
+
+    // ❌ Close Chatbot
+    closeChatbot.addEventListener("click", function () {
+        chatbotContainer.style.display = "none";
+    });
+
+    // ✉️ Send Message to ChatGPT
+    sendChatbot.addEventListener("click", async function () {
+        const userMessage = chatbotInput.value.trim();
         if (!userMessage) return;
 
-        // Display User Message
-        chatbotMessages.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+        // Display user message in chat
+        chatbotMessages.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
         chatbotInput.value = "";
 
-        // Call ChatGPT API
         try {
-            let response = await fetch("https://api.openai.com/v1/chat/completions", {
+            const response = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${OPENAI_API_KEY}`
+                    "Authorization": `Bearer ${userApiKey}`
                 },
                 body: JSON.stringify({
                     model: "gpt-3.5-turbo",
-                    messages: [{ role: "system", content: "You are a helpful trade compliance assistant." }, 
-                               { role: "user", content: userMessage }]
+                    messages: [{ role: "user", content: userMessage }]
                 })
             });
 
-            let data = await response.json();
-            let aiResponse = data.choices[0].message.content;
+            const data = await response.json();
 
-            // Display AI Response
-            chatbotMessages.innerHTML += `<div><strong>AI:</strong> ${aiResponse}</div>`;
-            chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
+            if (data.choices && data.choices.length > 0) {
+                chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ${data.choices[0].message.content}</p>`;
+            } else {
+                chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ⚠️ No response received.</p>`;
+            }
         } catch (error) {
-            chatbotMessages.innerHTML += `<div><strong>AI:</strong> ❌ Error fetching response.</div>`;
-            console.error("Chatbot Error:", error);
+            chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ❌ Error fetching response.</p>`;
         }
     });
 
