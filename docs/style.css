@@ -423,3 +423,7 @@ select {
     background-size: 18px;
     padding-right: 30px; /* Prevent text from overlapping arrow */
 }
+
+#destination, #category {
+    margin-bottom: 10px; /* ✅ Reduce extra space */
+}
