@@ -229,49 +229,56 @@ button:hover {
     border: 1px solid #047857;
 }
 
-/* 🌍 Improved Country Dropdown Styling */
+/* 🌍 Enhanced Country Dropdown Styling */
 #destination {
     width: 100%;
     padding: 12px;
     font-size: 1rem;
     border-radius: 8px;
-    border: 2px solid #c7d2fe;
-    background: #f8fafc;
+    border: 2px solid #4f46e5; /* Make border match theme */
+    background: #ffffff;
     cursor: pointer;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+/* Highlight when selected */
 #destination:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
+    border-color: #4338ca;
+    box-shadow: 0 0 8px rgba(67, 56, 202, 0.5);
     outline: none;
 }
 
-/* Make option groups look better */
-optgroup {
-    font-weight: bold;
-    background: #e0e7ff;
-    color: #1e40af;
-    padding: 4px;
+/* Style dropdown options */
+select option {
+    padding: 12px;
+    font-size: 1rem;
+    background: #f8fafc;
+    color: #374151;
+    border-radius: 5px;
 }
 
-/* Style individual options */
-option {
-    padding: 10px;
-    font-size: 1rem;
+/* Improve option group appearance */
+optgroup {
+    font-weight: bold;
+    background: #eef2ff;
+    color: #1e40af;
+    padding: 6px;
+}
+
+/* Hover effect for dropdown options */
+select option:hover {
+    background-color: #c7d2fe;
+    color: #1e3a8a;
 }
 
 /* Improve dropdown arrow appearance */
 select {
-    appearance: none; /* Remove default styling */
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-}
-
-/* Add dropdown arrow icon */
-#destination {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%234f46e5'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 18px;
+    padding-right: 30px; /* Prevent text from overlapping arrow */
 }
