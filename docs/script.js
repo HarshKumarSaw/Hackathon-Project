@@ -6,12 +6,21 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
+        const productName = document.getElementById("product-name").value;
+        const category = document.getElementById("category").value.toLowerCase();
+        const destination = document.getElementById("destination").value.toLowerCase();
+        const weight = parseFloat(document.getElementById("weight").value);
+        const invoice = document.getElementById("invoice").files[0];
+
+        // Calculate Risk Score
+        const riskLevel = calculateRiskScore(category, destination, weight);
+
         const formData = new FormData();
-        formData.append("productName", document.getElementById("product-name").value);
-        formData.append("category", document.getElementById("category").value.toLowerCase());
-        formData.append("destination", document.getElementById("destination").value.toLowerCase());
-        formData.append("weight", parseFloat(document.getElementById("weight").value));
-        formData.append("invoice", document.getElementById("invoice").files[0]);
+        formData.append("productName", productName);
+        formData.append("category", category);
+        formData.append("destination", destination);
+        formData.append("weight", weight);
+        formData.append("invoice", invoice);
 
         resultsDiv.innerHTML = "";
         resultsDiv.className = "";
@@ -29,7 +38,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
-                resultsDiv.innerHTML = "✅ " + result.message;
+                resultsDiv.innerHTML = `✅ ${result.message} <br> 🚨 Risk Level: <strong>${riskLevel}</strong>`;
+
+                if (riskLevel === "HIGH") {
+                    resultsDiv.classList.add("red"); // High-risk shipments in red
+                } else if (riskLevel === "MEDIUM") {
+                    resultsDiv.classList.add("yellow"); // Medium risk (yellow)
+                } else {
+                    resultsDiv.classList.add("green"); // Low risk (green)
+                }
+
                 loadShipmentHistory(); // Refresh shipment history
             }
         } catch (error) {
@@ -69,4 +87,43 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     loadShipmentHistory(); // Load history on page load
+
+    // Risk Score Calculation Function
+    function calculateRiskScore(category, destination, weight) {
+        let riskScore = 0;
+
+        // 🚨 High-Risk Destinations (Higher chance of rejection)
+        const highRiskCountries = ["russia", "iran", "north korea", "syria"];
+        if (highRiskCountries.includes(destination.toLowerCase())) {
+            riskScore += 3;
+        }
+
+        // ⚠️ Medium-Risk Destinations (Some restrictions)
+        const mediumRiskCountries = ["china", "brazil", "mexico"];
+        if (mediumRiskCountries.includes(destination.toLowerCase())) {
+            riskScore += 2;
+        }
+
+        // 🚫 Prohibited Categories (Automatic High Risk)
+        const prohibitedCategories = ["firearms", "explosives", "drugs", "alcohol"];
+        if (prohibitedCategories.includes(category.toLowerCase())) {
+            return "HIGH"; // Immediate rejection risk
+        }
+
+        // 📦 Large Shipments = Higher Scrutiny
+        if (weight > 30) {
+            riskScore += 2;
+        } else if (weight > 10) {
+            riskScore += 1;
+        }
+
+        // 🎯 Final Risk Score
+        if (riskScore >= 4) {
+            return "HIGH";
+        } else if (riskScore >= 2) {
+            return "MEDIUM";
+        } else {
+            return "LOW";
+        }
+    }
 });
