@@ -56,9 +56,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 // 📊 Function to Generate Charts Dynamically
 function generateChart(canvasId, type, labels, data, colors, labelText = "") {
-    
-    
-    
     const ctx = document.getElementById(canvasId).getContext("2d");
     new Chart(ctx, {
         type: type,
