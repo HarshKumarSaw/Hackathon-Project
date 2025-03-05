@@ -1,4 +1,4 @@
-/* Global Styles */
+/* 🌍 Global Styles */
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
@@ -7,335 +7,113 @@ body {
     color: #333;
     text-align: center;
     display: flex;
-    flex-direction: column; /* ✅ Ensures vertical stacking */
-    align-items: center; /* ✅ Centers all elements */
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
 }
 
-/* Risk Level Message Styling */
-.risk-message {
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    display: inline-block;
-}
-
-/* Color Codes for Risk Levels */
-.risk-high {
-    color: #b91c1c;
-    background: #fee2e2;
-    border: 1px solid #b91c1c;
-}
-
-.risk-medium {
-    color: #b45309;
-    background: #fef3c7;
-    border: 1px solid #b45309;
-}
-
-.risk-low {
-    color: #047857;
-    background: #d1fae5;
-    border: 1px solid #047857;
-}
-
-/* Medium-Risk Warning (Yellow) */
-#compliance-results.yellow {
-    color: #b45309;
-    background: #fef3c7;
-}
-
-/* High-Risk Warning (Red) */
-#compliance-results.red {
-    color: #b91c1c;
-    background: #fee2e2;
-}
-
-/* Low-Risk Confirmation (Green) */
-#compliance-results.green {
-    color: #047857;
-    background: #d1fae5;
-}
-
-/* Container to Stack Elements Properly */
-.container {
-    display: flex;
-    flex-direction: column; /* ✅ Forces elements to be in vertical order */
-    align-items: center;
-    width: 100%;
-    max-width: 500px;
-}
-
-/* Header */
-h1 {
+/* 🚀 Dashboard Styling */
+h1, h2 {
     color: #1e3a8a;
-    font-size: 2rem;
-    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
-/* Dashboard Button */
-.dashboard-button {
-    display: block;
-    margin: 10px auto 20px;
-    padding: 12px;
-    background-color: #4f46e5;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    width: 250px;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.dashboard-button:hover {
-    background-color: #4338ca;
-    transform: scale(1.05);
-}
-
-/* Form Styling */
-form {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+/* 📊 Dashboard Container */
+.dashboard-container {
     width: 90%;
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* 📌 Stats Box */
+#stats {
     display: flex;
-    flex-direction: column; /* ✅ Ensures vertical input stacking */
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-/* Labels & Inputs */
-label {
-    display: block;
-    text-align: left;
-    width: 100%;
-    font-weight: bold;
-    color: #374151;
-    margin-bottom: 5px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #c7d2fe;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-/* Submit Button */
-button {
-    background: #1e40af;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    width: 100%;
-}
-
-button:hover {
-    background: #1e3a8a;
-    transform: scale(1.05);
-}
-
-/* Shipment History */
-#shipment-history {
-    max-width: 500px;
-    width: 90%;
-    background: white;
+    justify-content: space-around;
+    background: #f8fafc;
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-/* Shipment Entries */
-.shipment-entry {
-    background: #f3f4f6;
-    padding: 10px;
-    margin-bottom: 10px;
     border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Compliance Results (Fix for Red #compliance-results {
-    margin-top: 20px;
-    font-weight: bold;
-    padding: 12px;
-    border-radius: 8px;
-    display: block; /* ✅ Ensure it always shows when needed */
-}
-
-/* Fix for Red Error Messages */
-#compliance-results.red {
-    color: #b91c1c !important; /* ✅ Force Red Text */
-    background: #fee2e2 !important; /* ✅ Force Red Background */
-    border: 1px solid #b91c1c !important;
-    display: block !important;
-}
-
-/* Fix for Green Success Messages */
-#compliance-results.green {
-    color: #047857 !important; /* ✅ Force Green Text */
-    background: #d1fae5 !important; /* ✅ Force Green Background */
-    border: 1px solid #047857 !important;
-    display: block !important;
-}
-
+/* 🏆 Shipment Compliance Overview */
 .chart-container {
-    width: 80%;
+    width: 90%;
     max-width: 600px;
     margin: 20px auto;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-    form, #shipment-history {
-        width: 90%;
-    }
-}
-
-/* Risk Level Message Styling */
+/* 🟢 Risk Level Messages */
 .risk-message {
     font-weight: bold;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
+    padding: 8px;
+    border-radius: 6px;
     display: inline-block;
 }
 
-/* Color Codes for Risk Levels */
-.risk-high {
-    color: #b91c1c;
-    background: #fee2e2;
-    border: 1px solid #b91c1c;
-}
-
-.risk-medium {
-    color: #b45309;
-    background: #fef3c7;
-    border: 1px solid #b45309;
-}
-
+/* ✅ Low Risk */
 .risk-low {
     color: #047857;
     background: #d1fae5;
     border: 1px solid #047857;
 }
 
-/* 🌍 Fixed Destination Dropdown Styling */
-#destination {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 2px solid #c7d2fe;
-    background: white;
-    cursor: pointer;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    height: 44px; /* Ensure same height as input boxes */
-    box-sizing: border-box; /* Prevents overflow issues */
+/* ⚠️ Medium Risk */
+.risk-medium {
+    color: #b45309;
+    background: #fef3c7;
+    border: 1px solid #b45309;
 }
 
-#destination:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
-    outline: none;
-}
-/* Style dropdown options */
-select option {
-    padding: 12px;
-    font-size: 1rem;
-    background: #f8fafc;
-    color: #374151;
-    border-radius: 5px;
+/* 🔴 High Risk */
+.risk-high {
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #b91c1c;
 }
 
-/* Improve option group appearance */
-optgroup {
-    font-weight: bold;
-    background: #eef2ff;
-    color: #1e40af;
-    padding: 6px;
-}
-
-/* Hover effect for dropdown options */
-select option:hover {
-    background-color: #c7d2fe;
-    color: #1e3a8a;
-}
-
-/* Improve dropdown arrow appearance */
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%234f46e5'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 18px;
-    padding-right: 30px; /* Prevent text from overlapping arrow */
-}
-
-/* ✅ Compliance Message Styling */
+/* 🎯 Compliance Messages */
 #compliance-results {
-    font-size: 1rem; /* Match form labels & shipment history */
+    font-size: 1rem;
     font-weight: normal;
-    padding: 12px;
+    padding: 10px;
     border-radius: 8px;
-    margin-top: 15px;
+    margin-top: 10px;
     text-align: center;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-/* 🟢 Success Box */
+/* 🟩 Success */
 #compliance-results.green {
     color: #065f46;
     background: #d1fae5;
     border: 2px solid #047857;
 }
 
-/* ⚠️ Medium Risk Warning */
+/* 🟨 Medium Risk */
 #compliance-results.yellow {
     color: #b45309;
     background: #fef3c7;
     border: 2px solid #b45309;
 }
 
-/* 🔴 High Risk Warning */
+/* 🟥 High Risk */
 #compliance-results.red {
     color: #b91c1c;
     background: #fee2e2;
     border: 2px solid #b91c1c;
 }
 
-/* ⚠️ Risk Message Styling */
-.risk-message {
-    font-size: 1rem; /* Uniform size across messages */
-    font-weight: normal;
-    padding: 10px;
-    margin-top: 8px;
-    display: block;
-    text-align: center;
-    border-radius: 5px;
-}
-
-/* ✅ Success Check Icon */
-.success-icon {
-    font-size: 1.2rem;
-    margin-right: 8px;
-}
-
-/* 📂 Modern File Upload Button */
+/* 📂 Modern File Upload */
 .file-upload {
     display: flex;
     align-items: center;
@@ -347,7 +125,6 @@ select {
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    text-align: center;
     transition: all 0.3s ease-in-out;
 }
 
@@ -356,23 +133,79 @@ select {
     transform: scale(1.05);
 }
 
-/* Hide default input */
+/* Hide default file input */
 #invoice {
     display: none;
 }
 
-/* Display selected file name */
+/* Selected file name */
 #file-name {
     margin-top: 5px;
     font-size: 0.9rem;
     color: #374151;
 }
 
+/* 📦 Shipment History */
+#shipment-history {
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* 📜 Shipment Entries */
+.shipment-entry {
+    background: #f3f4f6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+/* 🏷️ Shipment Title */
 .shipment-title {
     background: white;
     padding: 8px 15px;
     border-radius: 8px;
     display: inline-block;
     font-weight: bold;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional for better visibility */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 📥 Download PDF Button */
+#download-pdf {
+    background: #1e40af;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 250px;
+    margin-top: 10px;
+}
+
+#download-pdf:hover {
+    background: #1e3a8a;
+    transform: scale(1.05);
+}
+
+/* 🎨 Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 95%;
+    }
+
+    .chart-container {
+        width: 95%;
+    }
+
+    #stats {
+        flex-direction: column;
+        text-align: center;
+    }
 }
