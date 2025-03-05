@@ -80,6 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const categorySelect = document.getElementById("category");
     const categoryRiskIndicator = document.getElementById("category-risk");
+    const tariffDisplay = document.createElement("p");
+    tariffDisplay.id = "tariff-display";
+    tariffDisplay.style.fontWeight = "bold";
+    tariffDisplay.style.color = "#1e3a8a";
+    tariffDisplay.style.marginTop = "10px";
+    categorySelect.insertAdjacentElement("afterend", tariffDisplay);
 
 // 🌍 Full International Trade Categories with Risk Levels
     const categoryRiskLevels = {
