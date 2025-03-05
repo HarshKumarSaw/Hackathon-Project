@@ -501,15 +501,15 @@ canvas {
     position: relative;
 }
 
-/* 🔴 Force Close Button to Stay in the Top-Right Corner */
+/* 🔴 Force Close Button to the Top-Right Corner */
 #close-chatbot {
     position: absolute !important;
-    top: 10px !important;   /* Forces it to the top */
-    right: 15px !important; /* Forces it to the right */
+    top: 10px !important;     /* Forces to the top */
+    right: 10px !important;   /* Forces to the right */
     background: none !important;
     border: none !important;
     color: white !important;
-    font-size: 22px !important;  /* Bigger & visible */
+    font-size: 24px !important;  /* Bigger & clearer */
     font-weight: bold !important;
     cursor: pointer !important;
     transition: transform 0.2s ease-in-out !important;
