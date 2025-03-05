@@ -282,3 +282,24 @@ input, select {
     border-radius: 5px !important;
     font-size: 1rem !important;
 }
+
+/* 🚀 Force Fix for Dashboard & Back to Form Buttons */
+.dashboard-button {
+    display: block !important;
+    margin: 10px auto 20px !important;
+    padding: 12px !important;
+    background-color: #4f46e5 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    width: 250px !important;
+    transition: all 0.3s ease-in-out !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
+    text-align: center !important;
+}
+
+.dashboard-button:hover {
+    background-color: #4338ca !important;
+    transform: scale(1.05) !important;
+}
