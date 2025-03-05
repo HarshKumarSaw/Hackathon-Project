@@ -12,6 +12,24 @@ body {
     min-height: 100vh;
 }
 
+/* Medium-Risk Warning (Yellow) */
+#compliance-results.yellow {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+/* High-Risk Warning (Red) */
+#compliance-results.red {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+/* Low-Risk Confirmation (Green) */
+#compliance-results.green {
+    color: #047857;
+    background: #d1fae5;
+}
+
 /* Container to Stack Elements Properly */
 .container {
     display: flex;
