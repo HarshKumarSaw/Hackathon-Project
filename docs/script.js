@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const addTax = (totalImportTax - tariffRate).toFixed(2);
                 // ✅ Display Total Tax with Explanation
                 tariffDisplay.innerHTML = `📌 <strong>Total Import Tax:</strong> ${totalImportTax}% 
-                <br> (Tariff: ${tariffRate}%, Additional Tax: ${addTax} based on risk)`;
+                <br> (Tariff: ${tariffRate}%, Additional Tax: ${addTax} )`;
             } else {
                 tariffDisplay.innerHTML = "⚠️ No tax data available for this selection.";
             }
