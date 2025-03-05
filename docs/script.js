@@ -89,8 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 resultsDiv.className = "green";
                 resultsDiv.innerHTML = `
-    <span class="success-icon">✅✅</span> ${result.message}
-    <span class="risk-message">${riskMessage}</span>
+    <div class="compliance-message">✅ ${result.message}</div>
+    <div class="risk-message">${riskMessage}</div>
 `;
                 loadShipmentHistory(); // Refresh shipment history
             }
