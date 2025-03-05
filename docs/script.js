@@ -177,4 +177,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (weight > 10) riskScore += 1;
         return riskScore >= 4 ? "HIGH" : riskScore >= 2 ? "MEDIUM" : "LOW";
     }
+
+    // Show selected file name
+    document.getElementById("invoice").addEventListener("change", function () {
+        const fileNameDisplay = document.getElementById("file-name");
+        fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : "No file chosen";
+});
 });
