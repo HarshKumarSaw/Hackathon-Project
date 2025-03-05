@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultsDiv = document.getElementById("compliance-results");
     const historyDiv = document.getElementById("shipment-history");
     const destinationSelect = document.getElementById("destination");
+    const riskIndicator = document.createElement("p"); // Create risk indicator element
+    riskIndicator.id = "risk-indicator";
+    destinationSelect.insertAdjacentElement("afterend", riskIndicator);
 
     // 🌍 Country Categorization
     const highRiskCountries = ["Russia", "Iran", "North Korea", "Syria"];
@@ -10,26 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const lowRiskCountries = ["USA", "Canada", "UK", "Germany", "France", "India", "Japan", "Australia", "Italy", "Spain"];
 
     // 🌎 Full List of Countries
-    const allCountries = [
-        ...highRiskCountries, ...mediumRiskCountries, ...lowRiskCountries,
-        "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Austria",
-        "Azerbaijan", "Bangladesh", "Belgium", "Bolivia", "Chile", "Colombia",
-        "Denmark", "Dominican Republic", "Ecuador", "Egypt", "Ethiopia", "Finland",
-        "Greece", "Hungary", "Indonesia", "Ireland", "Jordan", "Malaysia", "Nepal",
-        "Netherlands", "New Zealand", "Nigeria", "Norway", "Pakistan", "Peru",
-        "Philippines", "Poland", "Portugal", "Saudi Arabia", "South Africa",
-        "South Korea", "Sweden", "Switzerland", "Thailand", "Turkey", "Ukraine",
-        "United Arab Emirates", "Vietnam", "Zambia"
-    ];
+    const allCountries = [...highRiskCountries, ...mediumRiskCountries, ...lowRiskCountries];
 
-    // Populate Dropdown
+    // Populate Dropdown with Categorization
     function populateCountryDropdown() {
         const groupings = [
             { label: "🚨 High-Risk Countries", countries: highRiskCountries },
             { label: "⚠️ Medium-Risk Countries", countries: mediumRiskCountries },
-            { label: "✅ Low-Risk Countries", countries: lowRiskCountries },
-            { label: "🌍 Other Countries", countries: allCountries.filter(c => 
-                !highRiskCountries.includes(c) && !mediumRiskCountries.includes(c) && !lowRiskCountries.includes(c)) }
+            { label: "✅ Low-Risk Countries", countries: lowRiskCountries }
         ];
 
         destinationSelect.innerHTML = '<option value="">-- Select Country --</option>';
@@ -47,23 +38,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     populateCountryDropdown();
 
+    // ✅ Show Risk Indicator Below Dropdown
+    destinationSelect.addEventListener("change", function () {
+        const selectedCountry = destinationSelect.value;
+
+        if (highRiskCountries.includes(selectedCountry)) {
+            riskIndicator.innerHTML = "🔴 <strong>High Compliance Risk:</strong> Strict checks required!";
+            riskIndicator.style.color = "#b91c1c";
+        } else if (mediumRiskCountries.includes(selectedCountry)) {
+            riskIndicator.innerHTML = "🟡 <strong>Moderate Compliance Risk:</strong> Some restrictions apply.";
+            riskIndicator.style.color = "#b45309";
+        } else if (lowRiskCountries.includes(selectedCountry)) {
+            riskIndicator.innerHTML = "🟢 <strong>Low Compliance Risk:</strong> Minimal compliance issues.";
+            riskIndicator.style.color = "#047857";
+        } else {
+            riskIndicator.innerHTML = ""; // No message if no country selected
+        }
+    });
+
+    // 🛠 Ensure Form Submission Works
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const productName = document.getElementById("product-name").value;
-        const category = document.getElementById("category").value.toLowerCase();
-        const destination = destinationSelect.value;
-        const weight = parseFloat(document.getElementById("weight").value);
-        const invoice = document.getElementById("invoice").files[0];
-
-        const riskLevel = calculateRiskScore(category, destination, weight);
-
         const formData = new FormData();
-        formData.append("productName", productName);
-        formData.append("category", category);
-        formData.append("destination", destination);
-        formData.append("weight", weight);
-        formData.append("invoice", invoice);
+        formData.append("productName", document.getElementById("product-name").value);
+        formData.append("category", document.getElementById("category").value.toLowerCase());
+        formData.append("destination", destinationSelect.value);
+        formData.append("weight", parseFloat(document.getElementById("weight").value));
+        formData.append("invoice", document.getElementById("invoice").files[0]);
 
         resultsDiv.innerHTML = "";
         resultsDiv.className = "";
@@ -75,98 +77,48 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const result = await response.json();
-            let riskMessage = `<span class="risk-message risk-low">🟢 Low Risk: Shipment is safe for compliance.</span>`;
-
-            if (riskLevel === "HIGH") {
-                riskMessage = `<span class="risk-message risk-high">🔴 High Risk: This shipment may be rejected! Double-check compliance.</span>`;
-            } else if (riskLevel === "MEDIUM") {
-                riskMessage = `<span class="risk-message risk-medium">🟡 Medium Risk: Some restrictions apply. Review before shipping.</span>`;
-            }
 
             if (response.status === 400) {
                 resultsDiv.className = "red";
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
-                resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
-                loadShipmentHistory(); // Refresh shipment history
+                resultsDiv.innerHTML = "✅ Shipment is compliant!";
+                loadShipmentHistory();
             }
         } catch (error) {
             resultsDiv.className = "red";
-            resultsDiv.innerHTML = "❌ Error connecting to the server. Please try again later.";
+            resultsDiv.innerHTML = "❌ Error connecting to the server.";
             console.error("Backend Error:", error);
         }
     });
 
-    // Load Shipment History
+    // ✅ Load Shipment History
     async function loadShipmentHistory() {
         try {
             const response = await fetch("https://hackathon-project-5oha.onrender.com/api/shipments");
             const shipments = await response.json();
+            historyDiv.innerHTML = shipments.length === 0 ? "<p>No shipments recorded yet.</p>" : "";
 
-            if (shipments.length === 0) {
-                historyDiv.innerHTML = "No shipments recorded yet.";
-                return;
-            }
-
-            historyDiv.innerHTML = "<h2>Shipment History</h2>";
             shipments.forEach(shipment => {
-                historyDiv.innerHTML += `
-                    <div class="shipment-entry">
-                        <strong>${shipment.productName}</strong> (${shipment.category})<br>
-                        Destination: ${shipment.destination}<br>
-                        Weight: ${shipment.weight}kg<br>
-                        Date: ${new Date(shipment.date).toLocaleString()}<br>
-                        Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
-                        <hr>
-                    </div>
+                const shipmentEntry = document.createElement("div");
+                shipmentEntry.classList.add("shipment-entry");
+                shipmentEntry.innerHTML = `
+                    <strong>${shipment.productName}</strong> (${shipment.category})<br>
+                    Destination: ${shipment.destination}<br>
+                    Weight: ${shipment.weight}kg<br>
+                    Date: ${new Date(shipment.date).toLocaleString()}<br>
+                    Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
+                    <hr>
                 `;
+                historyDiv.appendChild(shipmentEntry);
             });
-
-            // Generate Risk Trends Chart
-            generateRiskChart(shipments);
         } catch (error) {
             console.error("Error loading shipment history:", error);
         }
     }
 
-    loadShipmentHistory(); // Load history on page load
-
-    // 📊 Function to Generate Risk Analytics Chart
-    function generateRiskChart(shipments) {
-        let lowRisk = 0, mediumRisk = 0, highRisk = 0;
-
-        shipments.forEach(shipment => {
-            let riskLevel = calculateRiskScore(shipment.category, shipment.destination, shipment.weight);
-            if (riskLevel === "LOW") lowRisk++;
-            else if (riskLevel === "MEDIUM") mediumRisk++;
-            else if (riskLevel === "HIGH") highRisk++;
-        });
-
-        const ctx = document.getElementById("riskChart").getContext("2d");
-        
-        if (window.riskChart) {
-            window.riskChart.destroy(); // Destroy previous chart if it exists
-        }
-
-        window.riskChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Low Risk", "Medium Risk", "High Risk"],
-                datasets: [{
-                    label: "Number of Shipments",
-                    data: [lowRisk, mediumRisk, highRisk],
-                    backgroundColor: ["#047857", "#b45309", "#b91c1c"]
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-    }
+    loadShipmentHistory();
 
     function calculateRiskScore(category, destination, weight) {
         let riskScore = 0;
@@ -180,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Show selected file name
     document.getElementById("invoice").addEventListener("change", function () {
-        const fileNameDisplay = document.getElementById("file-name");
-        fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : "No file chosen";
-});
+        document.getElementById("file-name").textContent = this.files.length > 0 ? this.files[0].name : "No file chosen";
+    });
 });
