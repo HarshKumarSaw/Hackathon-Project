@@ -57,11 +57,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 // 📊 Function to Generate Charts Dynamically
 function generateChart(canvasId, type, labels, data, colors, labelText = "") {
     
-    // Ensure the container centers the chart
-    parent.style.display = "flex";
-    parent.style.justifyContent = "center";
-    parent.style.alignItems = "center";
-    parent.style.width = "100%";
+    
     
     const ctx = document.getElementById(canvasId).getContext("2d");
     new Chart(ctx, {
