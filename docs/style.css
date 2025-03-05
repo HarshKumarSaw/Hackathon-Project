@@ -432,3 +432,10 @@ select {
 #destination, #category {
     margin-bottom: 10px; /* ✅ Reduce extra space */
 }
+
+canvas {
+    display: block;
+    max-width: 100%; /* ✅ Prevents chart overflow */
+    height: auto;
+    margin: 0 auto; /* ✅ Ensures it is centered */
+}
