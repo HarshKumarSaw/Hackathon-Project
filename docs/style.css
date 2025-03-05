@@ -189,9 +189,14 @@ button:hover {
 }
 
 .chart-container {
-    width: 80%;
-    max-width: 600px;
-    margin: 20px auto;
+    width: 100%; /* ✅ Make it responsive */
+    max-width: 600px; /* ✅ Prevents it from stretching too wide */
+    margin: 20px auto; /* ✅ Centers the chart horizontally */
+    text-align: center; /* ✅ Ensures text inside is centered */
+    display: flex;
+    flex-direction: column; /* ✅ Stack title & chart properly */
+    align-items: center; /* ✅ Centers the chart */
+    justify-content: center; /* ✅ Centers content inside */
 }
 
 /* Responsive Design */
