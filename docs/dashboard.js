@@ -45,8 +45,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         generateChart("shipmentChart", "doughnut", ["Compliant Shipments", "Non-Compliant Shipments"], 
             [compliant, nonCompliant], ["#10B981", "#EF4444"]);
 
-        generateChart("categoryChart", "bar", Object.keys(categories), Object.values(categories), "#3B82F6", "Most Shipped Categories");
-
         generateChart("destinationChart", "bar", Object.keys(destinations), Object.values(destinations), "#F59E0B", "Top Destinations");
 
     } catch (error) {
