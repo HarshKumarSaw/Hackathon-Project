@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     populateCountryDropdown();
 
+    // 🛠 Fix: Ensure Form Submission Works
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
@@ -85,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Load Shipment History (with Edit & Delete Buttons)
+    // Load Shipment History
     async function loadShipmentHistory() {
         try {
             const response = await fetch("https://hackathon-project-5oha.onrender.com/api/shipments");
@@ -100,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     Destination: ${shipment.destination}<br>
                     Weight: ${shipment.weight}kg<br>
                     Date: ${new Date(shipment.date).toLocaleString()}<br>
-                    Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
                     <button class="edit-btn" onclick="editShipment('${shipment.id}')">✏️ Edit</button>
                     <button class="delete-btn" onclick="deleteShipment('${shipment.id}')">🗑️ Delete</button>
                     <hr>
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    loadShipmentHistory(); // Load history on page load
+    loadShipmentHistory();
 
     // 📝 Edit Shipment
     async function editShipment(shipmentId) {
