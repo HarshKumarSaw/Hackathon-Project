@@ -441,17 +441,23 @@ canvas {
 }
 
 /* 🔹 Floating Chatbot Button */
+/* 🔹 Floating Circular Chatbot Button */
 #chatbot-toggle {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    width: 50px;
+    height: 50px;
     background: #4f46e5;
     color: white;
     border: none;
-    padding: 12px 18px;
-    border-radius: 50px;
+    border-radius: 50%; /* Makes it circular */
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    font-weight: bold;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
 }
@@ -460,7 +466,6 @@ canvas {
     background: #4338ca;
     transform: scale(1.1);
 }
-
 /* 🔹 Chatbot UI */
 #chatbot-container {
     position: fixed;
