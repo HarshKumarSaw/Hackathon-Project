@@ -12,36 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chatbotToggle.addEventListener("click", function () {
         chatbotContainer.style.display = "block";
 
-        // If no API key has been set, ask for it
-        if (!userApiKey) {
-            userApiKey = prompt("🔑 Please enter your OpenAI API key:");
-            if (!userApiKey) {
-                alert("⚠️ API key is required to use the chatbot.");
-                chatbotContainer.style.display = "none";
-                return;
-            }
-        }
-    });
-
-    // ❌ Close Chatbot
-    closeChatbot.addEventListener("click", function () {
-        chatbotContainer.style.display = "none";
-    });
-
-document.addEventListener("DOMContentLoaded", function () {
-    const chatbotContainer = document.getElementById("chatbot-container");
-    const chatbotToggle = document.getElementById("chatbot-toggle");
-    const closeChatbot = document.getElementById("close-chatbot");
-    const chatbotMessages = document.getElementById("chatbot-messages");
-    const chatbotInput = document.getElementById("chatbot-input");
-    const sendChatbot = document.getElementById("send-chatbot");
-
-    let userApiKey = null; // 🔐 API key stored only in memory
-
-    // 🌟 Show chatbot and ask for API key
-    chatbotToggle.addEventListener("click", function () {
-        chatbotContainer.style.display = "block";
-
         if (!userApiKey) {
             userApiKey = prompt("🔑 Please enter your OpenAI API key:");
             if (!userApiKey) {
@@ -118,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chatbotInput.addEventListener("keypress", function (event) {
         if (event.key === "Enter") sendChatbot.click();
     });
+
     const form = document.querySelector("form");
     const resultsDiv = document.getElementById("compliance-results");
     const historyDiv = document.getElementById("shipment-history");
