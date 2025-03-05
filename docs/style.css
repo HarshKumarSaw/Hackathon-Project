@@ -536,7 +536,7 @@ canvas {
     background: #4338ca;
 }
 
-/* 🟢 Chat Input Box - Align Send Button Inline */
+/* 🟢 Chat Input Box - Align Send Button Inline & Adjust Position */
 .chat-input-container {
     display: flex;
     align-items: center;
@@ -553,9 +553,10 @@ canvas {
     border-radius: 5px;
     font-size: 1rem;
     outline: none;
+    height: 40px; /* Ensure uniform height */
 }
 
-/* Send Button */
+/* Send Button - Adjusted for Alignment */
 .chat-send-btn {
     margin-left: 10px; /* Space between input and button */
     padding: 10px 15px;
@@ -566,6 +567,10 @@ canvas {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    height: 42px; /* Slightly taller to match input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .chat-send-btn:hover {
