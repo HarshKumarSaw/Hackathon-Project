@@ -12,38 +12,52 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>📊 Shipment Dashboard</h1>
 
-    <div id="stats">
-        <p><strong>Total Shipments:</strong> <span id="total-shipments">0</span></p>
-        <p><strong>Compliant Shipments:</strong> <span id="compliant-shipments">0</span></p>
-        <p><strong>Non-Compliant Shipments:</strong> <span id="noncompliant-shipments">0</span></p>
+    <div class="dashboard-container">
+        <h1>📊 Shipment Dashboard</h1>
+
+        <!-- Shipment Stats Section -->
+        <div class="card">
+            <h2>📦 Shipment Overview</h2>
+            <div class="stats-grid">
+                <p><strong>Total Shipments:</strong> <span id="total-shipments">0</span></p>
+                <p><strong>✅ Compliant Shipments:</strong> <span id="compliant-shipments">0</span></p>
+                <p><strong>⚠️ Non-Compliant Shipments:</strong> <span id="noncompliant-shipments">0</span></p>
+            </div>
+        </div>
+
+        <!-- Compliance Overview Chart -->
+        <div class="card">
+            <h2>📊 Shipment Compliance Overview</h2>
+            <canvas id="shipmentChart"></canvas>
+        </div>
+
+        <!-- Most Shipped Categories Chart -->
+        <div class="card">
+            <h2>📦 Most Shipped Categories</h2>
+            <canvas id="categoryChart"></canvas>
+        </div>
+
+        <!-- Top Destinations Chart -->
+        <div class="card">
+            <h2>🌍 Top Destinations</h2>
+            <canvas id="destinationChart"></canvas>
+        </div>
+
+        <!-- Risk Trends Chart -->
+        <div class="card">
+            <h2>📊 Risk Trends & Analytics</h2>
+            <canvas id="riskChart"></canvas>
+        </div>
+
+        <!-- PDF Download & Back Button -->
+        <div class="button-container">
+            <button id="download-pdf" class="dashboard-button">📥 Download PDF Report</button>
+            <a href="index.html" class="dashboard-button">⬅️ Back to Form</a>
+        </div>
     </div>
-
-    <h2>📦 Shipment Compliance Overview</h2>
-    <div class="chart-container">
-        <canvas id="shipmentChart"></canvas>
-    </div>
-
-    <h2>📦 Most Shipped Categories</h2>
-    <div class="chart-container">
-        <canvas id="categoryChart"></canvas>
-    </div>
-
-    <h2>🌍 Top Destinations</h2>
-    <div class="chart-container">
-        <canvas id="destinationChart"></canvas>
-    </div>
-
-    <h2>📊 Risk Trends & Analytics</h2>
-    <div class="chart-container">
-        <canvas id="riskChart"></canvas>
-    </div>
-
-    <button id="download-pdf" class="dashboard-button">📥 Download PDF Report</button>
-
-    <a href="index.html" class="dashboard-button">⬅️ Back to Form</a>
 
     <script src="dashboard.js"></script>
+
 </body>
 </html>
