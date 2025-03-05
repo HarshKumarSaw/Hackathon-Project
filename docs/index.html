@@ -32,7 +32,9 @@
         <input type="number" id="weight" required><br>
 
         <label>Invoice Upload:</label>
-        <input type="file" id="invoice"><br>
+        <label for="invoice" class="file-upload">📂 Choose Invoice File</label>
+        <input type="file" id="invoice">
+        <p id="file-name">No file chosen</p>
 
         <button type="submit">Check Compliance</button>
     </form>
