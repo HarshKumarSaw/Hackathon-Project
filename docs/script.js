@@ -38,7 +38,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
-                resultsDiv.innerHTML = `✅ ${result.message} <br> 🚨 Risk Level: <strong>${riskLevel}</strong>`;
+                let riskMessage = `<span class="risk-message risk-low">🟢 Low Risk: Shipment is safe for compliance.</span>`;
+
+if (riskLevel === "HIGH") {
+    riskMessage = `<span class="risk-message risk-high">🔴 High Risk: This shipment may be rejected! Double-check compliance.</span>`;
+    resultsDiv.classList.add("red");
+} else if (riskLevel === "MEDIUM") {
+    riskMessage = `<span class="risk-message risk-medium">🟡 Medium Risk: Some restrictions apply. Review before shipping.</span>`;
+    resultsDiv.classList.add("yellow");
+} else {
+    resultsDiv.classList.add("green");
+}
+
+resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
 
                 if (riskLevel === "HIGH") {
                     resultsDiv.classList.add("red"); // High-risk shipments in red
