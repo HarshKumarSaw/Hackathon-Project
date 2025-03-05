@@ -488,6 +488,7 @@ canvas {
 }
 
 /* 🟢 Chatbot Header - Ensures the Close Button Stays Right */
+/* 🔹 Chatbot Header - Ensures Close Button is Right */
 #chatbot-header {
     display: flex;
     justify-content: space-between;
@@ -501,17 +502,22 @@ canvas {
     position: relative;
 }
 
-/* 🔴 Force Close Button to the Top-Right Corner */
+/* 🔴 ABSOLUTE FORCE FIX: Moves Close Button to the Top Right */
 #close-chatbot {
     position: absolute !important;
-    top: 10px !important;     /* Forces to the top */
-    right: 10px !important;   /* Forces to the right */
+    top: 5px !important;     /* Forces close to the very top */
+    right: 5px !important;   /* Forces close to the very right */
+    width: 35px !important;  /* Ensures proper button size */
+    height: 35px !important;
     background: none !important;
     border: none !important;
     color: white !important;
-    font-size: 24px !important;  /* Bigger & clearer */
+    font-size: 24px !important;
     font-weight: bold !important;
     cursor: pointer !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     transition: transform 0.2s ease-in-out !important;
 }
 
