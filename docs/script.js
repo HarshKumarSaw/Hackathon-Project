@@ -88,10 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
-                resultsDiv.innerHTML = `
-    <div class="compliance-message">✅ ${result.message}</div>
-    <div class="risk-message">${riskMessage}</div>
-`;
+                resultsDiv.innerHTML = `✅ ${result.message} <br> ${riskMessage}`;
                 loadShipmentHistory(); // Refresh shipment history
             }
         } catch (error) {
@@ -101,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Load Shipment History (Ensures History is Working)
+    // Load Shipment History
     async function loadShipmentHistory() {
         try {
             const response = await fetch("https://hackathon-project-5oha.onrender.com/api/shipments");
@@ -125,6 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
             });
+
+            // Generate Risk Trends Chart
+            generateRiskChart(shipments);
         } catch (error) {
             console.error("Error loading shipment history:", error);
         }
@@ -132,7 +132,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadShipmentHistory(); // Load history on page load
 
-    // Risk Score Calculation Function (Ensuring Risk Calculation is Working)
+    // 📊 Function to Generate Risk Analytics Chart
+    function generateRiskChart(shipments) {
+        let lowRisk = 0, mediumRisk = 0, highRisk = 0;
+
+        shipments.forEach(shipment => {
+            let riskLevel = calculateRiskScore(shipment.category, shipment.destination, shipment.weight);
+            if (riskLevel === "LOW") lowRisk++;
+            else if (riskLevel === "MEDIUM") mediumRisk++;
+            else if (riskLevel === "HIGH") highRisk++;
+        });
+
+        const ctx = document.getElementById("riskChart").getContext("2d");
+        
+        if (window.riskChart) {
+            window.riskChart.destroy(); // Destroy previous chart if it exists
+        }
+
+        window.riskChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Low Risk", "Medium Risk", "High Risk"],
+                datasets: [{
+                    label: "Number of Shipments",
+                    data: [lowRisk, mediumRisk, highRisk],
+                    backgroundColor: ["#047857", "#b45309", "#b91c1c"]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+
     function calculateRiskScore(category, destination, weight) {
         let riskScore = 0;
         if (highRiskCountries.includes(destination)) riskScore += 3;
