@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             let riskLevel = calculateRiskScore(shipment.category, shipment.destination, shipment.weight);
 
             // Compliance check
-            if (shipment.weight > 50 || ["North Korea", "Iran"].includes(shipment.destination) || 
+            if (["North Korea", "Iran"].includes(shipment.destination) || 
                 ["explosives", "drugs", "firearms"].includes(shipment.category.toLowerCase())) {
                 nonCompliant++;
             } else {
