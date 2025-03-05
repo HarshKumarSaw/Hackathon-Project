@@ -276,9 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 const taxMultiplier = taxMultipliers[totalRiskScore] || 1.0; // Default to 1.0 if unexpected
                 // ✅ Calculate Total Import Tax
                 const totalImportTax = (tariffRate * taxMultiplier).toFixed(2); // Keep 2 decimal places
+                const addTax = (totalImportTax - tariffRate).toFixed(2);
                 // ✅ Display Total Tax with Explanation
                 tariffDisplay.innerHTML = `📌 <strong>Total Import Tax:</strong> ${totalImportTax}% 
-                <br> (Tariff: ${tariffRate}%, Additional Tax: ${totalImportTax - tariffRate} based on risk)`;
+                <br> (Tariff: ${tariffRate}%, Additional Tax: ${addTax} based on risk)`;
             } else {
                 tariffDisplay.innerHTML = "⚠️ No tax data available for this selection.";
             }
