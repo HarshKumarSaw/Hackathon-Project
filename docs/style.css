@@ -229,25 +229,25 @@ button:hover {
     border: 1px solid #047857;
 }
 
-/* 🌍 Enhanced Country Dropdown Styling */
+/* 🌍 Fixed Destination Dropdown Styling */
 #destination {
     width: 100%;
     padding: 12px;
     font-size: 1rem;
     border-radius: 8px;
-    border: 2px solid #4f46e5; /* Make border match theme */
-    background: #ffffff;
+    border: 2px solid #c7d2fe;
+    background: white;
     cursor: pointer;
     transition: border-color 0.3s, box-shadow 0.3s;
+    height: 44px; /* Ensure same height as input boxes */
+    box-sizing: border-box; /* Prevents overflow issues */
 }
 
-/* Highlight when selected */
 #destination:focus {
-    border-color: #4338ca;
-    box-shadow: 0 0 8px rgba(67, 56, 202, 0.5);
+    border-color: #4f46e5;
+    box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
     outline: none;
 }
-
 /* Style dropdown options */
 select option {
     padding: 12px;
