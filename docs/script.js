@@ -1,94 +1,57 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const chatbotContainer = document.getElementById("chatbot-container");
     const chatbotToggle = document.getElementById("chatbot-toggle");
+    const chatbotContainer = document.getElementById("chatbot-container");
     const closeChatbot = document.getElementById("close-chatbot");
     const chatbotMessages = document.getElementById("chatbot-messages");
     const chatbotInput = document.getElementById("chatbot-input");
     const sendChatbot = document.getElementById("send-chatbot");
 
-    let userApiKey = null; // 🔐 API key stored only in memory
+    const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"; // Replace with your actual key
 
-    // 🌟 Show chatbot and ask for API key
-    chatbotToggle.addEventListener("click", function () {
-        chatbotContainer.style.display = "block";
+    // 🔹 Show/Hide Chatbot
+    chatbotToggle.addEventListener("click", () => chatbotContainer.style.display = "flex");
+    closeChatbot.addEventListener("click", () => chatbotContainer.style.display = "none");
 
-        if (!userApiKey) {
-            userApiKey = prompt("🔑 Please enter your OpenAI API key:");
-            if (!userApiKey) {
-                alert("⚠️ API key is required to use the chatbot.");
-                chatbotContainer.style.display = "none";
-                return;
-            }
-
-            // Show "Connecting to AI server..." message
-            chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ⏳ Connecting to AI server...</p>`;
-
-            // Test API key before proceeding
-            fetch("https://api.openai.com/v1/models", {
-                headers: { "Authorization": `Bearer ${userApiKey}` }
-            }).then(response => {
-                if (response.ok) {
-                    chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ✅ Connected to AI server.</p>`;
-                } else {
-                    chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ❌ Invalid API key. Please reload and enter a valid key.</p>`;
-                    userApiKey = null; // Reset API key if invalid
-                }
-            }).catch(() => {
-                chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ❌ Connection error. Please check your internet.</p>`;
-                userApiKey = null;
-            });
-        }
-    });
-
-    // ❌ Close Chatbot
-    closeChatbot.addEventListener("click", function () {
-        chatbotContainer.style.display = "none";
-    });
-
-    // ✉️ Send Message to ChatGPT
-    sendChatbot.addEventListener("click", async function () {
-        const userMessage = chatbotInput.value.trim();
+    // 🔹 Send Message
+    sendChatbot.addEventListener("click", async () => {
+        let userMessage = chatbotInput.value.trim();
         if (!userMessage) return;
 
-        // Display user message in chat
-        chatbotMessages.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+        // Display User Message
+        chatbotMessages.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
         chatbotInput.value = "";
 
-        chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ⏳ Thinking...</p>`;
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
-
+        // Call ChatGPT API
         try {
-            const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            let response = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${userApiKey}`
+                    "Authorization": `Bearer ${OPENAI_API_KEY}`
                 },
                 body: JSON.stringify({
                     model: "gpt-3.5-turbo",
-                    messages: [{ role: "user", content: userMessage }]
+                    messages: [{ role: "system", content: "You are a helpful trade compliance assistant." }, 
+                               { role: "user", content: userMessage }]
                 })
             });
 
-            const data = await response.json();
+            let data = await response.json();
+            let aiResponse = data.choices[0].message.content;
 
-            if (data.choices && data.choices.length > 0) {
-                chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ${data.choices[0].message.content}</p>`;
-            } else {
-                chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ⚠️ No response received.</p>`;
-            }
+            // Display AI Response
+            chatbotMessages.innerHTML += `<div><strong>AI:</strong> ${aiResponse}</div>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
         } catch (error) {
-            chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ❌ Error fetching response.</p>`;
+            chatbotMessages.innerHTML += `<div><strong>AI:</strong> ❌ Error fetching response.</div>`;
+            console.error("Chatbot Error:", error);
         }
-
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll to latest message
     });
 
     // Allow Enter Key Submission
-    chatbotInput.addEventListener("keypress", function (event) {
+    chatbotInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") sendChatbot.click();
     });
-
     const form = document.querySelector("form");
     const resultsDiv = document.getElementById("compliance-results");
     const historyDiv = document.getElementById("shipment-history");
