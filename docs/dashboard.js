@@ -121,3 +121,47 @@ function calculateRiskScore(category, destination, weight) {
     if (weight > 10) riskScore += 1;
     return riskScore >= 4 ? "HIGH" : riskScore >= 2 ? "MEDIUM" : "LOW";
 }
+
+document.getElementById("download-pdf").addEventListener("click", async function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // 📑 PDF Title & Date
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Shipment Compliance Report", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 30);
+
+    try {
+        const response = await fetch("https://hackathon-project-5oha.onrender.com/api/shipments");
+        const shipments = await response.json();
+
+        if (shipments.length === 0) {
+            doc.text("No shipment records available.", 20, 50);
+        } else {
+            let y = 50; // Start position for text
+
+            doc.setFontSize(14);
+            doc.text("📦 Shipment Details:", 20, y);
+            y += 10;
+
+            shipments.forEach((shipment, index) => {
+                let complianceStatus = (shipment.weight > 50 || ["North Korea", "Iran"].includes(shipment.destination) || 
+                    ["explosives", "drugs", "firearms"].includes(shipment.category.toLowerCase())) ? "❌ Non-Compliant" : "✅ Compliant";
+
+                doc.setFontSize(12);
+                doc.text(`${index + 1}. ${shipment.productName} (${shipment.category})`, 20, y);
+                doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 5);
+                doc.text(`   Compliance: ${complianceStatus}`, 20, y + 10);
+                y += 20;
+            });
+        }
+
+        // 📥 Save PDF
+        doc.save("Shipment_Compliance_Report.pdf");
+
+    } catch (error) {
+        console.error("Error generating PDF report:", error);
+    }
+});
