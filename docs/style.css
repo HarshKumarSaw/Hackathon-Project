@@ -487,10 +487,10 @@ canvas {
     font-family: Arial, sans-serif;
 }
 
-/* 🟢 Chatbot Header - Fix Close Button Position */
+/* 🟢 Chatbot Header - Ensures the Close Button Stays Right */
 #chatbot-header {
     display: flex;
-    justify-content: space-between; /* Ensures proper spacing */
+    justify-content: space-between;
     align-items: center;
     background: #4f46e5;
     color: white;
@@ -501,22 +501,22 @@ canvas {
     position: relative;
 }
 
-/* 🔴 Close Button - Bigger & Positioned Correctly */
+/* 🔴 Force Close Button to Stay in the Top-Right Corner */
 #close-chatbot {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 22px;  /* Increased size */
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    transition: transform 0.2s ease-in-out;
+    position: absolute !important;
+    top: 10px !important;   /* Forces it to the top */
+    right: 15px !important; /* Forces it to the right */
+    background: none !important;
+    border: none !important;
+    color: white !important;
+    font-size: 22px !important;  /* Bigger & visible */
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease-in-out !important;
 }
 
 #close-chatbot:hover {
-    transform: scale(1.2);
+    transform: scale(1.2) !important;
 }
 
 /* 🔹 Messages */
