@@ -283,17 +283,18 @@ select {
     padding-right: 30px; /* Prevent text from overlapping arrow */
 }
 
-/* ✅ Success Message Styling */
+/* ✅ Compliance Message Styling */
 #compliance-results {
-    font-size: 1rem; /* Standardized font size */
-    font-weight: bold;
+    font-size: 1rem; /* Match form labels & shipment history */
+    font-weight: normal;
     padding: 12px;
     border-radius: 8px;
     margin-top: 15px;
+    text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
 }
 
 /* 🟢 Success Box */
@@ -303,7 +304,7 @@ select {
     border: 2px solid #047857;
 }
 
-/* 🟡 Medium Risk Warning */
+/* ⚠️ Medium Risk Warning */
 #compliance-results.yellow {
     color: #b45309;
     background: #fef3c7;
@@ -317,12 +318,12 @@ select {
     border: 2px solid #b91c1c;
 }
 
-/* ⚠️ Risk Message Specific Styling */
+/* ⚠️ Risk Message Styling */
 .risk-message {
-    font-size: 0.9rem; /* Smaller than main text */
+    font-size: 1rem; /* Uniform size across messages */
     font-weight: normal;
-    padding: 8px;
-    margin-top: 5px;
+    padding: 10px;
+    margin-top: 8px;
     display: block;
     text-align: center;
     border-radius: 5px;
