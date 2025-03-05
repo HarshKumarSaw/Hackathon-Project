@@ -103,3 +103,15 @@ app.get("/api/shipments", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+// 📦 Serve Tariff Data API
+const tariffFilePath = path.join(__dirname, "tariff_data.json");
+
+// Ensure tariff_data.json exists
+if (!fs.existsSync(tariffFilePath)) {
+    console.log("Error: tariff_data.json not found!");
+} else {
+    app.get("/api/tariffs", (req, res) => {
+        res.sendFile(tariffFilePath);
+    });
+}
