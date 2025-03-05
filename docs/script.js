@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ Show Risk Indicator Below Dropdown
     destinationSelect.addEventListener("change", function () {
+        fetchTariff(categorySelect.value, destinationSelect.value);
         const selectedCountry = destinationSelect.value;
         const riskLevel = countryRiskLevels[selectedCountry];
 
@@ -112,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ✅ Show Risk Indicator Below Dropdown
     categorySelect.addEventListener("change", function () {
+        fetchTariff(categorySelect.value, destinationSelect.value);
         const selectedCategory = categorySelect.value;
         const riskLevel = categoryRiskLevels[selectedCategory];
         
