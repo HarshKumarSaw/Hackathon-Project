@@ -28,6 +28,53 @@ document.addEventListener("DOMContentLoaded", function () {
         chatbotContainer.style.display = "none";
     });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const chatbotContainer = document.getElementById("chatbot-container");
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const closeChatbot = document.getElementById("close-chatbot");
+    const chatbotMessages = document.getElementById("chatbot-messages");
+    const chatbotInput = document.getElementById("chatbot-input");
+    const sendChatbot = document.getElementById("send-chatbot");
+
+    let userApiKey = null; // 🔐 API key stored only in memory
+
+    // 🌟 Show chatbot and ask for API key
+    chatbotToggle.addEventListener("click", function () {
+        chatbotContainer.style.display = "block";
+
+        if (!userApiKey) {
+            userApiKey = prompt("🔑 Please enter your OpenAI API key:");
+            if (!userApiKey) {
+                alert("⚠️ API key is required to use the chatbot.");
+                chatbotContainer.style.display = "none";
+                return;
+            }
+
+            // Show "Connecting to AI server..." message
+            chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ⏳ Connecting to AI server...</p>`;
+
+            // Test API key before proceeding
+            fetch("https://api.openai.com/v1/models", {
+                headers: { "Authorization": `Bearer ${userApiKey}` }
+            }).then(response => {
+                if (response.ok) {
+                    chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ✅ Connected to AI server.</p>`;
+                } else {
+                    chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ❌ Invalid API key. Please reload and enter a valid key.</p>`;
+                    userApiKey = null; // Reset API key if invalid
+                }
+            }).catch(() => {
+                chatbotMessages.innerHTML = `<p><strong>🤖 TariffBot 3000:</strong> ❌ Connection error. Please check your internet.</p>`;
+                userApiKey = null;
+            });
+        }
+    });
+
+    // ❌ Close Chatbot
+    closeChatbot.addEventListener("click", function () {
+        chatbotContainer.style.display = "none";
+    });
+
     // ✉️ Send Message to ChatGPT
     sendChatbot.addEventListener("click", async function () {
         const userMessage = chatbotInput.value.trim();
@@ -36,6 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Display user message in chat
         chatbotMessages.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
         chatbotInput.value = "";
+
+        chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ⏳ Thinking...</p>`;
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
 
         try {
             const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -60,10 +110,12 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             chatbotMessages.innerHTML += `<p><strong>🤖 TariffBot 3000:</strong> ❌ Error fetching response.</p>`;
         }
+
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll to latest message
     });
 
     // Allow Enter Key Submission
-    chatbotInput.addEventListener("keypress", (event) => {
+    chatbotInput.addEventListener("keypress", function (event) {
         if (event.key === "Enter") sendChatbot.click();
     });
     const form = document.querySelector("form");
