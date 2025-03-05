@@ -267,11 +267,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const totalRiskScore = countryRisk + categoryRisk; // **Total Risk Score (2 to 6)**
                 // ✅ Define Tax Multiplier Based on Total Risk Score
                 const taxMultipliers = {
-                2: 1.05, // Low-Low
-                3: 1.15, // Low-Medium or Medium-Low
-                4: 1.35, // Medium-Medium or Low-High
-                5: 1.65, // Medium-High or High-Medium
-                6: 2.0   // High-High
+                2: 1.5, // Low-Low
+                3: 1.8, // Low-Medium or Medium-Low
+                4: 2.2, // Medium-Medium or Low-High
+                5: 2.8, // Medium-High or High-Medium
+                6: 3.5   // High-High
                     };
                 const taxMultiplier = taxMultipliers[totalRiskScore] || 1.0; // Default to 1.0 if unexpected
                 // ✅ Calculate Total Import Tax
