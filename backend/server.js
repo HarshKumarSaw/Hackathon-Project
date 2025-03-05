@@ -59,10 +59,6 @@ function checkCompliance(productName, category, destination, weight) {
         issues.push(`"${category}" is a prohibited item and cannot be shipped.`);
     }
 
-    if (weight > 50) {
-        issues.push("Shipment weight exceeds the allowed limit (50kg max).");
-    }
-
     return issues;
 }
 
