@@ -84,10 +84,21 @@ app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
 
     // ✅ Save Shipment Only If Compliant
     const shipment = {
-        productName,
-        category,
-        destination,
-        weight,
+        exporterName,        // ✅ Exporter Details
+        exporterAddress,     
+        importerName,        // ✅ Importer Details
+        destination,         
+        productName,         // ✅ Product Details
+        category,            
+        hsCode,              
+        quantity,            
+        shipmentValue,       // ✅ Shipment Details
+        weight,              
+        modeOfTransport,     
+        tariffRate,          // ✅ Tax Details
+        additionalTaxes,     
+        totalImportTax,      
+        exportLicense: exportLicense || "Not Required", // ✅ If applicable
         invoice: invoicePath,
         date: new Date().toISOString()
     };
