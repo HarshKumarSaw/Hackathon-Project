@@ -151,6 +151,30 @@ document.addEventListener("DOMContentLoaded", function () {
         "Arms & Ammunition": "High", "Miscellaneous Manufactured Articles": "Low", "Art, Collectibles, & Antiques": "Low",
         "Special Transactions": "High", "Energy & Environmental Goods": "Medium", "Unclassified Trade Goods": "Medium"
 };
+    // HS Code Mapping for Each Category
+    const categoryHSCodeMap = {
+        "Live Animals & Animal Products": "0101",
+        "Vegetable Products": "0701",
+        "Foodstuffs": "2106",
+        "Mineral Products": "2501",
+        "Chemical & Pharmaceutical Products": "3001",
+        "Plastics & Rubber": "3901",
+        "Leather & Fur": "4101",
+        "Wood & Paper Products": "4801",
+        "Textiles & Clothing": "6201",
+        "Footwear, Headgear, Umbrellas": "6401",
+        "Stone, Glass, & Ceramics": "6801",
+        "Metals & Metal Products": "7201",
+        "Machinery & Electrical Equipment": "8401",
+        "Transport Vehicles": "8701",
+        "Optical, Medical Instruments": "9001",
+        "Arms & Ammunition": "9301",
+        "Miscellaneous Manufactured Articles": "9601",
+        "Art, Collectibles, & Antiques": "9701",
+        "Special Transactions": "9801",
+        "Energy & Environmental Goods": "9901",
+        "Unclassified Trade Goods": "9999"
+    };
 
 // ✅ Populate Category Dropdown Alphabetically
     function populateCategoryDropdown() {
