@@ -599,7 +599,7 @@ canvas {
 
 #export-license-section {
     width: 100% !important;
-    display: flex !important;
+    display: none !important;
     flex-direction: column !important;
     align-items: flex-start !important;
 }
