@@ -597,8 +597,10 @@ canvas {
     transform: scale(1.05);
 }
 
-#export-license-section input {
-    width: 100%; /* Match other input fields */
-    box-sizing: border-box; /* Ensures proper spacing */
-    padding: 10px;
+#export-license {
+    width: 100% !important;  /* Forces full width */
+    max-width: 100% !important;  /* Ensures it doesn't shrink */
+    display: block !important;  /* Makes it behave like other inputs */
+    box-sizing: border-box !important; /* Prevents overflow issues */
+    padding: 10px !important;
 }
