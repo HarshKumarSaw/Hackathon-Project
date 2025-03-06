@@ -230,10 +230,29 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
 
         const formData = new FormData();
-        formData.append("productName", document.getElementById("product-name").value);
-        formData.append("category", document.getElementById("category").value.toLowerCase());
+        // ✅ Add Exporter Details
+        formData.append("exporterName", document.getElementById("exporter-name").value);
+        formData.append("exporterAddress", document.getElementById("exporter-address").value);
+        // ✅ Add Importer Details
+        formData.append("importerName", document.getElementById("importer-name").value);
         formData.append("destination", destinationSelect.value);
-        formData.append("weight", parseFloat(document.getElementById("weight").value));
+        // ✅ Add Product Details
+        formData.append("productName", document.getElementById("product-name").value);
+        formData.append("category", document.getElementById("category").value);
+        formData.append("hsCode", document.getElementById("hs-code").value);
+        formData.append("quantity", document.getElementById("quantity").value);
+        // ✅ Add Shipment Details
+        formData.append("shipmentValue", document.getElementById("shipment-value").value);
+        formData.append("weight", document.getElementById("weight").value);
+        formData.append("modeOfTransport", document.getElementById("mode-of-transport").value);
+        // ✅ Add Tax Details
+        formData.append("tariffRate", document.getElementById("tariff-info").innerText);
+        formData.append("additionalTaxes", document.getElementById("additional-tax").innerText);
+        formData.append("totalImportTax", document.getElementById("total-tax").innerText);
+        // ✅ Add Export License (Only if required)
+        const exportLicenseField = document.getElementById("export-license");
+        formData.append("exportLicense", exportLicenseField ? exportLicenseField.value : "Not Required");
+        // ✅ Add Invoice File
         formData.append("invoice", document.getElementById("invoice").files[0]);
 
         resultsDiv.innerHTML = "";
