@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "South Sudan": "High", "Spain": "Low", "Sri Lanka": "Medium", "Sudan": "High", "Suriname": "Medium",
         "Sweden": "Low", "Switzerland": "Low", "Syria": "High", "Taiwan": "Low", "Tajikistan": "Medium",
         "Tanzania": "Medium", "Thailand": "Medium", "Togo": "Medium", "Tunisia": "Medium", "Turkey": "Medium",
-        "Turkmenistan": "Medium", "Uganda": "Medium", "Ukraine": "Medium", "United Arab Emirates": "Low", "United Kingdom": "Low",
+        "Turkmenistan": "Medium", "Uganda": "Medium", "Ukraine": "High", "United Arab Emirates": "Low", "United Kingdom": "Low",
         "United States": "Low", "Uruguay": "Low", "Uzbekistan": "Medium", "Venezuela": "High", "Vietnam": "Medium",
         "Yemen": "High", "Zambia": "Medium", "Zimbabwe": "High"
     };
