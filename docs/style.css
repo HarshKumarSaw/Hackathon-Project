@@ -600,13 +600,12 @@ canvas {
 #export-license-section {
     width: 100% !important;
     display: flex !important;
-    flex-direction: column !important;  /* Ensures label and input stack properly */
-    align-items: flex-start !important; /* Aligns to the left */
+    flex-direction: column !important;
+    align-items: flex-start !important;
 }
 
 #export-license {
-    width: 100% !important;  /* Forces full width */
-    max-width: 100% !important;
+    width: calc(100% - 20px) !important; /* Adjust width to match other fields */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
