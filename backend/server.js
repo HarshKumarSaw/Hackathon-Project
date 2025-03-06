@@ -56,7 +56,10 @@ function checkCompliance(productName, category, destination, weight) {
         issues.push("Shipping to this country is restricted.");
     }
 
-    const prohibitedCategories = ["explosives", "drugs", "firearms"];
+    const prohibitedCategories = ["Arms & Ammunition",
+    "Chemical & Pharmaceutical Products",
+    "Live Animals & Animal Products",
+    "Art, Collectibles, & Antiques"];
     if (prohibitedCategories.includes(category.toLowerCase())) {
         issues.push(`"${category}" is a prohibited item and cannot be shipped.`);
     }
