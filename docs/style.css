@@ -610,3 +610,27 @@ canvas {
     border-radius: 5px;
     font-size: 16px;
 }
+/* Force custom styling on the dropdown */
+#mode-of-transport {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 16px;
+    appearance: none; /* Removes default browser styles */
+    -webkit-appearance: none; /* Safari fix */
+    -moz-appearance: none; /* Firefox fix */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23000" d="M2 0L0 2h4z"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+}
+
+/* Fix dropdown focus */
+#mode-of-transport:focus {
+    border-color: #1e40af;
+    outline: none;
+    box-shadow: 0 0 5px rgba(30, 64, 175, 0.5);
+}
