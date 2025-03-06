@@ -35,30 +35,84 @@
     <a href="dashboard.html" class="dashboard-button">📊 View Dashboard</a>
 
     <form enctype="multipart/form-data">
-        <label>Product Name:</label>
-        <input type="text" id="product-name" required><br>
+        
+        <!-- 🔹 1️⃣ Exporter Details -->
+        <h2>📌 Exporter Details (Your Company)</h2>
+        <label>Company Name:</label>
+        <input type="text" id="exporter-name" required><br>
 
-        <label>Destination Country:</label>
+        <label>Company Address:</label>
+        <input type="text" id="exporter-address" required><br>
+
+        <!-- 🔹 2️⃣ Importer Details -->
+        <h2>📌 Importer Details (Buyer)</h2>
+        <label>Importer Name:</label>
+        <input type="text" id="importer-name" required><br>
+
+        <label>Importer Country:</label> <!-- Using existing ID: destination -->
         <select id="destination" required></select>
         <p id="risk-indicator"></p> <!-- Country compliance message -->
+
+        <label>Importer Tax ID:</label>
+        <input type="text" id="importer-tax-id" placeholder="Optional"><br>
+
+        <!-- 🔹 3️⃣ Product Details -->
+        <h2>📌 Product Details</h2>
+        <label>Product Name:</label>
+        <input type="text" id="product-name" required><br>
 
         <label>Category:</label>
         <select id="category" required>
             <option value="">-- Select Category --</option>
         </select>
         <p id="category-risk" class="risk-message"> </p>
-        
 
-        <label>Weight (kg):</label>
+        <label>HS Code:</label>
+        <input type="text" id="hs-code" readonly> <!-- Auto-filled based on category -->
+
+        <label>Quantity:</label>
+        <input type="number" id="quantity" required><br>
+
+        <!-- 🔹 4️⃣ Shipment Details -->
+        <h2>📌 Shipment Details</h2>
+        <label>Country of Origin:</label>
+        <input type="text" value="India" readonly><br> <!-- Fixed to India -->
+
+        <label>Shipment Value (INR):</label>
+        <input type="number" id="shipment-value" required><br>
+
+        <label>Shipment Weight (kg):</label>
         <input type="number" id="weight" required><br>
 
-        <p id="tariff-info" style="font-weight: bold; color: #1e40af; margin-top: 5px;"></p>
+        <label>Mode of Transport:</label>
+        <select id="mode-of-transport" required>
+            <option value="Air">Air</option>
+            <option value="Sea">Sea</option>
+            <option value="Land">Land</option>
+            <option value="Rail">Rail</option>
+        </select>
 
+        <!-- 🔹 5️⃣ Compliance & Taxes -->
+        <h2>📌 Compliance & Taxes</h2>
+        <label>Tariff Rate:</label>
+        <p id="tariff-info">Fetching...</p> <!-- Auto-filled from database -->
+
+        <label>Total Import Tax:</label>
+        <p id="total-tax">Calculating...</p> <!-- Tariff + VAT + Other Taxes -->
+
+        <!-- 🚨 Only show if Export License is required -->
+        <div id="export-license-section" style="display: none;">
+            <label>Export License Number:</label>
+            <input type="text" id="export-license"><br>
+        </div>
+
+        <!-- 📂 Invoice Upload -->
         <label>Invoice Upload:</label>
         <label for="invoice" class="file-upload">📂 Choose Invoice File</label>
         <input type="file" id="invoice">
         <p id="file-name">No file chosen</p>
 
+        <!-- ✅ Submit Button -->
         <button type="submit">Check Compliance</button>
     </form>
 
@@ -66,7 +120,7 @@
     <div style="height: 15px;"></div>
     <div class="shipment-history-box">
         <h2 class="shipment-title">📋 Shipment Details</h2>
-        <div id="shipment-history"></div> <!-- Make sure this exists -->
+        <div id="shipment-history"></div> <!-- Ensure this exists -->
     </div>
 
     <script src="script.js"></script>
