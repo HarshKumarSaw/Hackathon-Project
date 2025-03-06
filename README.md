@@ -3,7 +3,6 @@
 [![GitHub repo size](https://img.shields.io/github/repo-size/HarshKumarSaw/Hackathon-Project)](https://github.com/HarshKumarSaw/Hackathon-Project)
 [![GitHub contributors](https://img.shields.io/github/contributors/HarshKumarSaw/Hackathon-Project)](https://github.com/HarshKumarSaw/Hackathon-Project/graphs/contributors)
 [![License](https://img.shields.io/github/license/HarshKumarSaw/Hackathon-Project)](LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/HarshKumarSaw/Hackathon-Project)](https://github.com/HarshKumarSaw/Hackathon-Project/commits/main)
  [![GitHub language top langs](https://img.shields.io/github/languages/top/HarshKumarSaw/Hackathon-Project)](https://github.com/HarshKumarSaw/Hackathon-Project)
  [![Framework](https://img.shields.io/badge/framework-Express.js-brightgreen)](https://expressjs.com/)
  [![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fharshkumarsaw.github.io%2FHackathon-Project%2Findex.html)](https://harshkumarsaw.github.io/Hackathon-Project/index.html)
