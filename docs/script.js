@@ -213,6 +213,17 @@ document.addEventListener("DOMContentLoaded", function () {
             categoryRiskIndicator.innerHTML = "";
     }
 });
+// Show Export License Field Only If Required
+    document.getElementById("category").addEventListener("change", function () {
+        const selectedCategory = this.value;
+        const exportLicenseSection = document.getElementById("export-license-section");
+        
+        if (categoryRiskLevels[selectedCategory] === "High") {
+        exportLicenseSection.style.display = "block"; // Show field
+        } else {
+        exportLicenseSection.style.display = "none";  // Hide field
+        }
+});
 
     // 🛠 Ensure Form Submission Works
     form.addEventListener("submit", async function (event) {
