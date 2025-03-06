@@ -64,23 +64,14 @@ function checkCompliance(productName, category, destination, weight) {
 
 // API Route to Submit a Shipment with Invoice Upload
 app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
-    const {
-        exporterName, exporterAddress,  // ✅ Exporter Details
-        importerName, destination,  // ✅ Importer Details
-        productName, category, hsCode, quantity,  // ✅ Product Details
-        shipmentValue, weight, modeOfTransport,  // ✅ Shipment Details
-        tariffRate, additionalTaxes, totalImportTax,  // ✅ Taxes
-        exportLicense  // ✅ Only if required
-    } = req.body;
-
+    const { productName, category, destination, weight } = req.body;
     const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-    // 🚫 Validate Required Fields
-    if (!productName || !category || !destination || !weight || !shipmentValue || !modeOfTransport) {
-        return res.status(400).json({ message: "⚠️ All required fields must be filled." });
+    if (!productName || !category || !destination || !weight) {
+        return res.status(400).json({ message: "All fields are required." });
     }
 
-    // 🚫 Compliance Check Before Saving
+    // 🚫 Check Compliance Before Saving
     const complianceIssues = checkCompliance(productName, category, destination, weight);
     if (complianceIssues.length > 0) {
         return res.status(400).json({ message: "⚠️ Compliance Issues Found", issues: complianceIssues });
@@ -88,11 +79,10 @@ app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
 
     // ✅ Save Shipment Only If Compliant
     const shipment = {
-        importerName, destination,
-        productName, category, hsCode, quantity,
-        shipmentValue, weight, modeOfTransport,
-        tariffRate, additionalTaxes, totalImportTax,
-        exportLicense: exportLicense || "Not Required",
+        productName,
+        category,
+        destination,
+        weight,
         invoice: invoicePath,
         date: new Date().toISOString()
     };
