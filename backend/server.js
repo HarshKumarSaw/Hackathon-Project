@@ -51,7 +51,7 @@ function checkCompliance(productName, category, destination, weight) {
 
     const restrictedCountries = ["north korea", "pakistan", "iran", "afghanistan", "iraq", "syria", 
     "yemen", "sudan", "cuba", "venezuela", "russia", "belarus", "eritrea", 
-    "libya", "democratic republic of congo", "myanmar"];
+    "libya", "congo", "myanmar"];
     if (restrictedCountries.includes(destination.toLowerCase())) {
         issues.push("Shipping to this country is restricted.");
     }
