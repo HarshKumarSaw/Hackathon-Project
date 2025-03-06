@@ -597,10 +597,18 @@ canvas {
     transform: scale(1.05);
 }
 
+#export-license-section {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;  /* Ensures label and input stack properly */
+    align-items: flex-start !important; /* Aligns to the left */
+}
+
 #export-license {
     width: 100% !important;  /* Forces full width */
-    max-width: 100% !important;  /* Ensures it doesn't shrink */
-    display: block !important;  /* Makes it behave like other inputs */
-    box-sizing: border-box !important; /* Prevents overflow issues */
-    padding: 10px !important;
+    max-width: 100% !important;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
