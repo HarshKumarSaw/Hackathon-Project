@@ -185,6 +185,12 @@ document.addEventListener("DOMContentLoaded", function () {
             option.textContent = category;
             categorySelect.appendChild(option);
     });
+// Auto-fill HS Code when Category is Selected
+    document.getElementById("category").addEventListener("change", function () {
+        const selectedCategory = this.value;
+        const hsCodeInput = document.getElementById("hs-code");
+        hsCodeInput.value = categoryHSCodeMap[selectedCategory] || ""; // Fill or keep empty if not found
+});
 }
     populateCategoryDropdown();
 
