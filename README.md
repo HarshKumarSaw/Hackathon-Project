@@ -9,6 +9,7 @@
  [![GitHub language top langs](https://img.shields.io/github/languages/top/HarshKumarSaw/Hackathon-Project)](https://github.com/HarshKumarSaw/Hackathon-Project)
  [![Framework](https://img.shields.io/badge/framework-Express.js-brightgreen)](https://expressjs.com/)
  [![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fharshkumarsaw.github.io%2FHackathon-Project%2Findex.html)](https://harshkumarsaw.github.io/Hackathon-Project/index.html)
+ [![Platform](https://img.shields.io/badge/platform-all-brightgreen)](https://harshkumarsaw.github.io/Hackathon-Project/index.html)
 
 **Smart Trade Compliance & Tariff Calculator** - Automating global trade compliance for small businesses!
 
