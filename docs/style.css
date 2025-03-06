@@ -596,3 +596,9 @@ canvas {
     background: #4338ca;
     transform: scale(1.05);
 }
+
+#export-license-section input {
+    width: 100%; /* Match other input fields */
+    box-sizing: border-box; /* Ensures proper spacing */
+    padding: 10px;
+}
