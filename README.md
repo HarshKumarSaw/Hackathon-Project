@@ -5,6 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/HarshKumarSaw/Hackathon-Project?style=social)](https://github.com/HarshKumarSaw/Hackathon-Project/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/HarshKumarSaw/Hackathon-Project?style=social)](https://github.com/HarshKumarSaw/Hackathon-Project/network/members)
 [![License](https://img.shields.io/github/license/HarshKumarSaw/Hackathon-Project)](LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/HarshKumarSaw/Hackathon-Project)](https://github.com/HarshKumarSaw/Hackathon-Project/commits/main)
 
 **Smart Trade Compliance & Tariff Calculator** - Automating global trade compliance for small businesses!
 
