@@ -56,7 +56,7 @@ function checkCompliance(productName, category, destination, weight) {
         issues.push("Shipping to this country is restricted.");
     }
 
-    const prohibitedCategories = ["Arms & Ammunition",
+    const prohibitedCategories = ["arms & ammunition",
     "Chemical & Pharmaceutical Products",
     "Live Animals & Animal Products",
     "Art, Collectibles, & Antiques"];
