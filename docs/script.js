@@ -322,8 +322,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 // ✅ Display Total Tax with Explanation
                 document.getElementById("tariff-info").innerHTML = `${tariffRate}%`;
-                document.getElementById("total-tax").innerHTML = `${totalImportTax}% (Includes Additional Taxes: ${addTax}%)`;
-                
+                document.getElementById("additional-tax").innerHTML = `${addTax}%`; // New field for additional taxes
+                document.getElementById("total-tax").innerHTML = `${totalImportTax}%`;
             } else {
                 tariffDisplay.innerHTML = "⚠️ No tax data available for this selection.";
             }
