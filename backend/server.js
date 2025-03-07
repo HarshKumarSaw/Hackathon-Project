@@ -32,6 +32,26 @@ async function initializeDB() {
 }
 initializeDB();
 
+// Define users database file path
+const usersFilePath = path.join(__dirname, "users.json");
+
+// Ensure users.json exists
+if (!fs.existsSync(usersFilePath)) {
+    console.log("Creating users.json...");
+    fs.writeFileSync(usersFilePath, JSON.stringify({ users: [] }, null, 2));
+}
+
+// Set up Users Database
+const usersAdapter = new JSONFile(usersFilePath);
+const usersDB = new Low(usersAdapter);
+
+async function initializeUsersDB() {
+    await usersDB.read();
+    usersDB.data ||= { users: [] };
+    await usersDB.write();
+}
+initializeUsersDB();
+
 app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads")); // Serve uploaded invoices publicly
