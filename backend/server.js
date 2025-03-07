@@ -143,7 +143,15 @@ app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (
 // API Route to Get Shipment History
 app.get("/api/shipments", optionalAuth, async (req, res) => {
     await db.read();
-    res.json(db.data.shipments || []);
+    
+    if (req.user) {
+        // If user is logged in, show only their shipments
+        const userShipments = db.data.shipments.filter(shipment => shipment.user === req.user.email);
+        res.json(userShipments);
+    } else {
+        // If not logged in, show all shipments
+        res.json(db.data.shipments || []);
+    }
 });
 
 // API Route: User Signup
