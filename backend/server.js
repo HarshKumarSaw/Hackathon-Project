@@ -125,6 +125,7 @@ app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (
 
     // ✅ Save Shipment Only If Compliant
     const shipment = {
+        user,
         productName,
         category,
         destination,
