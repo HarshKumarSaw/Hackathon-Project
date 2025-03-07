@@ -128,6 +128,32 @@ app.get("/api/shipments", async (req, res) => {
     res.json(db.data.shipments || []);
 });
 
+// API Route: User Signup
+app.post("/api/signup", async (req, res) => {
+    const { email, password } = req.body;
+
+    // ❌ Validate Inputs
+    if (!email || !password) {
+        return res.status(400).json({ message: "⚠️ Email and password are required." });
+    }
+
+    await usersDB.read(); // Load user data
+
+    // ❌ Check if User Already Exists
+    if (usersDB.data.users.some(user => user.email === email)) {
+        return res.status(400).json({ message: "⚠️ User already exists. Please login." });
+    }
+
+    // ✅ Hash Password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // ✅ Save User to Database
+    usersDB.data.users.push({ email, password: hashedPassword });
+    await usersDB.write();
+
+    res.json({ message: "✅ Signup successful! Please login." });
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
