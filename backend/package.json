@@ -10,5 +10,7 @@
     "cors": "^2.8.5",
     "lowdb": "^5.0.0",
     "multer": "^1.4.4"
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
   }
 }
