@@ -108,7 +108,7 @@ function checkCompliance(productName, category, destination, weight) {
 }
 
 // API Route to Submit a Shipment with Invoice Upload
-app.post("/api/submit-shipment", upload.single("invoice"), async (req, res) => {
+app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (req, res) => {
     const { productName, category, destination, weight } = req.body;
     const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
 
