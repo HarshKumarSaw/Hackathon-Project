@@ -139,7 +139,7 @@ app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (
 });
 
 // API Route to Get Shipment History
-app.get("/api/shipments", async (req, res) => {
+app.get("/api/shipments", optionalAuth, async (req, res) => {
     await db.read();
     res.json(db.data.shipments || []);
 });
