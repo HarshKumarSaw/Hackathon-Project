@@ -306,6 +306,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    document.getElementById("upload-csv").addEventListener("click", async function () {
+    const fileInput = document.getElementById("csv-upload");
+    if (!fileInput.files.length) {
+        alert("Please select a CSV file to upload.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("csv", fileInput.files[0]);
+
+    try {
+        const response = await fetch("https://hackathon-project-5oha.onrender.com/api/upload-csv", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+        document.getElementById("upload-message").innerText = result.message;
+
+        if (response.ok) {
+            alert("CSV uploaded successfully!");
+            location.reload(); // Refresh to update shipment history
+        }
+    } catch (error) {
+        console.error("Error uploading CSV:", error);
+        document.getElementById("upload-message").innerText = "❌ Error uploading CSV.";
+    }
+});
+
     loadShipmentHistory();
 
     async function fetchTariff(category, destination) {
