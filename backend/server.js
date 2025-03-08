@@ -26,7 +26,7 @@ const adapter = new JSONFile(dbFilePath);
 const db = new Low(adapter);
 async function initializeDB() {
     await db.read();
-    db.data ||= { shipments: [],users[] };
+    db.data ||= { shipments: [],users:[] };
     await db.write();
 }
 initializeDB();
