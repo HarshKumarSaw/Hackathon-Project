@@ -4,187 +4,353 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shipment Compliance Checker</title>
-    <link rel="stylesheet" href="style.css">
-
+    
     <!-- Load Select2 Library for Searchable Dropdown -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
+    
     <!-- Load Chart.js Library for Risk Trends -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- 🔹 Floating Chatbot Button -->
-    <button id="chatbot-toggle">💬</button>
-    <!-- 🔹 Chatbot Container -->
-    <div id="chatbot-container">
-        <div id="chatbot-header">
-            <span>🤖 ExportEaser</span>
-            <button id="close-chatbot">✖</button>
-        </div>
-        <div id="chatbot-messages"></div>
-        <div class="chat-input-container">
-            <input type="text" id="chatbot-input" class="chat-input" placeholder="Ask about compliance, tariffs, shipping...">
-            <button id="send-chatbot" class="chat-send-btn">Send</button>
-        </div>
-    </div>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#1E40AF',
+                        accent: '#DBEAFE',
+                        danger: '#EF4444',
+                        success: '#10B981',
+                        warning: '#F59E0B'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom styles that can't be handled by Tailwind */
+        .select2-container {
+            width: 100% !important;
+        }
+        .select2-selection {
+            height: 42px !important;
+            padding: 6px !important;
+            border-radius: 0.5rem !important;
+            border-color: #E5E7EB !important;
+        }
+        .select2-selection__arrow {
+            height: 42px !important;
+        }
+        
+        /* Hide file input but keep it functional */
+        input[type="file"] {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+        
+        /* Chatbot animations */
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); }
+        }
+        
+        .chatbot-open {
+            animation: slideIn 0.3s forwards;
+        }
+        
+        .chatbot-closed {
+            animation: slideOut 0.3s forwards;
+        }
+    </style>
 </head>
-<body>
-
-        <!-- Fixed Navigation Bar at the top -->
-    <nav class="fixed top-0 left-0 right-0  py-4 px-6 z-50 ">
-        <div class="container mx-auto flex justify-end items-center">
+<body class="bg-gray-50 min-h-screen">
+    <!-- Fixed Navigation Bar at the top -->
+    <nav class="fixed top-0 left-0 right-0 bg-primary py-3 px-4 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-white font-bold text-xl">
+                ExportEase
+            </div>
             
-            
-            <!-- Desktop Navigation Links (center) -->
+            <!-- Desktop Navigation Links -->
             <ul class="hidden md:flex space-x-8">
-                <li><a href="dashboard.html" class="text-white hover:text-blue-300 transition-colors">Dashboard</a></li>
-                <li><a href="index.html" class="text-white hover:text-blue-300 transition-colors">Compliance Checker</a></li>
-                <!-- <li><a href="history.html" class="text-white hover:text-blue-300 transition-colors">Shipment History</a></li> -->
+                <li><a href="dashboard.html" class="text-white hover:text-blue-100 transition-colors">Dashboard</a></li>
+                <li><a href="index.html" class="text-white font-medium hover:text-blue-100 transition-colors">Compliance Checker</a></li>
             </ul>
             
             <!-- Right Side (Login Button and Mobile Menu Toggle) -->
-            <div class="flex items-center space-x-4 ml-8">
+            <div class="flex items-center space-x-4">
                 <!-- Login Button -->
-                <a href="auth.html" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-md hover:bg-blue-50 transition-colors">
+                <a href="auth.html" class="bg-white text-primary px-4 py-2 rounded-lg shadow-sm hover:bg-blue-50 transition-colors text-sm font-medium">
                     Login
                 </a>
                 
                 <!-- Mobile Menu Toggle -->
-                <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+                <button id="menu-toggle" class="md:hidden text-white text-xl focus:outline-none">
                     ☰
                 </button>
             </div>
         </div>
         
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden container mx-auto mt-4 bg-white rounded-lg shadow-lg overflow-hidden md:hidden">
+        <div id="mobile-menu" class="hidden container mx-auto mt-2 bg-white rounded-lg shadow-lg overflow-hidden md:hidden">
             <ul>
-                <li class="border-b"><a href="dashboard.html" class="block px-6 py-3 hover:bg-blue-50">Dashboard</a></li>
-                <li class="border-b"><a href="compliance.html" class="block px-6 py-3 hover:bg-blue-50">Compliance Checker</a></li>
-                <!-- <li><a href="history.html" class="block px-6 py-3 hover:bg-blue-50">Shipment History</a></li> -->
+                <li class="border-b border-gray-100"><a href="dashboard.html" class="block px-6 py-3 hover:bg-blue-50">Dashboard</a></li>
+                <li><a href="index.html" class="block px-6 py-3 hover:bg-blue-50">Compliance Checker</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- JavaScript for Toggle Functionality -->
-    <script>
-        document.getElementById("menu-toggle").addEventListener("click", function () {
-            document.getElementById("mobile-menu").classList.toggle("hidden");
-        });
-    </script>
-
-    <h1>📦 ExportEase Compilance Checker</h1>
-
-    <a href="dashboard.html" class="dashboard-button">📊 View Dashboard</a>
-
-     <!-- 📂 CSV Upload for Auto-Filling Form -->
-    <label for="csv-upload" class="file-upload">📂 Upload CSV</label>
-    <input type="file" id="csv-upload" accept=".csv">
-    <p id="csv-upload-status">No file selected</p>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-20 pb-16">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <span class="mr-2">📦</span> ExportEase Compliance Checker
+                </h1>
+                <p class="text-gray-600 mt-1">Verify your shipment's compliance requirements</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
+                <a href="dashboard.html" class="bg-primary text-white px-4 py-2 rounded-lg shadow-sm hover:bg-secondary transition-colors text-sm font-medium flex items-center justify-center">
+                    <span class="mr-2">📊</span> View Dashboard
+                </a>
+                
+                <label for="csv-upload" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium cursor-pointer flex items-center justify-center">
+                    <span class="mr-2">📂</span> Upload CSV
+                </label>
+                <input type="file" id="csv-upload" accept=".csv">
+            </div>
+        </div>
         
+        <p id="csv-upload-status" class="text-sm text-gray-500 mb-4">No file selected</p>
 
-    <form enctype="multipart/form-data">
+        <!-- Form Container -->
+        <form enctype="multipart/form-data" class="space-y-6">
+            <!-- 1. Exporter Details -->
+            <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <span class="mr-2">📌</span> Exporter Details (Your Company)
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="exporter-name" class="block text-sm font-medium text-gray-700 mb-1">Company Name:</label>
+                        <input type="text" id="exporter-name" required class="font-sans max-w-[190px] px-4 py-3 text-base border-[1.5px] border-black rounded-lg shadow-[2.5px_3px_0px_black] outline-none transition ease-in-out duration-200 focus:shadow-[5.5px_7px_0px_black]" />
+                    </div>
+                    
+                    <div>
+                        <label for="exporter-address" class="block text-sm font-medium text-gray-700 mb-1">Company Address:</label>
+                        <input type="text" id="exporter-address" required class="font-sans max-w-[190px] px-4 py-3 text-base border-[1.5px] border-black rounded-lg shadow-[2.5px_3px_0px_black] outline-none transition ease-in-out duration-200 focus:shadow-[5.5px_7px_0px_black]" />
+                    </div>
+                </div>
+            </div>
 
-        <!-- 🔹 1️⃣ Exporter Details -->
-        <h2>📌 Exporter Details (Your Company)</h2>
-        <label>Company Name:</label>
-        <input type="text" id="exporter-name" required><br>
+            <!-- 2. Importer Details -->
+            <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <span class="mr-2">📌</span> Importer Details (Buyer)
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="importer-name" class="block text-sm font-medium text-gray-700 mb-1">Importer Name:</label>
+                        <input type="text" id="importer-name" required class="font-sans max-w-[190px] px-4 py-3 text-base border-[1.5px] border-black rounded-lg shadow-[2.5px_3px_0px_black] outline-none transition ease-in-out duration-200 focus:shadow-[5.5px_7px_0px_black]" />
+                    </div>
+                    
+                    <div>
+                        <label for="destination" class="block text-sm font-medium text-gray-700 mb-1">Importer Country:</label>
+                        <select id="destination" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"></select>
+                        <p id="risk-indicator" class="mt-1 text-sm"></p>
+                    </div>
+                    
+                    <div>
+                        <label for="importer-tax-id" class="block text-sm font-medium text-gray-700 mb-1">Importer Tax ID:</label>
+                        <input type="text" id="importer-tax-id" placeholder="Optional" class="font-sans max-w-[190px] px-4 py-3 text-base border-[1.5px] border-black rounded-lg shadow-[2.5px_3px_0px_black] outline-none transition ease-in-out duration-200 focus:shadow-[5.5px_7px_0px_black]" />
+                    </div>
+                </div>
+            </div>
 
-        <label>Company Address:</label>
-        <input type="text" id="exporter-address" required><br>
+            <!-- 3. Product Details -->
+            <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <span class="mr-2">📌</span> Product Details
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="product-name" class="block text-sm font-medium text-gray-700 mb-1">Product Name:</label>
+                        <input type="text" id="product-name" required class="font-sans max-w-[190px] px-4 py-3 text-base border-[1.5px] border-black rounded-lg shadow-[2.5px_3px_0px_black] outline-none transition ease-in-out duration-200 focus:shadow-[5.5px_7px_0px_black]" />
+                    </div>
+                    
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category:</label>
+                        <select id="category" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <p id="category-risk" class="mt-1 text-sm"></p>
+                    </div>
+                    
+                    <div>
+                        <label for="hs-code" class="block text-sm font-medium text-gray-700 mb-1">HS Code:</label>
+                        <input type="text" id="hs-code" readonly class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-500">
+                    </div>
+                    
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantity:</label>
+                        <input type="number" id="quantity" required class="font-sans max-w-[190px] px-4 py-3 text-base border-[1.5px] border-black rounded-lg shadow-[2.5px_3px_0px_black] outline-none transition ease-in-out duration-200 focus:shadow-[5.5px_7px_0px_black]" />
+                    </div>
+                </div>
+            </div>
 
-        <!-- 🔹 2️⃣ Importer Details -->
-        <h2>📌 Importer Details (Buyer)</h2>
-        <label>Importer Name:</label>
-        <input type="text" id="importer-name" required><br>
+            <!-- 4. Shipment Details -->
+            <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <span class="mr-2">📌</span> Shipment Details
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Country of Origin:</label>
+                        <input type="text" value="India" readonly class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-500">
+                    </div>
+                    
+                    <div id="export-license-section" style="display: none;">
+                        <label for="export-license" class="block text-sm font-medium text-gray-700 mb-1">Export License Number:</label>
+                        <input type="number" id="export-license" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="shipment-value" class="block text-sm font-medium text-gray-700 mb-1">Shipment Value (INR):</label>
+                        <input type="number" id="shipment-value" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">Shipment Weight (kg):</label>
+                        <input type="number" id="weight" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="mode-of-transport" class="block text-sm font-medium text-gray-700 mb-1">Mode of Transport:</label>
+                        <select id="mode-of-transport" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                            <option value="Selec">-- Select Mode --</option>
+                            <option value="Air">✈️ Air</option>
+                            <option value="Sea">🚢 Sea</option>
+                            <option value="Land">🚛 Land</option>
+                            <option value="Rail">🚆 Rail</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-        <label>Importer Country:</label> <!-- Using existing ID: destination -->
-        <select id="destination" required></select>
-        <p id="risk-indicator"></p> <!-- Country compliance message -->
+            <!-- 5. Compliance & Taxes -->
+            <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <span class="mr-2">📌</span> Compliance & Taxes
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-gray-700">Tariff Rate:</label>
+                        <p id="tariff-info" class="text-sm font-medium">-</p>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-gray-700">Additional Taxes:</label>
+                        <p id="additional-tax" class="text-sm font-medium">-</p>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-gray-700">Total Import Tax:</label>
+                        <p id="total-tax" class="text-sm font-medium">-</p>
+                    </div>
+                    
+                    <div class="pt-2">
+                        <label for="invoice" class="block w-full text-center bg-white border border-gray-300 text-gray-700 px-4 py-3 rounded-lg shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
+                            <span class="mr-2">📂</span> Choose Invoice File
+                        </label>
+                        <input type="file" id="invoice">
+                        <p id="file-name" class="mt-2 text-sm text-gray-500 text-center">No file chosen</p>
+                    </div>
+                </div>
+            </div>
 
-        <label>Importer Tax ID:</label>
-        <input type="text" id="importer-tax-id" placeholder="Optional"><br>
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-medium py-3 px-6 rounded-lg shadow-sm transition-colors flex items-center justify-center">
+                <span class="mr-2">✅</span> Check Compliance
+            </button>
+        </form>
 
-        <!-- 🔹 3️⃣ Product Details -->
-        <h2>📌 Product Details</h2>
-        <label>Product Name:</label>
-        <input type="text" id="product-name" required><br>
-
-        <label>Category:</label>
-        <select id="category" required>
-            <option value="">-- Select Category --</option>
-        </select>
-        <p id="category-risk" class="risk-message"> </p>
-
-        <label>HS Code:</label>
-        <input type="text" id="hs-code" readonly><br> <!-- Auto-filled based on category -->
-
-        <label>Quantity:</label>
-        <input type="number" id="quantity" required><br>
-
-        <!-- 🔹 4️⃣ Shipment Details -->
-        <h2>📌 Shipment Details</h2>
-        <label>Country of Origin:</label>
-        <input type="text" value="India" readonly><br> <!-- Fixed to India -->
-
-        <!-- 🚨 Only show if Export License is required -->
-        <div id="export-license-section" style="display: none;">
-            <label>Export License Number:</label>
-            <input type="number" id="export-license"><br>
-        </div><br>
-
-        <label>Shipment Value (INR):</label>
-        <input type="number" id="shipment-value" required><br>
-
-        <label>Shipment Weight (kg):</label>
-        <input type="number" id="weight" required><br>
-
-        <label>Mode of Transport:</label>
-        <select id="mode-of-transport" class="styled-dropdown" required>
-            <option value="Selec">-- Select Mode --</option>
-            <option value="Air">✈️ Air</option>
-            <option value="Sea">🚢 Sea</option>
-            <option value="Land">🚛 Land</option>
-            <option value="Rail">🚆 Rail</option>
-        </select><br>
-
-        <!-- 🔹 5️⃣ Compliance & Taxes -->
-        <h2>📌 Compliance & Taxes</h2>
+        <!-- Results Section -->
+        <div id="compliance-results" class="mt-6"></div>
         
-        <label>Tariff Rate:</label>
-        <p id="tariff-info">-</p>
+        <!-- Shipment History -->
+        <div class="mt-6 bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="mr-2">📋</span> Shipment Details
+            </h2>
+            <div id="shipment-history" class="text-sm"></div>
+        </div>
+    </main>
+
+    <!-- Floating Chatbot -->
+    <button id="chatbot-toggle" class="fixed bottom-6 right-6 bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center text-2xl shadow-lg hover:bg-secondary transition-colors z-50">
+        💬
+    </button>
+    
+    <div id="chatbot-container" class="fixed bottom-0 right-0 w-full sm:w-96 h-[450px] bg-white shadow-xl rounded-t-xl sm:rounded-xl sm:bottom-6 sm:right-6 z-50 flex flex-col overflow-hidden transform translate-x-full">
+        <div id="chatbot-header" class="bg-primary text-white px-4 py-3 flex justify-between items-center">
+            <span class="font-medium flex items-center"><span class="mr-2">🤖</span> ExportEaser Assistant</span>
+            <button id="close-chatbot" class="text-white hover:text-blue-100">✖</button>
+        </div>
         
-        <label>Additional Taxes:</label>
-        <p id="additional-tax">-</p> <!-- New field for additional taxes -->
+        <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
         
-        <label>Total Import Tax:</label>
-        <p id="total-tax">-</p>
-        
-
-        <!-- 📂 Invoice Upload -->
-        <label></label>
-        <label for="invoice" class="file-upload">📂 Choose Invoice File</label>
-        <input type="file" id="invoice">
-        <p id="file-name">No file chosen</p>
-
-        <!-- ✅ Submit Button -->
-        <button type="submit">Check Compliance</button>
-    </form>
-<!--         <button type="button" id="upload-csv">Extract Data</button> -->
-
-
-
-    <div id="compliance-results"></div>
-    <div style="height: 15px;"></div>
-    <div class="shipment-history-box">
-        <h2 class="shipment-title">📋 Shipment Details</h2>
-        <div id="shipment-history"></div> <!-- Ensure this exists -->
+        <div class="chat-input-container border-t border-gray-200 p-3 flex items-center">
+            <input type="text" id="chatbot-input" class="chat-input flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Ask about compliance, tariffs, shipping...">
+            <button id="send-chatbot" class="chat-send-btn bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-secondary transition-colors">Send</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
 
     <script>
+        // Mobile menu toggle
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            document.getElementById("mobile-menu").classList.toggle("hidden");
+        });
+        
+        // Chatbot toggle
+        document.getElementById("chatbot-toggle").addEventListener("click", function() {
+            const chatbot = document.getElementById("chatbot-container");
+            chatbot.classList.remove("chatbot-closed");
+            chatbot.classList.add("chatbot-open");
+            chatbot.style.transform = "translateX(0)";
+        });
+        
+        document.getElementById("close-chatbot").addEventListener("click", function() {
+            const chatbot = document.getElementById("chatbot-container");
+            chatbot.classList.remove("chatbot-open");
+            chatbot.classList.add("chatbot-closed");
+            setTimeout(() => {
+                chatbot.style.transform = "translateX(100%)";
+            }, 300);
+        });
+        
+        // Initialize Select2
         document.addEventListener("DOMContentLoaded", function () {
             $('#destination').select2({
                 placeholder: "Search for a country...",
@@ -194,3 +360,4 @@
     </script>
 </body>
 </html>
+
