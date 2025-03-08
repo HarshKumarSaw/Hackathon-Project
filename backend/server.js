@@ -176,19 +176,19 @@ app.post("/api/submit-shipment",isAuthenticated, upload.single("invoice"), async
     res.json({ message: "✅ Shipment saved successfully!", shipment });
 });
 
-// API Route to Get Shipment History
-app.get("/api/shipments", optionalAuth, async (req, res) => {
-    await db.read();
+// // API Route to Get Shipment History
+// app.get("/api/shipments", optionalAuth, async (req, res) => {
+//     await db.read();
     
-    if (req.user) {
-        // If user is logged in, show only their shipments
-        const userShipments = db.data.shipments.filter(shipment => shipment.user === req.user.email);
-        res.json(userShipments);
-    } else {
-        // If not logged in, show all shipments
-        res.json(db.data.shipments || []);
-    }
-});
+//     if (req.user) {
+//         // If user is logged in, show only their shipments
+//         const userShipments = db.data.shipments.filter(shipment => shipment.user === req.user.email);
+//         res.json(userShipments);
+//     } else {
+//         // If not logged in, show all shipments
+//         res.json(db.data.shipments || []);
+//     }
+// });
 
 // 📂 API Route: Upload and Process CSV File
 app.post("/api/upload-csv", csvUpload.single("csv"), async (req, res) => {
