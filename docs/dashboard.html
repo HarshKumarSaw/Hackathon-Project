@@ -4,80 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shipment Dashboard</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Load jsPDF Library for PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <!-- Load Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Load jsPDF Library for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body>
+    <div class="app" id="app">
+        <!-- Header/Navigation -->
+        <header class="header">
+            <div class="container header-container">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                        <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
+                        <path d="M12 3v6"></path>
+                    </svg>
+                    <span class="logo-text">Shipment Dashboard</span>
+                </div>
 
-    <!-- ✅ Navigation Bar -->
-    <nav class="bg-blue-600 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <span class="text-lg font-bold">📦 Shipment Dashboard</span>
-            <ul class="hidden md:flex space-x-6">
-                <li><a href="/" class="hover:underline">Home</a></li>
-                <li><a href="/compliance" class="hover:underline">Compliance Checker</a></li>
-                <li><a href="/dashboard" class="hover:underline">Dashboard</a></li>
-                <li><a href="/about" class="hover:underline">About Us</a></li>
-                <li><a href="/contact" class="hover:underline">Contact</a></li>
-            </ul>
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop">
+                    <ul class="nav-list">
+                        <li><a href="/" class="nav-link">Home</a></li>
+                        <li><a href="/compliance" class="nav-link">Compliance Checker</a></li>
+                        <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="/about" class="nav-link">About Us</a></li>
+                        <li><a href="/contact" class="nav-link">Contact</a></li>
+                    </ul>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon sun-icon">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2"></path>
+                            <path d="M12 20v2"></path>
+                            <path d="m4.93 4.93 1.41 1.41"></path>
+                            <path d="m17.66 17.66 1.41 1.41"></path>
+                            <path d="M2 12h2"></path>
+                            <path d="M20 12h2"></path>
+                            <path d="m6.34 17.66-1.41 1.41"></path>
+                            <path d="m19.07 4.93-1.41 1.41"></path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon moon-icon">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                        </svg>
+                    </button>
+                </nav>
+
+                <!-- Mobile Navigation Toggle -->
+                <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+            <nav class="mobile-nav">
+                <ul class="mobile-nav-list">
+                    <li><a href="/" class="mobile-nav-link">Home</a></li>
+                    <li><a href="/compliance" class="mobile-nav-link">Compliance Checker</a></li>
+                    <li><a href="/dashboard" class="mobile-nav-link">Dashboard</a></li>
+                    <li><a href="/about" class="mobile-nav-link">About Us</a></li>
+                    <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
+                </ul>
+                <button id="mobile-theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon sun-icon">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="m4.93 4.93 1.41 1.41"></path>
+                        <path d="m17.66 17.66 1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="m6.34 17.66-1.41 1.41"></path>
+                        <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon moon-icon">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                    <span>Toggle Theme</span>
+                </button>
+            </nav>
         </div>
-    </nav>
 
-    <!-- ✅ Dashboard Container -->
-    <div class="max-w-6xl mx-auto mt-8 px-4">
-        <h1 class="text-3xl font-bold text-center text-blue-700">📊 Shipment Dashboard</h1>
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <h1 class="page-title">📊 Shipment Dashboard</h1>
 
-        <!-- 🔹 Shipment Stats Section -->
-        <div class="grid md:grid-cols-3 gap-6 mt-6">
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold text-gray-700">📦 Total Shipments</h2>
-                <p class="text-2xl font-bold text-blue-600" id="total-shipments">0</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold text-gray-700">✅ Compliant Shipments</h2>
-                <p class="text-2xl font-bold text-green-600" id="compliant-shipments">0</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold text-gray-700">⚠️ Non-Compliant Shipments</h2>
-                <p class="text-2xl font-bold text-red-600" id="noncompliant-shipments">0</p>
-            </div>
-        </div>
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="card stats-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Total Shipments</h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                                <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path>
+                                <path d="M12 3v6"></path>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="skeleton" id="total-shipments-skeleton"></div>
+                            <div class="stats-value primary-color" id="total-shipments">0</div>
+                        </div>
+                    </div>
 
-        <!-- 🔹 Charts Section -->
-        <div class="grid md:grid-cols-2 gap-6 mt-8">
-            <div class="bg-white shadow-lg rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-700">📊 Shipment Compliance Overview</h2>
-                <canvas id="shipmentChart"></canvas>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-700">🌍 Top Destinations</h2>
-                <canvas id="destinationChart"></canvas>
-            </div>
-        </div>
+                    <div class="card stats-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Compliant Shipments</h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="skeleton" id="compliant-shipments-skeleton"></div>
+                            <div class="stats-value success-color" id="compliant-shipments">0</div>
+                        </div>
+                    </div>
 
-        <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
-            <h2 class="text-xl font-semibold text-gray-700">📊 Risk Trends & Analytics</h2>
-            <canvas id="riskChart"></canvas>
-        </div>
+                    <div class="card stats-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Non-Compliant Shipments</h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="skeleton" id="noncompliant-shipments-skeleton"></div>
+                            <div class="stats-value danger-color" id="noncompliant-shipments">0</div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- 🔹 Buttons -->
-        <div class="flex flex-col md:flex-row justify-center gap-4 mt-8">
-            <button id="download-pdf" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow">
-                📥 Download PDF Report
-            </button>
-            <a href="index.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow">
-                ⬅️ Back to Form
-            </a>
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="tabs">
+                        <div class="tabs-list">
+                            <button class="tab-button active" data-tab="overview">Compliance Overview</button>
+                            <button class="tab-button" data-tab="destinations">Top Destinations</button>
+                            <button class="tab-button" data-tab="risk">Risk Analysis</button>
+                        </div>
+
+                        <div class="tab-content active" id="overview-tab">
+                            <div class="card chart-card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Shipment Compliance Overview</h2>
+                                </div>
+                                <div class="card-content chart-container">
+                                    <div class="skeleton chart-skeleton" id="compliance-chart-skeleton"></div>
+                                    <canvas id="shipmentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="destinations-tab">
+                            <div class="card chart-card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Top Destinations</h2>
+                                </div>
+                                <div class="card-content chart-container">
+                                    <div class="skeleton chart-skeleton" id="destinations-chart-skeleton"></div>
+                                    <canvas id="destinationChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="risk-tab">
+                            <div class="card chart-card">
+                                <div class="card-header">
+                                    <h2 class="card-title">Risk Trends & Analytics</h2>
+                                </div>
+                                <div class="card-content chart-container">
+                                    <div class="skeleton chart-skeleton" id="risk-chart-skeleton"></div>
+                                    <canvas id="riskChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button id="download-pdf" class="button primary-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download PDF Report
+                    </button>
+                    <a href="index.html" class="button secondary-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                            <path d="m12 19-7-7 7-7"></path>
+                            <path d="M19 12H5"></path>
+                        </svg>
+                        Back to Form
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast">
+            <div class="toast-content">
+                <div class="toast-title" id="toast-title"></div>
+                <div class="toast-description" id="toast-description"></div>
+            </div>
+            <button id="toast-close" class="toast-close">×</button>
         </div>
     </div>
 
     <script src="dashboard.js"></script>
-
 </body>
 </html>
