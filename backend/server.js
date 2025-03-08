@@ -69,6 +69,48 @@ async function initializeUsersDB() {
 initializeUsersDB();
 
 app.use(express.json());
+
+const csv = require("csv-parser");
+
+// 📂 CSV Upload Endpoint
+app.post("/api/upload-csv", upload.single("csv"), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "❌ No file uploaded." });
+    }
+
+    const results = [];
+    const filePath = req.file.path;
+
+    fs.createReadStream(filePath)
+        .pipe(csv())
+        .on("data", (row) => {
+            results.push(row);
+        })
+        .on("end", async () => {
+            try {
+                // Process CSV Data and Save to Database
+                for (const row of results) {
+                    const shipment = {
+                        productName: row["Product Name"],
+                        category: row["Category"],
+                        destination: row["Destination"],
+                        weight: parseFloat(row["Weight"]),
+                        shipmentValue: parseFloat(row["Shipment Value"]),
+                        modeOfTransport: row["Mode of Transport"],
+                        date: new Date().toISOString(),
+                    };
+                    db.data.shipments.push(shipment);
+                }
+
+                await db.write();
+                res.json({ message: "✅ CSV file processed successfully!", shipments: results });
+            } catch (error) {
+                console.error("CSV Processing Error:", error);
+                res.status(500).json({ message: "❌ Error processing CSV file." });
+            }
+        });
+});
+
 app.use(cors());
 app.use("/uploads", express.static("uploads")); // Serve uploaded invoices publicly
 
