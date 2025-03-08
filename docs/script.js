@@ -78,10 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "exportername": "exporter-name",
             "exporteraddress": "exporter-address",
             "importername": "importer-name",
-            "importercountry": "importer-country",
-            "importertaxid": "importer-tax-id",
             "productname": "product-name",
-            "category": "category",
             "destination": "destination",
             "weight": "weight",
             "quantity": "quantity",
@@ -98,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     reader.readAsText(file); // Read CSV file
 });
-
 
 
     // Allow Enter Key Submission
