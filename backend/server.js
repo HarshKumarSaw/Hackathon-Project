@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = "b4f82e9c3d7a58b1d2e4c6f9a0b3d5e7f1a2c4d6e8b0f3a5c7d9e1b4f6a8c2d";
 
 const express = require("express");
 const cors = require("cors");
@@ -12,22 +11,6 @@ const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 10000;
-
-// 🔹 Middleware: Optional Token Authentication
-function optionalAuth(req, res, next) {
-    const token = req.header("Authorization");
-
-    if (token) {
-        try {
-            const decoded = jwt.verify(token.replace("Bearer ", ""), SECRET_KEY);
-            req.user = decoded; // Attach user data
-        } catch (error) {
-            return res.status(401).json({ message: "⚠️ Invalid or expired token." });
-        }
-    }
-
-    next(); // Continue even if no token
-}
 
 // Define database file path
 const dbFilePath = path.join(__dirname, "shipments.json");
@@ -157,61 +140,6 @@ app.get("/api/shipments", optionalAuth, async (req, res) => {
         // If not logged in, show all shipments
         res.json(db.data.shipments || []);
     }
-});
-
-// API Route: User Signup
-app.post("/api/signup", async (req, res) => {
-    const { email, password } = req.body;
-
-    // ❌ Validate Inputs
-    if (!email || !password) {
-        return res.status(400).json({ message: "⚠️ Email and password are required." });
-    }
-
-    await usersDB.read(); // Load user data
-
-    // ❌ Check if User Already Exists
-    if (usersDB.data.users.some(user => user.email === email)) {
-        return res.status(400).json({ message: "⚠️ User already exists. Please login." });
-    }
-
-    // ✅ Hash Password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // ✅ Save User to Database
-    usersDB.data.users.push({ email, password: hashedPassword });
-    await usersDB.write();
-
-    res.json({ message: "✅ Signup successful! Please login." });
-});
-
-// 🔹 API Route: User Login
-app.post("/api/login", async (req, res) => {
-    const { email, password } = req.body;
-
-    // ❌ Validate Inputs
-    if (!email || !password) {
-        return res.status(400).json({ message: "⚠️ Email and password are required." });
-    }
-
-    await usersDB.read(); // Load user data
-
-    // ❌ Check if User Exists
-    const user = usersDB.data.users.find(user => user.email === email);
-    if (!user) {
-        return res.status(400).json({ message: "⚠️ User not found. Please sign up first." });
-    }
-
-    // ❌ Validate Password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        return res.status(400).json({ message: "⚠️ Incorrect password." });
-    }
-
-    // ✅ Generate JWT Token
-    const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "7d" });
-
-    res.json({ message: "✅ Login successful!", token });
 });
 
 // 📂 API Route: Upload and Process CSV File
