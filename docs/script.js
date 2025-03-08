@@ -75,6 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Map CSV values to form fields
         const fieldMapping = {
+            "exportername": "exporter-name",
+            "exporteraddress": "exporter-address",
+            "importername": "importer-name",
+            "importercountry": "importer-country",
+            "importertaxid": "importer-tax-id",
             "productname": "product-name",
             "category": "category",
             "destination": "destination",
