@@ -945,22 +945,31 @@
   </div>
 
   <div class="app-container">
-    <!-- Navigation -->
-    <nav class="navbar">
-      <div class="container">
-        <div class="navbar-brand">
-          <h1>GlobalTrade</h1>
+    <!-- 🔹 Navigation Bar with Hamburger Menu -->
+    <nav class="absolute top-4 right-4">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            
+            <!-- Hamburger Menu Button -->
+            <button id="menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
+                ☰
+            </button>
+            
+            <!-- Navigation Links (Hidden on Mobile, Shown on Desktop) -->
+            <ul id="nav-menu" class="hidden md:flex space-x-6">
+                <li><a href="dashboard.html" class="hover:underline">Dashboard</a></li>
+                <li><a href="compliance.html" class="hover:underline">Compliance Checker</a></li>
+                <li><a href="history.html" class="hover:underline">Shipment History</a></li>
+            </ul>
         </div>
-        <div class="navbar-menu">
-          <a href="#" class="navbar-item">Home</a>
-          <a href="#" class="navbar-item active">Compliance Checker</a>
-          <a href="#" class="navbar-item">Dashboard</a>
-          <a href="#" class="navbar-item">About Us</a>
-          <a href="#" class="navbar-item">Contact</a>
-        </div>
-        <button class="btn btn-outline">Logout</button>
-      </div>
+        
+        <!-- 🔹 Mobile Menu (Now Styled & Sized Properly) -->
+        <ul id="mobile-menu" class="hidden absolute right-4 top-16 bg-white shadow-lg rounded-lg w-48 text-black md:hidden">
+            <li class="border-b px-4 py-2 hover:bg-blue-100"><a href="dashboard.html">Dashboard</a></li>
+            <li class="border-b px-4 py-2 hover:bg-blue-100"><a href="compliance.html">Compliance Checker</a></li>
+            <li class="px-4 py-2 hover:bg-blue-100"><a href="history.html">Shipment History</a></li>
+        </ul>
     </nav>
+
 
     <div class="container main-content">
       <div class="header">
