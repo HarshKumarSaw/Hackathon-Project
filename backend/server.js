@@ -136,8 +136,16 @@ function checkCompliance(productName, category, destination, weight) {
     return issues;
 }
 
+/ Middleware to check if user is logged in
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next(); // User is logged in, continue
+    }
+    res.status(401).json({ message: "Unauthorized. Please log in first." });
+}
+
 // API Route to Submit a Shipment with Invoice Upload
-app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (req, res) => {
+app.post("/api/submit-shipment",isAuthenticated, upload.single("invoice"), async (req, res) => {
     const { productName, category, destination, weight } = req.body;
     const user = req.user ? req.user.email : "Guest"; // Store user email or mark as "Guest"
     const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
