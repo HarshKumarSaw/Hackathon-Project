@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const SECRET_KEY = "b4f82e9c3d7a58b1d2e4c6f9a0b3d5e7f1a2c4d6e8b0f3a5c7d9e1b4f6a8c2d";
 
 const express = require("express");
 const cors = require("cors");
@@ -12,13 +13,29 @@ const multer = require("multer");
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// 🔹 Middleware: Optional Token Authentication
+function optionalAuth(req, res, next) {
+    const token = req.header("Authorization");
+
+    if (token) {
+        try {
+            const decoded = jwt.verify(token.replace("Bearer ", ""), SECRET_KEY);
+            req.user = decoded; // Attach user data
+        } catch (error) {
+            return res.status(401).json({ message: "⚠️ Invalid or expired token." });
+        }
+    }
+
+    next(); // Continue even if no token
+}
+
 // Define database file path
 const dbFilePath = path.join(__dirname, "shipments.json");
 
 // Ensure shipments.json exists
 if (!fs.existsSync(dbFilePath)) {
     console.log("Creating shipments.json...");
-    fs.writeFileSync(dbFilePath, JSON.stringify({ shipments: [],users:[]}, null, 2));
+    fs.writeFileSync(dbFilePath, JSON.stringify({ shipments: [] }, null, 2));
 }
 
 // Set up database
@@ -26,7 +43,7 @@ const adapter = new JSONFile(dbFilePath);
 const db = new Low(adapter);
 async function initializeDB() {
     await db.read();
-    db.data ||= { shipments: [],users:[] };
+    db.data ||= { shipments: [] };
     await db.write();
 }
 initializeDB();
@@ -52,50 +69,8 @@ async function initializeUsersDB() {
 initializeUsersDB();
 
 app.use(express.json());
-
 app.use(cors());
 app.use("/uploads", express.static("uploads")); // Serve uploaded invoices publicly
-
-
-// 🔒 Signup Route
-app.post("/api/signup", async (req, res) => {
-    const { name, email, password } = req.body;
-    await db.read();
-
-    if (db.data.users.some(user => user.email === email)) {
-        return res.status(400).json({ message: "Email already registered!" });
-    }
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
-    db.data.users.push({ name, email, password: hashedPassword });
-    await db.write();
-
-    res.json({ message: "Signup successful! Please login." });
-});
-
-// 🔐 Login Route (with session storage)
-app.post("/api/login", async (req, res) => {
-    const { email, password } = req.body;
-    await db.read();
-
-    const user = db.data.users.find(user => user.email === email);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    req.session.user = { name: user.name, email: user.email };
-
-    res.json({ message: "Login successful!", user: { name: user.name, email: user.email } });
-});
-const session = require("express-session");
-app.use(
-    session({
-        secret: "your-secret-key",
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false }, 
-    })
-);
 
 // Multer Setup for Invoice Uploads
 const storage = multer.diskStorage({
@@ -108,11 +83,7 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-
 const upload = multer({ storage: storage });
-
-// 📂 Multer Setup for CSV Uploads (Separate from Invoice Uploads)
-const csvUpload = multer({ dest: "uploads/csv/" });
 
 // 🚫 Compliance Checking Function (Blocks Restricted Shipments)
 function checkCompliance(productName, category, destination, weight) {
@@ -136,15 +107,8 @@ function checkCompliance(productName, category, destination, weight) {
     return issues;
 }
 
-function isAuthenticated(req, res, next) {
-    if (req.session.user) {
-        return next(); // User is logged in, continue
-    }
-    res.status(401).json({ message: "Unauthorized. Please log in first." });
-}
-
 // API Route to Submit a Shipment with Invoice Upload
-app.post("/api/submit-shipment",isAuthenticated, upload.single("invoice"), async (req, res) => {
+app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (req, res) => {
     const { productName, category, destination, weight } = req.body;
     const user = req.user ? req.user.email : "Guest"; // Store user email or mark as "Guest"
     const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
@@ -176,62 +140,73 @@ app.post("/api/submit-shipment",isAuthenticated, upload.single("invoice"), async
     res.json({ message: "✅ Shipment saved successfully!", shipment });
 });
 
-// // API Route to Get Shipment History
-// app.get("/api/shipments", optionalAuth, async (req, res) => {
-//     await db.read();
+// API Route to Get Shipment History
+app.get("/api/shipments", optionalAuth, async (req, res) => {
+    await db.read();
     
-//     if (req.user) {
-//         // If user is logged in, show only their shipments
-//         const userShipments = db.data.shipments.filter(shipment => shipment.user === req.user.email);
-//         res.json(userShipments);
-//     } else {
-//         // If not logged in, show all shipments
-//         res.json(db.data.shipments || []);
-//     }
-// });
+    if (req.user) {
+        // If user is logged in, show only their shipments
+        const userShipments = db.data.shipments.filter(shipment => shipment.user === req.user.email);
+        res.json(userShipments);
+    } else {
+        // If not logged in, show all shipments
+        res.json(db.data.shipments || []);
+    }
+});
 
-// 📂 API Route: Upload and Process CSV File
-app.post("/api/upload-csv", csvUpload.single("csv"), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ message: "⚠️ No file uploaded. Please upload a valid CSV file." });
+// API Route: User Signup
+app.post("/api/signup", async (req, res) => {
+    const { email, password } = req.body;
+
+    // ❌ Validate Inputs
+    if (!email || !password) {
+        return res.status(400).json({ message: "⚠️ Email and password are required." });
     }
 
-    const filePath = path.join(__dirname, req.file.path);
+    await usersDB.read(); // Load user data
 
-    try {
-        const csvData = fs.readFileSync(filePath, "utf-8");
-        const rows = csvData.split("\n").map(row => row.split(","));
-        
-        // Extract header and data
-        const headers = rows[0].map(header => header.trim());
-        const shipments = rows.slice(1).map(row => {
-            let shipment = {};
-            row.forEach((value, index) => {
-                shipment[headers[index]] = value.trim();
-            });
-            return shipment;
-        });
-
-        // Validate and Save Shipments
-        await db.read();
-        shipments.forEach(shipment => {
-            if (shipment.productName && shipment.category && shipment.destination && shipment.weight) {
-                db.data.shipments.push({
-                    ...shipment,
-                    date: new Date().toISOString(),
-                });
-            }
-        });
-        await db.write();
-
-        // Cleanup: Delete uploaded CSV file
-        fs.unlinkSync(filePath);
-
-        res.json({ message: `✅ ${shipments.length} shipments uploaded successfully!` });
-    } catch (error) {
-        console.error("CSV Processing Error:", error);
-        res.status(500).json({ message: "❌ Error processing CSV file." });
+    // ❌ Check if User Already Exists
+    if (usersDB.data.users.some(user => user.email === email)) {
+        return res.status(400).json({ message: "⚠️ User already exists. Please login." });
     }
+
+    // ✅ Hash Password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // ✅ Save User to Database
+    usersDB.data.users.push({ email, password: hashedPassword });
+    await usersDB.write();
+
+    res.json({ message: "✅ Signup successful! Please login." });
+});
+
+// 🔹 API Route: User Login
+app.post("/api/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    // ❌ Validate Inputs
+    if (!email || !password) {
+        return res.status(400).json({ message: "⚠️ Email and password are required." });
+    }
+
+    await usersDB.read(); // Load user data
+
+    // ❌ Check if User Exists
+    const user = usersDB.data.users.find(user => user.email === email);
+    if (!user) {
+        return res.status(400).json({ message: "⚠️ User not found. Please sign up first." });
+    }
+
+    // ❌ Validate Password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(400).json({ message: "⚠️ Incorrect password." });
+    }
+
+    // ✅ Generate JWT Token
+    const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "7d" });
+
+    res.json({ message: "✅ Login successful!", token });
 });
 
 // Start Server
@@ -250,9 +225,3 @@ if (!fs.existsSync(tariffFilePath)) {
         res.sendFile(tariffFilePath);
     });
 }
-
-// 🚪 Logout Route
-app.post("/api/logout", (req, res) => {
-    req.session.destroy();
-    res.json({ message: "Logged out successfully!" });
-});
