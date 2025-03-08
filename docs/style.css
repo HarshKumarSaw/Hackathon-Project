@@ -366,6 +366,10 @@ select {
     display: none;
 }
 
+#csv-upload{
+    display: none;
+}
+
 /* Display selected file name */
 #file-name {
     margin-top: 5px;
