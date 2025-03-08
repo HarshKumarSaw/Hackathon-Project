@@ -13,7 +13,7 @@ async function login() {
     const message = document.getElementById("message");
 
     try {
-        const response = await fetch("http://localhost:10000/api/login", {
+        const response = await fetch("https://hackathon-project-5oha.onrender.com/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -40,7 +40,7 @@ async function signup() {
     const signupMessage = document.getElementById("signup-message");
 
     try {
-        const response = await fetch("http://localhost:10000/api/signup", {
+        const response = await fetch("https://hackathon-project-5oha.onrender.com/api/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, password })
