@@ -48,6 +48,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+        // 📂 Show Selected CSV File Name
+    document.getElementById("csv-upload").addEventListener("change", function () {
+        const fileName = this.files.length > 0 ? this.files[0].name : "No file selected";
+        document.getElementById("csv-upload-status").textContent = fileName;
+    });
+
+
     // Allow Enter Key Submission
     chatbotInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") sendChatbot.click();
