@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logiguard - Login</title>
+    <title>Logiguard - Authentication</title>
     <link rel="stylesheet" href="auth.css">
 </head>
 <body>
     <div class="auth-container">
         <div class="auth-box" id="login-box">
-            <h2>🔒 Secure Login</h2>
+            <h2>🔒 Login</h2>
             <input type="email" id="email" placeholder="Enter your email" required>
             <input type="password" id="password" placeholder="Enter your password" required>
-            <button onclick="window.location.href='https://harshkumarsaw.github.io/Hackathon-Project/dashboard.html';">Login</button>
+            <button onclick="login()">Login</button>
             <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
             <p id="message"></p>
         </div>
@@ -22,7 +22,7 @@
             <input type="text" id="name" placeholder="Enter full name" required>
             <input type="email" id="signup-email" placeholder="Enter email" required>
             <input type="password" id="signup-password" placeholder="Enter password" required>
-            <button onclick="window.location.href='https://harshkumarsaw.github.io/Hackathon-Project/dashboard.html';">Sign up</button>
+            <button onclick="signup()">Sign Up</button>
             <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
             <p id="signup-message"></p>
         </div>
