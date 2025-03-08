@@ -19,7 +19,7 @@ const dbFilePath = path.join(__dirname, "shipments.json");
 // Ensure shipments.json exists
 if (!fs.existsSync(dbFilePath)) {
     console.log("Creating shipments.json...");
-    fs.writeFileSync(dbFilePath, JSON.stringify({ shipments: [], users: [] }, null, 2));
+    fs.writeFileSync(dbFilePath, JSON.stringify({ shipments: []}, null, 2));
 }
 
 // Set up database
@@ -27,7 +27,7 @@ const adapter = new JSONFile(dbFilePath);
 const db = new Low(adapter);
 async function initializeDB() {
     await db.read();
-    db.data ||= { shipments: [] , users: [] };
+    db.data ||= { shipments: []};
     await db.write();
 }
 initializeDB();
@@ -73,32 +73,6 @@ app.post("/api/signup", async (req, res) => {
     res.json({ message: "Signup successful! Please login." });
 });
 
-// 🔐 Login Route (with session storage)
-app.post("/api/login", async (req, res) => {
-    const { email, password } = req.body;
-    await db.read();
-
-    const user = db.data.users.find(user => user.email === email);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    req.session.user = { name: user.name, email: user.email };
-
-    res.json({ message: "Login successful!", user: { name: user.name, email: user.email } });
-});
-
-
-const session = require("express-session");
-app.use(
-    session({
-        secret: "your-secret-key",
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false }, 
-    })
-);
-
 // Multer Setup for Invoice Uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -136,14 +110,6 @@ function checkCompliance(productName, category, destination, weight) {
     }
 
     return issues;
-}
-
-// Middleware to check if user is logged in
-function isAuthenticated(req, res, next) {
-    if (req.session.user) {
-        return next(); // User is logged in, continue
-    }
-    res.status(401).json({ message: "Unauthorized. Please log in first." });
 }
 
 // API Route to Submit a Shipment with Invoice Upload
@@ -253,10 +219,4 @@ if (!fs.existsSync(tariffFilePath)) {
         res.sendFile(tariffFilePath);
     });
 }
-
-// 🚪 Logout Route
-app.post("/api/logout", (req, res) => {
-    req.session.destroy();
-    res.json({ message: "Logged out successfully!" });
-});
 
