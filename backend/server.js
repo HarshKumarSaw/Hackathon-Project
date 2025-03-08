@@ -71,7 +71,6 @@ initializeUsersDB();
 app.use(express.json());
 
 app.use(cors());
-const upload = multer({ storage: storage });
 app.use("/uploads", express.static("uploads")); // Serve uploaded invoices publicly
 
 // Multer Setup for Invoice Uploads
@@ -85,6 +84,8 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
+
+const upload = multer({ storage: storage });
 
 // 🚫 Compliance Checking Function (Blocks Restricted Shipments)
 function checkCompliance(productName, category, destination, weight) {
