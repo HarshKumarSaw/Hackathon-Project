@@ -135,10 +135,19 @@
 
     <hr>
 
-        <h2>📂 Upload Shipments via CSV</h2>
+<!--         <h2>📂 Upload Shipments via CSV</h2>
         <input type="file" id="csv-upload" accept=".csv">
         <button id="upload-csv">Upload CSV</button>
-        <div id="upload-message"></div>
+        <div id="upload-message"></div> -->
+
+        <!-- 📂 Bulk CSV Upload -->
+    <h2>📌 Bulk Shipment Upload</h2>
+    <label for="csv-upload" class="file-upload">📂 Upload CSV File</label>
+    <input type="file" id="csv-upload" accept=".csv">
+    <p id="csv-file-name">No file chosen</p>
+    <button type="button" onclick="uploadCSV()">📤 Upload CSV</button>
+    <p id="csv-upload-status"></p> <!-- Status message -->
+
 
     <div id="compliance-results"></div>
     <div style="height: 15px;"></div>
