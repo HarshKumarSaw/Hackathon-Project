@@ -74,17 +74,28 @@
     </footer>
 
     <script>
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-        document.getElementById("mobile-menu").classList.toggle("hidden");
-
-        this.children[0].classList.toggle("rotate-45");
-        this.children[0].classList.toggle("translate-y-2");
-
-        this.children[1].classList.toggle("opacity-0");
-
-        this.children[2].classList.toggle("-rotate-45");
-        this.children[2].classList.toggle("-translate-y-2");
-    });
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            let menu = document.getElementById("mobile-menu");
+            
+            // Toggle menu visibility
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+                menu.classList.add("block"); // Ensure it displays
+            } else {
+                menu.classList.remove("block");
+                menu.classList.add("hidden");
+            }
+            
+            // Animate hamburger icon
+            this.children[0].classList.toggle("rotate-45");
+            this.children[0].classList.toggle("translate-y-2");
+            
+            this.children[1].classList.toggle("opacity-0");
+            
+            this.children[2].classList.toggle("-rotate-45");
+            this.children[2].classList.toggle("-translate-y-2");
+        });
+    
     </script>
 
 </body>
