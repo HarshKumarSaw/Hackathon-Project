@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = "b4f82e9c3d7a58b1d2e4c6f9a0b3d5e7f1a2c4d6e8b0f3a5c7d9e1b4f6a8c2d";
 
 const express = require("express");
 const cors = require("cors");
@@ -12,22 +11,6 @@ const multer = require("multer");
 
 const app = express();
 const PORT = process.env.PORT || 10000;
-
-// 🔹 Middleware: Optional Token Authentication
-function optionalAuth(req, res, next) {
-    const token = req.header("Authorization");
-
-    if (token) {
-        try {
-            const decoded = jwt.verify(token.replace("Bearer ", ""), SECRET_KEY);
-            req.user = decoded; // Attach user data
-        } catch (error) {
-            return res.status(401).json({ message: "⚠️ Invalid or expired token." });
-        }
-    }
-
-    next(); // Continue even if no token
-}
 
 // Define database file path
 const dbFilePath = path.join(__dirname, "shipments.json");
