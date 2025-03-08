@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         generateChart("shipmentChart", "doughnut", ["Compliant Shipments", "Non-Compliant Shipments"], 
             [compliant, nonCompliant], ["#10B981", "#EF4444"]);
 
-        generateChart("destinationChart", "bar", Object.keys(destinations), Object.values(destinations), "#F59E0B", "Top Destinations");
+        generateChart("destinationChart", "bar", Object.keys(destinations), Object.values(destinations), "#F59E0B", "Top Destinations", "center");
 
     } catch (error) {
         console.error("Error loading shipment data:", error);
