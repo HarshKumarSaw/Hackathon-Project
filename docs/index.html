@@ -18,7 +18,7 @@
     <!-- 🔹 Chatbot Container -->
     <div id="chatbot-container">
         <div id="chatbot-header">
-            <span>🤖 ExportBot 3000</span>
+            <span>🤖 ExportEaser</span>
             <button id="close-chatbot">✖</button>
         </div>
         <div id="chatbot-messages"></div>
@@ -33,7 +33,7 @@
     <nav>
         <ul>
             <li><a href="https://harshkumarsaw.github.io/Hackathon-Project/home.html">Home</a></li>
-            <li><a href="/compliance">Compliance Checker</a></li>
+            <li><a href="/index.html">Compliance Checker</a></li>
             <li><a href="/dashboard">Dashboard</a></li>
             <li><a href="/about">About Us</a></li>
             <li><a href="/contact">Contact</a></li>
@@ -41,7 +41,7 @@
         </ul>
     </nav>
 
-    <h1>📦 Cross-Border Shipment Compliance Checker</h1>
+    <h1>📦 ExportEase Compilance Checker</h1>
 
     <a href="dashboard.html" class="dashboard-button">📊 View Dashboard</a>
 
@@ -139,6 +139,13 @@
         <input type="file" id="csv-upload" accept=".csv">
         <button id="upload-csv">Upload CSV</button>
         <div id="upload-message"></div>
+
+    <!-- 📂 CSV Upload for Auto-Filling Form -->
+<label for="csv-upload" class="file-upload">📂 Upload CSV</label>
+<input type="file" id="csv-upload" accept=".csv">
+<p id="csv-upload-status">No file selected</p>
+<button type="button" id="upload-csv">Extract Data</button>
+
 
 
     <div id="compliance-results"></div>
