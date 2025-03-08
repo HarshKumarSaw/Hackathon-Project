@@ -20,9 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
     mobileThemeToggle.addEventListener('click', toggleTheme);
     
     // Mobile Menu Toggle
-    const mobileMenu  toggleTheme);
-    
-    // Mobile Menu Toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     
@@ -173,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Generate Compliance Chart
     function generateComplianceChart(compliant, nonCompliant) {
-        const ctx = document.getElementById('complianceChart').getContext('2d');
+        const ctx = document.getElementById('shipmentChart').getContext('2d');
         document.getElementById('compliance-chart-skeleton').classList.add('hidden');
         
         new Chart(ctx, {
