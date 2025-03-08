@@ -68,7 +68,7 @@ function generateChart(canvasId, type, labels, data, colors, labelText = "", leg
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: "top", align: legendAlign } },
+            plugins: { legend: { position: "top", align: "center", labels: { padding: 10 } } },
             scales: type === "bar" ? { y: { beginAtZero: true } } : {}
         }
     });
