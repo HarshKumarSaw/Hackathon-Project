@@ -73,5 +73,19 @@
         <p>&copy; 2024 ExportEase | All Rights Reserved</p>
     </footer>
 
+    <script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+
+        this.children[0].classList.toggle("rotate-45");
+        this.children[0].classList.toggle("translate-y-2");
+
+        this.children[1].classList.toggle("opacity-0");
+
+        this.children[2].classList.toggle("-rotate-45");
+        this.children[2].classList.toggle("-translate-y-2");
+    });
+    </script>
+
 </body>
 </html>
