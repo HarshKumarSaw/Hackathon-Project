@@ -3,20 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Signup</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Logiguard - Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="auth-container">
-        <h2>Login / Signup</h2>
+        <div class="auth-box">
+            <h2>🔒 Secure Login</h2>
+            
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            
+            <button onclick="login()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
 
-        <input type="email" id="email" placeholder="Enter email" required>
-        <input type="password" id="password" placeholder="Enter password" required>
-        
-        <button onclick="signup()">Signup</button>
-        <button onclick="login()">Login</button>
+            <p id="message"></p>
+        </div>
 
-        <p id="message"></p>
+        <div class="auth-box hidden" id="signup-box">
+            <h2>📝 Create an Account</h2>
+            
+            <input type="text" id="name" placeholder="Enter full name" required>
+            <input type="email" id="signup-email" placeholder="Enter email" required>
+            <input type="password" id="signup-password" placeholder="Enter password" required>
+            
+            <button onclick="signup()">Sign Up</button>
+            <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+
+            <p id="signup-message"></p>
+        </div>
     </div>
 
     <script src="auth.js"></script>
