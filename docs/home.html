@@ -4,47 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExportEase - Home</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to main CSS -->
-    <link rel="stylesheet" href="home.css"> <!-- Specific CSS for homepage -->
-    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
 
-    <!-- 🔹 Navigation Bar (Already Styled in main CSS) -->
-    <nav>
-        <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="compliance.html">Compliance Checker</a></li>
-            <li><a href="history.html">Shipment History</a></li>
-        </ul>
+    <!-- 🔹 Navigation Bar -->
+    <nav class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <h1 class="text-2xl font-bold">ExportEase</h1>
+            <ul class="flex space-x-6">
+                <li><a href="dashboard.html" class="hover:underline">Dashboard</a></li>
+                <li><a href="compliance.html" class="hover:underline">Compliance Checker</a></li>
+                <li><a href="history.html" class="hover:underline">Shipment History</a></li>
+            </ul>
+        </div>
     </nav>
 
     <!-- 🔹 Hero Section -->
-    <header class="hero">
-        <h1>Welcome to ExportEase</h1>
-        <p>Your one-stop solution for hassle-free international shipping.</p>
-        <a href="compliance.html" class="cta-button">Check Compliance</a>
+    <header class="bg-blue-500 text-white text-center py-16">
+        <h1 class="text-4xl font-bold">Welcome to ExportEase</h1>
+        <p class="text-lg mt-2">Your one-stop solution for hassle-free international shipping.</p>
+        <a href="compliance.html" class="mt-6 inline-block bg-white text-blue-600 font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-200 transition">
+            Check Compliance
+        </a>
     </header>
 
     <!-- 🔹 Features Section -->
-    <section class="features">
-        <div class="feature-box">
-            <h2>🌍 Global Compliance</h2>
-            <p>Ensure your shipments meet international trade regulations.</p>
-        </div>
-        <div class="feature-box">
-            <h2>📦 Easy Shipment Tracking</h2>
-            <p>Keep track of all your exports in one place.</p>
-        </div>
-        <div class="feature-box">
-            <h2>🚀 Fast Processing</h2>
-            <p>Get real-time risk assessments and compliance checks.</p>
+    <section class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h2 class="text-xl font-semibold">🌍 Global Compliance</h2>
+                <p class="text-gray-600 mt-2">Ensure your shipments meet international trade regulations.</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h2 class="text-xl font-semibold">📦 Easy Shipment Tracking</h2>
+                <p class="text-gray-600 mt-2">Keep track of all your exports in one place.</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h2 class="text-xl font-semibold">🚀 Fast Processing</h2>
+                <p class="text-gray-600 mt-2">Get real-time risk assessments and compliance checks.</p>
+            </div>
         </div>
     </section>
 
     <!-- 🔹 Footer -->
-    <footer>
+    <footer class="bg-gray-800 text-white text-center py-4 mt-8">
         <p>&copy; 2024 ExportEase | All Rights Reserved</p>
     </footer>
 
