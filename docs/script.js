@@ -54,6 +54,47 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("csv-upload-status").textContent = fileName;
     });
 
+    // 📂 Read CSV File & Fill Form
+document.getElementById("csv-upload").addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const csvContent = e.target.result;
+        const rows = csvContent.split("\n").map(row => row.split(",")); // Convert CSV to array
+
+        if (rows.length < 2) {
+            alert("⚠️ Invalid CSV format.");
+            return;
+        }
+
+        // Extract headers and first row of data
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        const values = rows[1].map(v => v.trim());
+
+        // Map CSV values to form fields
+        const fieldMapping = {
+            "productname": "product-name",
+            "category": "category",
+            "destination": "destination",
+            "weight": "weight",
+            "quantity": "quantity",
+            "shipmentvalue": "shipment-value",
+            "modeoftransport": "mode-of-transport"
+        };
+
+        headers.forEach((header, index) => {
+            if (fieldMapping[header]) {
+                document.getElementById(fieldMapping[header]).value = values[index] || "";
+            }
+        });
+    };
+
+    reader.readAsText(file); // Read CSV file
+});
+
+
 
     // Allow Enter Key Submission
     chatbotInput.addEventListener("keypress", (event) => {
