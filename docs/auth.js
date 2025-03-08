@@ -1,47 +1,45 @@
-const SERVER_URL = "https://hackathon-project-5oha.onrender.com/api"; // Your server URL
-
-// ✅ User Signup
-async function signup() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-
-    const response = await fetch(`${SERVER_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-    });
-
-    const data = await response.json();
-    document.getElementById("message").innerText = data.message;
-}
-
-// ✅ User Login
 async function login() {
-    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const response = await fetch(`${SERVER_URL}/login`, {
+    const response = await fetch("http://localhost:10000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password }),
     });
 
     const data = await response.json();
-    document.getElementById("message").innerText = data.message;
-
+    
     if (response.ok) {
-        localStorage.setItem("token", data.token); // Store token
-        window.location.href = "dashboard.html"; // Redirect to dashboard
+        localStorage.setItem("user", JSON.stringify(data.user)); // Store user session
+        window.location.href = "index.html"; // Redirect to Compliance Checker
+    } else {
+        document.getElementById("message").innerText = data.message;
     }
 }
 
-// ✅ Redirect to Dashboard if Already Logged In
-if (localStorage.getItem("token")) {
-    window.location.href = "dashboard.html";
+
+async function signup() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("signup-email").value;
+    let password = document.getElementById("signup-password").value;
+
+    let response = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+    });
+
+    let data = await response.json();
+    document.getElementById("signup-message").innerText = data.message;
+
+    if (response.ok) {
+        alert("Signup successful! Please login.");
+        toggleForm();
+    }
 }
 
-// ✅ Logout Function
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "auth.html";
+function toggleForm() {
+    document.querySelector(".auth-box").classList.toggle("hidden");
+    document.getElementById("signup-box").classList.toggle("hidden");
 }
