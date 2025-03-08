@@ -12,11 +12,8 @@
         <div class="container mx-auto flex justify-between items-center px-6">
             
             <!-- Hamburger Menu Button -->
-            <button id="menu-toggle" class="md:hidden flex flex-col justify-between w-8 h-6 focus:outline-none"
-                onclick="this.classList.toggle('open')">
-                <div class="w-8 h-1 bg-black rounded transition-all duration-300 origin-center"></div>
-                <div class="w-8 h-1 bg-black rounded transition-all duration-300"></div>
-                <div class="w-8 h-1 bg-black rounded transition-all duration-300 origin-center"></div>
+            <button id="menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
+                ☰
             </button>
             
             <!-- Navigation Links (Hidden on Mobile, Shown on Desktop) -->
@@ -72,31 +69,6 @@
     <footer class="bg-gray-800 text-white text-center py-4 mt-8">
         <p>&copy; 2024 ExportEase | All Rights Reserved</p>
     </footer>
-
-    <script>
-        document.getElementById("menu-toggle").addEventListener("click", function () {
-            let menu = document.getElementById("mobile-menu");
-            
-            // Toggle menu visibility
-            if (menu.classList.contains("hidden")) {
-                menu.classList.remove("hidden");
-                menu.classList.add("block"); // Ensure it displays
-            } else {
-                menu.classList.remove("block");
-                menu.classList.add("hidden");
-            }
-            
-            // Animate hamburger icon
-            this.children[0].classList.toggle("rotate-45");
-            this.children[0].classList.toggle("translate-y-2");
-            
-            this.children[1].classList.toggle("opacity-0");
-            
-            this.children[2].classList.toggle("-rotate-45");
-            this.children[2].classList.toggle("-translate-y-2");
-        });
-    
-    </script>
 
 </body>
 </html>
