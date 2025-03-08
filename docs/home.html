@@ -8,18 +8,39 @@
 </head>
 <body class="bg-gray-100 text-gray-900">
 
-    <!-- 🔹 Navigation Bar -->
+    <!-- 🔹 Navigation Bar with Hamburger Menu -->
     <nav class="bg-blue-600 text-white py-4">
         <div class="container mx-auto flex justify-between items-center px-6">
+            <!-- Website Logo -->
             <h1 class="text-2xl font-bold">ExportEase</h1>
-            <ul class="flex space-x-6">
+            
+            <!-- Hamburger Menu Button -->
+            <button id="menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
+                ☰
+            </button>
+            
+            <!-- Navigation Links (Hidden on Mobile, Shown on Desktop) -->
+            <ul id="nav-menu" class="hidden md:flex space-x-6">
                 <li><a href="dashboard.html" class="hover:underline">Dashboard</a></li>
                 <li><a href="compliance.html" class="hover:underline">Compliance Checker</a></li>
                 <li><a href="history.html" class="hover:underline">Shipment History</a></li>
             </ul>
         </div>
+        
+        <!-- Mobile Menu (Hidden by Default) -->
+        <ul id="mobile-menu" class="hidden bg-blue-700 text-center md:hidden">
+            <li class="py-2"><a href="dashboard.html" class="hover:underline block">Dashboard</a></li>
+            <li class="py-2"><a href="compliance.html" class="hover:underline block">Compliance Checker</a></li>
+            <li class="py-2"><a href="history.html" class="hover:underline block">Shipment History</a></li>
+        </ul>
     </nav>
 
+<!-- 🔹 JavaScript for Toggle Functionality -->
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+    });
+</script>
     <!-- 🔹 Hero Section -->
     <header class="bg-blue-500 text-white text-center py-16">
         <h1 class="text-4xl font-bold">Welcome to ExportEase</h1>
