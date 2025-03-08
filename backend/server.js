@@ -70,6 +70,7 @@ initializeUsersDB();
 
 app.use(express.json());
 
+const upload = multer({ storage: storage });
 const csv = require("csv-parser");
 
 // 📂 CSV Upload Endpoint
