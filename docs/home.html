@@ -3,75 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExportEase - Home</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ExportEase</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body>
 
-    <!-- 🔹 Navigation Bar with Hamburger Menu -->
-    <nav class="bg-blue-600 text-white py-4">
-        <div class="container mx-auto flex justify-between items-center px-6">
-            <!-- Website Logo -->
-            <h1 class="text-2xl font-bold">ExportEase</h1>
-            
-            <!-- Hamburger Menu Button -->
-            <button id="menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
-                ☰
-            </button>
-            
-            <!-- Navigation Links (Hidden on Mobile, Shown on Desktop) -->
-            <ul id="nav-menu" class="hidden md:flex space-x-6">
-                <li><a href="dashboard.html" class="hover:underline">Dashboard</a></li>
-                <li><a href="compliance.html" class="hover:underline">Compliance Checker</a></li>
-                <li><a href="history.html" class="hover:underline">Shipment History</a></li>
-            </ul>
+    <!-- 🔹 Navigation Bar -->
+    <nav>
+        <div class="logo">ExportEase</div>
+        <div class="dropdown">
+            <button class="dropdown-btn">☰</button>
+            <div class="dropdown-content">
+                <a href="#">Login/Register</a>
+                <a href="#">Contact Us</a>
+                <a href="#">About Us</a>
+                <a href="#">Global Compliance</a>
+                <a href="#">Easy Shipment Tracking</a>
+            </div>
         </div>
-        
-        <!-- 🔹 Mobile Menu (Now Styled & Sized Properly) -->
-        <ul id="mobile-menu" class="hidden absolute right-4 top-16 bg-white shadow-lg rounded-lg w-48 text-black md:hidden">
-            <li class="border-b px-4 py-2 hover:bg-blue-100"><a href="dashboard.html">Dashboard</a></li>
-            <li class="border-b px-4 py-2 hover:bg-blue-100"><a href="compliance.html">Compliance Checker</a></li>
-            <li class="px-4 py-2 hover:bg-blue-100"><a href="history.html">Shipment History</a></li>
-        </ul>
     </nav>
 
-<!-- 🔹 JavaScript for Toggle Functionality -->
-<script>
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-        document.getElementById("mobile-menu").classList.toggle("hidden");
-    });
-</script>
-    <!-- 🔹 Hero Section -->
-    <header class="bg-blue-500 text-white text-center py-16">
-        <h1 class="text-4xl font-bold">Welcome to ExportEase</h1>
-        <p class="text-lg mt-2">Your one-stop solution for hassle-free international shipping.</p>
-        <a href="compliance.html" class="mt-6 inline-block bg-white text-blue-600 font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-200 transition">
-            Check Compliance
-        </a>
-    </header>
-
-    <!-- 🔹 Features Section -->
-    <section class="container mx-auto px-6 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold">🌍 Global Compliance</h2>
-                <p class="text-gray-600 mt-2">Ensure your shipments meet international trade regulations.</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold">📦 Easy Shipment Tracking</h2>
-                <p class="text-gray-600 mt-2">Keep track of all your exports in one place.</p>
-            </div>
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold">🚀 Fast Processing</h2>
-                <p class="text-gray-600 mt-2">Get real-time risk assessments and compliance checks.</p>
-            </div>
+    <!-- 🔹 Image Section with Overlay Text -->
+    <div class="image-container">
+        <img src="https://i.ibb.co/JR8wQH3m/Screenshot-2025-03-08-at-11-19-01-AM.png" alt="ExportEase Background">
+        
+        <div class="overlay-text">
+            <h2 class="title">Welcome to ExportEase</h2>
+            <p class="subtitle">Ensuring Smooth and Secure Global Trade from India</p>
         </div>
-    </section>
 
-    <!-- 🔹 Footer -->
-    <footer class="bg-gray-800 text-white text-center py-4 mt-8">
-        <p>&copy; 2024 ExportEase | All Rights Reserved</p>
-    </footer>
+        <!-- 🔹 Compliance Checker Button -->
+        <a href="https://example.com" class="cta-button">Compliance Checker</a>
+    </div>
 
 </body>
 </html>
