@@ -8,7 +8,6 @@ const { Low } = require("lowdb");
 const { JSONFile } = require("lowdb/node");
 const fs = require("fs");
 const path = require("path");
-const session = require("express-session");
 const multer = require("multer");
 
 const app = express();
@@ -31,12 +30,12 @@ function optionalAuth(req, res, next) {
 }
 
 // Define database file path
-const dbFilePath = path.join(__dirname, "database.json");
+const dbFilePath = path.join(__dirname, "shipments.json");
 
 // Ensure shipments.json exists
 if (!fs.existsSync(dbFilePath)) {
-    console.log("Creating database.json...");
-    fs.writeFileSync(dbFilePath, JSON.stringify({ user:[] }, null, 2));
+    console.log("Creating shipments.json...");
+    fs.writeFileSync(dbFilePath, JSON.stringify({ shipments: [] }, null, 2));
 }
 
 // Set up database
@@ -44,7 +43,7 @@ const adapter = new JSONFile(dbFilePath);
 const db = new Low(adapter);
 async function initializeDB() {
     await db.read();
-    db.data ||= { user: []};
+    db.data ||= { shipments: [] };
     await db.write();
 }
 initializeDB();
@@ -72,58 +71,6 @@ initializeUsersDB();
 app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads")); // Serve uploaded invoices publicly
-app.use(
-    session({
-        secret: "secure-key", // Change this for security
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false }, // Set to true if using HTTPS
-    })
-);
-
-// 🔒 Signup Route
-app.post("/api/signup", async (req, res) => {
-    const { name, email, password } = req.body;
-    await db.read();
-
-    if (db.data.users.some(user => user.email === email)) {
-        return res.status(400).json({ message: "Email already registered!" });
-    }
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
-    db.data.users.push({ name, email, password: hashedPassword });
-    await db.write();
-
-    res.json({ message: "Signup successful! Please login." });
-});
-
-// 🔐 Login Route (with session storage)
-app.post("/api/login", async (req, res) => {
-    const { email, password } = req.body;
-    await db.read();
-
-    const user = db.data.users.find(user => user.email === email);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    req.session.user = { name: user.name, email: user.email };
-    res.json({ message: "Login successful!", user: { name: user.name, email: user.email } });
-});
-
-// 🚀 Protected Route - Dashboard
-app.get("/api/dashboard", (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ message: "Unauthorized. Please log in first." });
-    }
-    res.json({ message: `Welcome, ${req.session.user.name}!` });
-});
-
-// 🚪 Logout Route
-app.post("/api/logout", (req, res) => {
-    req.session.destroy();
-    res.json({ message: "Logged out successfully!" });
-});
 
 // Multer Setup for Invoice Uploads
 const storage = multer.diskStorage({
