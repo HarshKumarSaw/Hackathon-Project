@@ -4,60 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shipment Dashboard</title>
-    <link rel="stylesheet" href="style.css">
     
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Load jsPDF Library for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Load Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
 
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/compliance">Compliance Checker</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
+    <!-- ✅ Navigation Bar -->
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <span class="text-lg font-bold">📦 Shipment Dashboard</span>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="/" class="hover:underline">Home</a></li>
+                <li><a href="/compliance" class="hover:underline">Compliance Checker</a></li>
+                <li><a href="/dashboard" class="hover:underline">Dashboard</a></li>
+                <li><a href="/about" class="hover:underline">About Us</a></li>
+                <li><a href="/contact" class="hover:underline">Contact</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <div class="dashboard-container">
-        <h1>📊 Shipment Dashboard</h1>
+    <!-- ✅ Dashboard Container -->
+    <div class="max-w-6xl mx-auto mt-8 px-4">
+        <h1 class="text-3xl font-bold text-center text-blue-700">📊 Shipment Dashboard</h1>
 
-        <!-- Shipment Stats Section -->
-        <div class="card">
-            <h2>📦 Shipment Overview</h2>
-            <div class="stats-grid">
-                <p><strong>Total Shipments:</strong> <span id="total-shipments">0</span></p>
-                <p><strong>✅ Compliant Shipments:</strong> <span id="compliant-shipments">0</span></p>
-                <p><strong>⚠️ Non-Compliant Shipments:</strong> <span id="noncompliant-shipments">0</span></p>
+        <!-- 🔹 Shipment Stats Section -->
+        <div class="grid md:grid-cols-3 gap-6 mt-6">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h2 class="text-xl font-semibold text-gray-700">📦 Total Shipments</h2>
+                <p class="text-2xl font-bold text-blue-600" id="total-shipments">0</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h2 class="text-xl font-semibold text-gray-700">✅ Compliant Shipments</h2>
+                <p class="text-2xl font-bold text-green-600" id="compliant-shipments">0</p>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+                <h2 class="text-xl font-semibold text-gray-700">⚠️ Non-Compliant Shipments</h2>
+                <p class="text-2xl font-bold text-red-600" id="noncompliant-shipments">0</p>
             </div>
         </div>
 
-        <!-- Compliance Overview Chart -->
-        <div class="card">
-            <h2>📊 Shipment Compliance Overview</h2>
-            <canvas id="shipmentChart"></canvas>
+        <!-- 🔹 Charts Section -->
+        <div class="grid md:grid-cols-2 gap-6 mt-8">
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-700">📊 Shipment Compliance Overview</h2>
+                <canvas id="shipmentChart"></canvas>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-700">🌍 Top Destinations</h2>
+                <canvas id="destinationChart"></canvas>
+            </div>
         </div>
 
-        <!-- Top Destinations Chart -->
-        <div class="card">
-            <h2>🌍 Top Destinations</h2>
-            <canvas id="destinationChart"></canvas>
-        </div>
-
-        <!-- Risk Trends Chart -->
-        <div class="card">
-            <h2>📊 Risk Trends & Analytics</h2>
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+            <h2 class="text-xl font-semibold text-gray-700">📊 Risk Trends & Analytics</h2>
             <canvas id="riskChart"></canvas>
         </div>
 
-        <!-- PDF Download & Back Button -->
-        <div class="button-container">
-            <button id="download-pdf" class="dashboard-button">📥 Download PDF Report</button>
-            <a href="index.html" class="dashboard-button">⬅️ Back to Form</a>
+        <!-- 🔹 Buttons -->
+        <div class="flex flex-col md:flex-row justify-center gap-4 mt-8">
+            <button id="download-pdf" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow">
+                📥 Download PDF Report
+            </button>
+            <a href="index.html" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg shadow">
+                ⬅️ Back to Form
+            </a>
         </div>
     </div>
 
