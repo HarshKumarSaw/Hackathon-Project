@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("csv-upload-status").textContent = fileName;
     });
 
-    // 📂 Read CSV File & Fill Form
-document.getElementById("csv-upload").addEventListener("change", function (event) {
-    const file = event.target.files[0];
-    if (!file) return;
+        // 📂 Read CSV File & Fill Form
+    document.getElementById("csv-upload").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -75,13 +75,13 @@ document.getElementById("csv-upload").addEventListener("change", function (event
 
         // Map CSV values to form fields
         const fieldMapping = {
-            "productname": "product-name",
+            "product name": "product-name",
             "category": "category",
             "destination": "destination",
             "weight": "weight",
             "quantity": "quantity",
-            "shipmentvalue": "shipment-value",
-            "modeoftransport": "mode-of-transport"
+            "shipment value": "shipment-value",
+            "mode of transport": "mode-of-transport"
         };
 
         headers.forEach((header, index) => {
