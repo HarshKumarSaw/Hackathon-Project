@@ -136,7 +136,6 @@ function checkCompliance(productName, category, destination, weight) {
     return issues;
 }
 
-/ Middleware to check if user is logged in
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next(); // User is logged in, continue
