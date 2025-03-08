@@ -1,6 +1,10 @@
 function toggleForm() {
-    document.getElementById("login-box").classList.toggle("hidden");
-    document.getElementById("signup-box").classList.toggle("hidden");
+    const loginBox = document.getElementById("login-box");
+    const signupBox = document.getElementById("signup-box");
+
+    // Toggle visibility
+    loginBox.classList.toggle("hidden");
+    signupBox.classList.toggle("hidden");
 }
 
 async function login() {
@@ -9,7 +13,7 @@ async function login() {
     const message = document.getElementById("message");
 
     try {
-        const response = await fetch("https://hackathon-project-5oha.onrender.com/api/login", {
+        const response = await fetch("http://localhost:10000/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -36,7 +40,7 @@ async function signup() {
     const signupMessage = document.getElementById("signup-message");
 
     try {
-        const response = await fetch("https://hackathon-project-5oha.onrender.com/api/signup", {
+        const response = await fetch("http://localhost:10000/api/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, password })
@@ -55,4 +59,3 @@ async function signup() {
         signupMessage.innerText = "❌ Server Error. Please try again.";
     }
 }
-
