@@ -125,6 +125,11 @@ It empowers exporters by automating compliance, reducing risks, and simplifying 
 -   [Harsh Kumar Saw](https://github.com/HarshKumarSaw)
 
 Contributions are welcome! Please submit a pull request.
+-
+-
+-
+## Flowchart of logiguard !
+- ![Image](https://github.com/user-attachments/assets/fa488362-b16b-4655-86e3-529c1e8fc326)
 
 ---
 
