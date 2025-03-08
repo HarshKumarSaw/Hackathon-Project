@@ -75,13 +75,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Map CSV values to form fields
         const fieldMapping = {
-            "product name": "product-name",
+            "productname": "product-name",
             "category": "category",
             "destination": "destination",
             "weight": "weight",
             "quantity": "quantity",
-            "shipment value": "shipment-value",
-            "mode of transport": "mode-of-transport"
+            "shipmentvalue": "shipment-value",
+            "modeoftransport": "mode-of-transport"
         };
 
         headers.forEach((header, index) => {
