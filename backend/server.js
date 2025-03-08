@@ -154,61 +154,6 @@ app.get("/api/shipments", optionalAuth, async (req, res) => {
     }
 });
 
-// API Route: User Signup
-app.post("/api/signup", async (req, res) => {
-    const { email, password } = req.body;
-
-    // ❌ Validate Inputs
-    if (!email || !password) {
-        return res.status(400).json({ message: "⚠️ Email and password are required." });
-    }
-
-    await usersDB.read(); // Load user data
-
-    // ❌ Check if User Already Exists
-    if (usersDB.data.users.some(user => user.email === email)) {
-        return res.status(400).json({ message: "⚠️ User already exists. Please login." });
-    }
-
-    // ✅ Hash Password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // ✅ Save User to Database
-    usersDB.data.users.push({ email, password: hashedPassword });
-    await usersDB.write();
-
-    res.json({ message: "✅ Signup successful! Please login." });
-});
-
-// 🔹 API Route: User Login
-app.post("/api/login", async (req, res) => {
-    const { email, password } = req.body;
-
-    // ❌ Validate Inputs
-    if (!email || !password) {
-        return res.status(400).json({ message: "⚠️ Email and password are required." });
-    }
-
-    await usersDB.read(); // Load user data
-
-    // ❌ Check if User Exists
-    const user = usersDB.data.users.find(user => user.email === email);
-    if (!user) {
-        return res.status(400).json({ message: "⚠️ User not found. Please sign up first." });
-    }
-
-    // ❌ Validate Password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        return res.status(400).json({ message: "⚠️ Incorrect password." });
-    }
-
-    // ✅ Generate JWT Token
-    const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "7d" });
-
-    res.json({ message: "✅ Login successful!", token });
-});
-
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
