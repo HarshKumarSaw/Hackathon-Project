@@ -1,169 +1,2301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shipment Compliance Checker</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="description" content="Verify compliance requirements for international shipments">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Cross-Border Compliance Checker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ3Jvc3MtQm9yZGVyIENvbXBsaWFuY2UgQ2hlY2tlciIsInNob3J0X25hbWUiOiJDb21wbGlhbmNlIEFwcCIsImRlc2NyaXB0aW9uIjoiVmVyaWZ5IGNvbXBsaWFuY2UgcmVxdWlyZW1lbnRzIGZvciBpbnRlcm5hdGlvbmFsIHNoaXBtZW50cyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwic3RhcnRfdXJsIjoiLyIsImJhY2tncm91bmRfY29sb3IiOiIjM2I4MmY2IiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1qUWlJR2hsYVdkb2REMGlNalFpSUhacFpYZEJiR2x1WlQwaWJtOXVaU0lnWm1sc2JEMGlJM0ppT0dJNFppSWdZMjl5Wlc5eUlITjBjbTlyWlQwaWJXRjBZMmdpSUhOMGNtOXJaUzEzYVdSMGFEMGlNaUlnYzNSdmNtVXRiR2x1WldOaGNEMGljbTkxYm1RaUlITjBiM0psTFdwdmFXNXBibWM5SW5KdmRXNWtJaUJtYVd4c0xYSjFiR1U5SW1WMlpXNXZaR1FpUGp4amFYSmpiR1VnWTNnOUlqRXlJaUJqZVQwaU1USWlJSEk5SWpFd0lpQm1hV3hzUFNKdWIyNWxJaUJtYVd4c0xYSjFiR1U5SW1WMlpXNXZaR1FpUGp4d2IyeG5iMjVsSUhCdmFXNTBjejBpTWpJZ05DQXhNaUF4TkM0d01TQTVJREV4TGpBeElqNDhMMkpwYkdRK1BDOWphWEpqYkdVK1BDOXpkbWMrIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjE5Mng5NiJ9XX0=">
+  <style>
+    /* Base Styles */
+    :root {
+      --background: #ffffff;
+      --foreground: #0f172a;
+      --card: #ffffff;
+      --card-foreground: #0f172a;
+      --primary: #3b82f6;
+      --primary-foreground: #f8fafc;
+      --secondary: #f1f5f9;
+      --secondary-foreground: #1e293b;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --accent: #f1f5f9;
+      --accent-foreground: #1e293b;
+      --destructive: #ef4444;
+      --destructive-foreground: #f8fafc;
+      --border: #e2e8f0;
+      --input: #e2e8f0;
+      --ring: #3b82f6;
+      --radius: 0.5rem;
+      --warning: #f59e0b;
+      --warning-foreground: #fef3c7;
+      --success: #10b981;
+      --success-foreground: #f8fafc;
+    }
 
-    <!-- Load Select2 Library for Searchable Dropdown -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <!-- Load Chart.js Library for Risk Trends -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--foreground);
+      background: linear-gradient(to bottom, #ebf2ff, #e0e7ff);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    <!-- 🔹 Floating Chatbot Button -->
-    <button id="chatbot-toggle">💬</button>
-    <!-- 🔹 Chatbot Container -->
-    <div id="chatbot-container">
-        <div id="chatbot-header">
-            <span>🤖 ExportEaser</span>
-            <button id="close-chatbot">✖</button>
-        </div>
-        <div id="chatbot-messages"></div>
-        <div class="chat-input-container">
-            <input type="text" id="chatbot-input" class="chat-input" placeholder="Ask about compliance, tariffs, shipping...">
-            <button id="send-chatbot" class="chat-send-btn">Send</button>
-        </div>
-    </div>
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    /* Navigation */
+    .navbar {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .navbar-menu {
+      display: none;
+    }
+
+    .navbar-item {
+      color: var(--primary-foreground);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      transition: opacity 0.2s;
+    }
+
+    .navbar-item:hover {
+      opacity: 0.8;
+    }
+
+    .navbar-item.active {
+      font-weight: 500;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn .icon {
+      margin-right: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      background-color: var(--primary-foreground);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--foreground);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--secondary);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem 0;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.875rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .header p {
+      color: var(--muted-foreground);
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .main-section {
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 100%;
+    }
+
+    /* Tabs */
+    .tabs {
+      width: 100%;
+    }
+
+    .tabs-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 1rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background-color: var(--secondary);
+    }
+
+    .tab-btn {
+      padding: 0.75rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+
+    .tab-btn.active {
+      background-color: var(--background);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-title .icon {
+      margin-right: 0.5rem;
+    }
+
+    .completion-status {
+      font-size: 0.875rem;
+      font-weight: normal;
+    }
+
+    .card-description {
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 0.5rem;
+      background-color: var(--secondary);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Forms */
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.125rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title .icon {
+      margin-right: 0.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .taxes-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .required {
+      color: var(--destructive);
+    }
+
+    .optional {
+      color: var(--muted-foreground);
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+
+    input, select {
+      padding: 0.5rem;
+      border: 1px solid var(--input);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      background-color: var(--background);
+      color: var(--foreground);
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    .readonly-input {
+      background-color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .input-help {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.5rem;
+      height: 0.5rem;
+      border-right: 2px solid var(--foreground);
+      border-bottom: 2px solid var(--foreground);
+      pointer-events: none;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .risk-indicator {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      padding: 0.5rem;
+      border-radius: var(--radius);
+    }
+
+    .tax-display {
+      padding: 0.5rem;
+      background-color: var(--muted);
+      border-radius: var(--radius);
+      font-weight: 500;
+    }
+
+    .file-upload {
+      display: flex;
+      align-items: center;
+    }
+
+    .file-upload-btn {
+      width: 100%;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    .selected-file-name {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    /* Compliance Results */
+    .compliance-results {
+      margin-top: 1.5rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .alert-title {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+
+    .alert-title .icon {
+      margin-right: 0.5rem;
+    }
+
+    .alert-description ul {
+      margin-top: 0.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .alert-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .alert-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .alert-error {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--destructive);
+    }
+
+    /* CSV Upload */
+    .csv-upload-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .csv-upload-area {
+      border: 2px dashed rgba(100, 116, 139, 0.2);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .csv-upload-area .icon {
+      color: var(--muted-foreground);
+    }
+
+    .csv-upload-area h3 {
+      margin-top: 0.5rem;
+      font-size: 1.125rem;
+    }
+
+    .csv-upload-area p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .csv-upload-area button {
+      margin-top: 0.5rem;
+    }
+
+    .csv-file-display {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      background-color: var(--muted);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    .upload-csv-btn {
+      width: 100%;
+    }
+
+    .upload-message {
+      text-align: center;
+      font-weight: 500;
+      color: var(--primary);
+      margin-top: 1rem;
+    }
+
+    .csv-requirements {
+      margin-top: 1rem;
+    }
+
+    .csv-requirements h3 {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .csv-requirements ul {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      padding-left: 1.25rem;
+    }
+
+    .csv-requirements li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* Shipment History */
+    .shipment-history {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 1rem;
+    }
+
+    .no-shipments {
+      text-align: center;
+      color: var(--muted-foreground);
+      padding: 2rem 0;
+    }
+
+    .shipment-item {
+      background-color: rgba(241, 245, 249, 0.5);
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    .shipment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .shipment-title {
+      font-weight: 500;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .badge-error {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--destructive);
+    }
+
+    .shipment-details {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .shipment-detail {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+
+    .shipment-detail-value {
+      font-weight: 500;
+    }
+
+    .shipment-detail-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .shipment-detail-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Compliance Tips */
+    .compliance-tips {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tip {
+      display: flex;
+    }
+
+    .tip-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      margin-right: 0.75rem;
+      margin-top: 0.125rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    /* Chatbot */
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 9999px;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 50;
+    }
+
+    .chatbot {
+      position: fixed;
+      bottom: 6rem;
+      right: 1.5rem;
+      width: 20rem;
+      background-color: var(--background);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      z-index: 50;
+      display: none;
+    }
+
+    .chatbot-header {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chatbot-title {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .chatbot-title .icon {
+      margin-right: 0.5rem;
+    }
+
+    .chatbot-close {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      background: none;
+      border: none;
+      color: var(--primary-foreground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .chatbot-close:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .chatbot-messages {
+      height: 20rem;
+      padding: 0.75rem;
+      overflow-y: auto;
+    }
+
+    .chatbot-welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .chatbot-welcome .icon {
+      color: var(--muted-foreground);
+      margin-bottom: 0.5rem;
+    }
+
+    .chatbot-welcome h3 {
+      font-weight: 500;
+    }
+
+    .chatbot-welcome p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+    }
+
+    .chat-message {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .chat-message-user {
+      justify-content: flex-end;
+    }
+
+    .chat-message-ai {
+      justify-content: flex-start;
+    }
+
+    .chat-bubble {
+      max-width: 80%;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+    }
+
+    .chat-bubble-user {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .chat-bubble-ai {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    .chatbot-input-container {
+      display: flex;
+      padding: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .chatbot-input-container input {
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+
+    .chatbot-input-container button {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--radius);
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 1rem 0;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .footer p {
+      font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .navbar-menu {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .content-wrapper {
+        flex-direction: row;
+      }
+
+      .main-section {
+        width: 66.666667%;
+      }
+
+      .sidebar {
+        width: 33.333333%;
+      }
+    }
+
+    /* App-specific styles */
+    .app-install-banner {
+      display: none;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 0.75rem;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .app-install-banner button {
+      margin-left: 1rem;
+      background-color: var(--primary-foreground);
+      color: var(--primary);
+      border: none;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .app-offline-indicator {
+      display: none;
+      background-color: var(--warning);
+      color: var(--warning-foreground);
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Loading spinner */
+    .loading-spinner {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-foreground);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Splash screen */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s;
+    }
+
+    .splash-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-foreground);
+      margin-bottom: 1rem;
+    }
+
+    .splash-loading {
+      width: 3rem;
+      height: 3rem;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-foreground);
+      animation: spin 1s ease-in-out infinite;
+    }
+  </style>
 </head>
 <body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splash-screen">
+    <div class="splash-logo">📦 GlobalTrade</div>
+    <div class="splash-loading"></div>
+  </div>
 
-    <nav>
-        <ul>
-            <li><a href="https://harshkumarsaw.github.io/Hackathon-Project/home.html">Home</a></li>
-            <li><a href="/index.html">Compliance Checker</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <button onclick="logout()">Logout</button>
-        </ul>
+  <!-- Offline Indicator -->
+  <div class="app-offline-indicator" id="offline-indicator">
+    You are currently offline. Some features may be limited.
+  </div>
+
+  <!-- Install Banner -->
+  <div class="app-install-banner" id="install-banner">
+    Install this app on your device for a better experience
+    <button id="install-button">Install</button>
+  </div>
+
+  <div class="app-container">
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <h1>GlobalTrade</h1>
+        </div>
+        <div class="navbar-menu">
+          <a href="#" class="navbar-item">Home</a>
+          <a href="#" class="navbar-item active">Compliance Checker</a>
+          <a href="#" class="navbar-item">Dashboard</a>
+          <a href="#" class="navbar-item">About Us</a>
+          <a href="#" class="navbar-item">Contact</a>
+        </div>
+        <button class="btn btn-outline">Logout</button>
+      </div>
     </nav>
 
-    <h1>📦 ExportEase Compilance Checker</h1>
+    <div class="container main-content">
+      <div class="header">
+        <h1>📦 Cross-Border Shipment Compliance Checker</h1>
+        <p>Verify compliance requirements for international shipments</p>
+      </div>
 
-    <a href="dashboard.html" class="dashboard-button">📊 View Dashboard</a>
+      <div class="content-wrapper">
+        <div class="main-section">
+          <div class="tabs">
+            <div class="tabs-header">
+              <button class="tab-btn active" data-tab="checker">Compliance Checker</button>
+              <button class="tab-btn" data-tab="bulk">Bulk Upload</button>
+            </div>
 
-    <form enctype="multipart/form-data">
-        
-        <!-- 🔹 1️⃣ Exporter Details -->
-        <h2>📌 Exporter Details (Your Company)</h2>
-        <label>Company Name:</label>
-        <input type="text" id="exporter-name" required><br>
+            <div class="tab-content active" id="checker-tab">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title-wrapper">
+                    <h2 class="card-title">Shipment Details</h2>
+                    <div class="completion-status">
+                      <span>Completion: </span>
+                      <span id="completion-percentage">0%</span>
+                    </div>
+                  </div>
+                  <p class="card-description">Enter your shipment information to check compliance</p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="form-progress"></div>
+                  </div>
+                </div>
 
-        <label>Company Address:</label>
-        <input type="text" id="exporter-address" required><br>
+                <div class="card-content">
+                  <form id="compliance-form" class="form-container">
+                    <!-- Exporter Details -->
+                    <div class="form-section">
+                      <h3 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                        Exporter Details (Your Company)
+                      </h3>
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label for="exporterName">Company Name <span class="required">*</span></label>
+                          <input type="text" id="exporterName" placeholder="Enter company name" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="exporterAddress">Company Address <span class="required">*</span></label>
+                          <input type="text" id="exporterAddress" placeholder="Enter company address" required>
+                        </div>
+                      </div>
+                    </div>
 
-        <!-- 🔹 2️⃣ Importer Details -->
-        <h2>📌 Importer Details (Buyer)</h2>
-        <label>Importer Name:</label>
-        <input type="text" id="importer-name" required><br>
+                    <!-- Importer Details -->
+                    <div class="form-section">
+                      <h3 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                        Importer Details (Buyer)
+                      </h3>
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label for="importerName">Importer Name <span class="required">*</span></label>
+                          <input type="text" id="importerName" placeholder="Enter importer name" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="destination">Importer Country <span class="required">*</span></label>
+                          <div class="select-wrapper">
+                            <select id="destination" required>
+                              <option value="" disabled selected>Select country</option>
+                              <!-- Countries will be populated by JavaScript -->
+                            </select>
+                          </div>
+                          <div id="country-risk-indicator" class="risk-indicator"></div>
+                        </div>
+                        <div class="form-group">
+                          <label for="importerTaxId">Importer Tax ID <span class="optional">(Optional)</span></label>
+                          <input type="text" id="importerTaxId" placeholder="Enter tax ID (if applicable)">
+                        </div>
+                      </div>
+                    </div>
 
-        <label>Importer Country:</label> <!-- Using existing ID: destination -->
-        <select id="destination" required></select>
-        <p id="risk-indicator"></p> <!-- Country compliance message -->
+                    <!-- Product Details -->
+                    <div class="form-section">
+                      <h3 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                        Product Details
+                      </h3>
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label for="productName">Product Name <span class="required">*</span></label>
+                          <input type="text" id="productName" placeholder="Enter product name" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="category">Category <span class="required">*</span></label>
+                          <div class="select-wrapper">
+                            <select id="category" required>
+                              <option value="" disabled selected>Select category</option>
+                              <!-- Categories will be populated by JavaScript -->
+                            </select>
+                          </div>
+                          <div id="category-risk-indicator" class="risk-indicator"></div>
+                        </div>
+                        <div class="form-group">
+                          <label for="hsCode">HS Code</label>
+                          <input type="text" id="hsCode" readonly class="readonly-input">
+                          <p class="input-help">Auto-filled based on category</p>
+                        </div>
+                        <div class="form-group">
+                          <label for="quantity">Quantity <span class="required">*</span></label>
+                          <input type="number" id="quantity" placeholder="Enter quantity" required>
+                        </div>
+                      </div>
+                    </div>
 
-        <label>Importer Tax ID:</label>
-        <input type="text" id="importer-tax-id" placeholder="Optional"><br>
+                    <!-- Shipment Details -->
+                    <div class="form-section">
+                      <h3 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                        Shipment Details
+                      </h3>
+                      <div class="form-grid">
+                        <div class="form-group">
+                          <label>Country of Origin</label>
+                          <input type="text" value="India" readonly class="readonly-input">
+                        </div>
+                        <div class="form-group" id="export-license-container" style="display: none;">
+                          <label for="exportLicense">Export License Number <span class="required">*</span></label>
+                          <input type="text" id="exportLicense" placeholder="Enter license number">
+                        </div>
+                        <div class="form-group">
+                          <label for="shipmentValue">Shipment Value (INR) <span class="required">*</span></label>
+                          <input type="number" id="shipmentValue" placeholder="Enter value" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="weight">Shipment Weight (kg) <span class="required">*</span></label>
+                          <input type="number" id="weight" placeholder="Enter weight" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="modeOfTransport">Mode of Transport <span class="required">*</span></label>
+                          <div class="select-wrapper">
+                            <select id="modeOfTransport" required>
+                              <option value="" disabled selected>Select mode</option>
+                              <option value="Air">✈️ Air</option>
+                              <option value="Sea">🚢 Sea</option>
+                              <option value="Land">🚚 Land</option>
+                              <option value="Rail">🚆 Rail</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-        <!-- 🔹 3️⃣ Product Details -->
-        <h2>📌 Product Details</h2>
-        <label>Product Name:</label>
-        <input type="text" id="product-name" required><br>
+                    <!-- Compliance & Taxes -->
+                    <div class="form-section">
+                      <h3 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                        Compliance & Taxes
+                      </h3>
+                      <div class="form-grid taxes-grid">
+                        <div class="form-group">
+                          <label>Tariff Rate</label>
+                          <div class="tax-display" id="tariff-rate">-</div>
+                        </div>
+                        <div class="form-group">
+                          <label>Additional Taxes</label>
+                          <div class="tax-display" id="additional-tax">-</div>
+                        </div>
+                        <div class="form-group">
+                          <label>Total Import Tax</label>
+                          <div class="tax-display" id="total-tax">-</div>
+                        </div>
+                      </div>
+                    </div>
 
-        <label>Category:</label>
-        <select id="category" required>
-            <option value="">-- Select Category --</option>
-        </select>
-        <p id="category-risk" class="risk-message"> </p>
+                    <!-- Invoice Upload -->
+                    <div class="form-section">
+                      <div class="form-group">
+                        <label>Invoice Upload</label>
+                        <div class="file-upload">
+                          <button type="button" class="btn btn-outline file-upload-btn" id="file-upload-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            Choose Invoice File
+                          </button>
+                          <input type="file" id="file-upload" class="hidden-file-input">
+                        </div>
+                        <p id="selected-file" class="selected-file-name"></p>
+                      </div>
+                    </div>
 
-        <label>HS Code:</label>
-        <input type="text" id="hs-code" readonly><br> <!-- Auto-filled based on category -->
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary submit-btn">Check Compliance</button>
+                  </form>
+                </div>
+              </div>
 
-        <label>Quantity:</label>
-        <input type="number" id="quantity" required><br>
+              <!-- Compliance Results -->
+              <div id="compliance-results" class="compliance-results"></div>
+            </div>
 
-        <!-- 🔹 4️⃣ Shipment Details -->
-        <h2>📌 Shipment Details</h2>
-        <label>Country of Origin:</label>
-        <input type="text" value="India" readonly><br> <!-- Fixed to India -->
+            <div class="tab-content" id="bulk-tab">
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">Bulk Upload</h2>
+                  <p class="card-description">Upload multiple shipments via CSV file for batch processing</p>
+                </div>
+                <div class="card-content">
+                  <div class="csv-upload-container">
+                    <div class="csv-upload-area">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      <h3>Upload CSV File</h3>
+                      <p>Drag and drop or click to browse</p>
+                      <button type="button" class="btn btn-outline" id="csv-upload-btn">Select CSV</button>
+                      <input type="file" id="csv-upload" accept=".csv" class="hidden-file-input">
+                    </div>
+                  </div>
 
-        <!-- 🚨 Only show if Export License is required -->
-        <div id="export-license-section" style="display: none;">
-            <label>Export License Number:</label>
-            <input type="number" id="export-license"><br>
-        </div><br>
+                  <div id="csv-file-display" class="csv-file-display"></div>
 
-        <label>Shipment Value (INR):</label>
-        <input type="number" id="shipment-value" required><br>
+                  <button id="upload-csv-btn" class="btn btn-primary upload-csv-btn" disabled>Upload CSV</button>
 
-        <label>Shipment Weight (kg):</label>
-        <input type="number" id="weight" required><br>
+                  <p id="upload-message" class="upload-message"></p>
 
-        <label>Mode of Transport:</label>
-        <select id="mode-of-transport" class="styled-dropdown" required>
-            <option value="Selec">-- Select Mode --</option>
-            <option value="Air">✈️ Air</option>
-            <option value="Sea">🚢 Sea</option>
-            <option value="Land">🚛 Land</option>
-            <option value="Rail">🚆 Rail</option>
-        </select><br>
+                  <div class="csv-requirements">
+                    <h3>CSV Format Requirements:</h3>
+                    <ul>
+                      <li>First row must contain column headers</li>
+                      <li>Required columns: productName, category, destination, quantity, weight, value</li>
+                      <li>Optional columns: hsCode, exportLicense, modeOfTransport</li>
+                      <li>Use comma as delimiter</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- 🔹 5️⃣ Compliance & Taxes -->
-        <h2>📌 Compliance & Taxes</h2>
-        
-        <label>Tariff Rate:</label>
-        <p id="tariff-info">-</p>
-        
-        <label>Additional Taxes:</label>
-        <p id="additional-tax">-</p> <!-- New field for additional taxes -->
-        
-        <label>Total Import Tax:</label>
-        <p id="total-tax">-</p>
-        
+        <div class="sidebar">
+          <!-- Shipment History -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                Shipment History
+              </h2>
+            </div>
+            <div class="card-content">
+              <div class="shipment-history" id="shipment-history">
+                <p class="no-shipments">No shipments recorded yet.</p>
+              </div>
+            </div>
+          </div>
 
-        <!-- 📂 Invoice Upload -->
-        <label></label>
-        <label for="invoice" class="file-upload">📂 Choose Invoice File</label>
-        <input type="file" id="invoice">
-        <p id="file-name">No file chosen</p>
-
-        <!-- ✅ Submit Button -->
-        <button type="submit">Check Compliance</button>
-    </form>
-
-    <hr>
-
-        <h2>📂 Upload Shipments via CSV</h2>
-        <input type="file" id="csv-upload" accept=".csv">
-        <button id="upload-csv">Upload CSV</button>
-        <div id="upload-message"></div>
-
-    <!-- 📂 CSV Upload for Auto-Filling Form -->
-<label for="csv-upload" class="file-upload">📂 Upload CSV</label>
-<input type="file" id="csv-upload" accept=".csv">
-<p id="csv-upload-status">No file selected</p>
-<button type="button" id="upload-csv">Extract Data</button>
-
-
-
-    <div id="compliance-results"></div>
-    <div style="height: 15px;"></div>
-    <div class="shipment-history-box">
-        <h2 class="shipment-title">📋 Shipment Details</h2>
-        <div id="shipment-history"></div> <!-- Ensure this exists -->
+          <!-- Quick Tips -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Compliance Tips</h2>
+            </div>
+            <div class="card-content">
+              <div class="compliance-tips">
+                <div class="tip">
+                  <div class="tip-number">1</div>
+                  <p>Always verify HS codes for accurate tariff classification and duty rates.</p>
+                </div>
+                <div class="tip">
+                  <div class="tip-number">2</div>
+                  <p>Check for import restrictions or prohibitions before shipping to high-risk countries.</p>
+                </div>
+                <div class="tip">
+                  <div class="tip-number">3</div>
+                  <p>Ensure all documentation is complete and accurate to avoid customs delays.</p>
+                </div>
+                <div class="tip">
+                  <div class="tip-number">4</div>
+                  <p>High-risk products require export licenses and additional documentation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Chatbot -->
+    <button id="chatbot-toggle" class="chatbot-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </button>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            $('#destination').select2({
-                placeholder: "Search for a country...",
-                allowClear: true
-            });
+    <div id="chatbot" class="chatbot">
+      <div class="chatbot-header">
+        <div class="chatbot-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          ExportBot Assistant
+        </div>
+        <button id="chatbot-close" class="chatbot-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="chatbot-welcome">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <h3>How can I help you?</h3>
+          <p>Ask about compliance, tariffs, shipping requirements, or documentation.</p>
+        </div>
+      </div>
+
+      <div class="chatbot-input-container">
+        <input type="text" id="chatbot-input" placeholder="Type your question...">
+        <button id="chatbot-send">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 GlobalTrade Compliance Checker. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Form data
+      let formData = {
+        exporterName: "",
+        exporterAddress: "",
+        importerName: "",
+        destination: "",
+        importerTaxId: "",
+        productName: "",
+        category: "",
+        hsCode: "",
+        quantity: "",
+        exportLicense: "",
+        shipmentValue: "",
+        weight: "",
+        modeOfTransport: "",
+      };
+
+      // Compliance results
+      let complianceResults = {
+        status: "",
+        message: "",
+        issues: [],
+      };
+
+      // Tariff information
+      let tariffInfo = {
+        tariffRate: "-",
+        additionalTax: "-",
+        totalTax: "-",
+      };
+
+      // Risk indicators
+      let countryRisk = { level: "", message: "" };
+      let categoryRisk = { level: "", message: "" };
+
+      // Shipments
+      let shipments = [];
+
+      // Chat messages
+      let chatMessages = [];
+
+      // Selected files
+      let selectedFile = null;
+      let csvFile = null;
+
+      // DOM elements
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const complianceForm = document.getElementById('compliance-form');
+      const formProgress = document.getElementById('form-progress');
+      const completionPercentage = document.getElementById('completion-percentage');
+      const complianceResultsContainer = document.getElementById('compliance-results');
+      const fileUploadBtn = document.getElementById('file-upload-btn');
+      const fileUpload = document.getElementById('file-upload');
+      const selectedFileDisplay = document.getElementById('selected-file');
+      const csvUploadBtn = document.getElementById('csv-upload-btn');
+      const csvUpload = document.getElementById('csv-upload');
+      const csvFileDisplay = document.getElementById('csv-file-display');
+      const uploadCsvBtn = document.getElementById('upload-csv-btn');
+      const uploadMessage = document.getElementById('upload-message');
+      const shipmentHistoryContainer = document.getElementById('shipment-history');
+      const chatbotToggle = document.getElementById('chatbot-toggle');
+      const chatbot = document.getElementById('chatbot');
+      const chatbotClose = document.getElementById('chatbot-close');
+      const chatbotMessages = document.getElementById('chatbot-messages');
+      const chatbotInput = document.getElementById('chatbot-input');
+      const chatbotSend = document.getElementById('chatbot-send');
+      const exportLicenseContainer = document.getElementById('export-license-container');
+      const destinationSelect = document.getElementById('destination');
+      const categorySelect = document.getElementById('category');
+      const countryRiskIndicator = document.getElementById('country-risk-indicator');
+      const categoryRiskIndicator = document.getElementById('category-risk-indicator');
+      const hsCodeInput = document.getElementById('hsCode');
+      const tariffRateDisplay = document.getElementById('tariff-rate');
+      const additionalTaxDisplay = document.getElementById('additional-tax');
+      const totalTaxDisplay = document.getElementById('total-tax');
+      const splashScreen = document.getElementById('splash-screen');
+      const offlineIndicator = document.getElementById('offline-indicator');
+      const installBanner = document.getElementById('install-banner');
+      const installButton = document.getElementById('install-button');
+
+      // Country risk levels data
+      const countryRiskLevels = {
+        Afghanistan: "High",
+        Albania: "Low",
+        Algeria: "Medium",
+        Andorra: "Low",
+        Angola: "Medium",
+        "Antigua and Barbuda": "Low",
+        Argentina: "Low",
+        Armenia: "Medium",
+        Australia: "Low",
+        Austria: "Low",
+        Azerbaijan: "Medium",
+        Bahamas: "Low",
+        Bahrain: "Low",
+        Bangladesh: "Medium",
+        Barbados: "Low",
+        Belarus: "High",
+        Belgium: "Low",
+        Belize: "Low",
+        Benin: "Medium",
+        Bhutan: "Low",
+        Bolivia: "Medium",
+        "Bosnia and Herzegovina": "Low",
+        Botswana: "Low",
+        Brazil: "Medium",
+        Brunei: "Low",
+        Bulgaria: "Low",
+        "Burkina Faso": "High",
+        Burundi: "High",
+        Cambodia: "Medium",
+        Cameroon: "High",
+        Canada: "Low",
+        "Central African Republic": "High",
+        Chad: "High",
+        Chile: "Low",
+        China: "Medium",
+        Colombia: "Medium",
+        Comoros: "Medium",
+        Congo: "High",
+        "Costa Rica": "Low",
+        Croatia: "Low",
+        Cuba: "High",
+        Cyprus: "Low",
+        "Czech Republic": "Low",
+        Denmark: "Low",
+        Djibouti: "Medium",
+        Dominica: "Low",
+        "Dominican Republic": "Low",
+        Ecuador: "Medium",
+        Egypt: "Medium",
+        "El Salvador": "Medium",
+        "Equatorial Guinea": "High",
+        Eritrea: "High",
+        Estonia: "Low",
+        Eswatini: "Low",
+        Ethiopia: "High",
+        Fiji: "Low",
+        Finland: "Low",
+        France: "Low",
+        Gabon: "Medium",
+        Gambia: "Low",
+        Georgia: "Low",
+        Germany: "Low",
+        Ghana: "Medium",
+        Greece: "Low",
+        Grenada: "Low",
+        Guatemala: "Medium",
+        Guinea: "High",
+        Guyana: "Medium",
+        Haiti: "High",
+        Honduras: "Medium",
+        Hungary: "Low",
+        Iceland: "Low",
+        India: "Low",
+        Indonesia: "Medium",
+        Iran: "High",
+        Iraq: "High",
+        Ireland: "Low",
+        Israel: "Low",
+        Italy: "Low",
+        Jamaica: "Low",
+        Japan: "Low",
+        Jordan: "Medium",
+        Kazakhstan: "Medium",
+        Kenya: "Medium",
+        Kuwait: "Low",
+        Kyrgyzstan: "Medium",
+        Laos: "Medium",
+        Latvia: "Low",
+        Lebanon: "High",
+        Lesotho: "Low",
+        Liberia: "High",
+        Libya: "High",
+        Lithuania: "Low",
+        Luxembourg: "Low",
+        Madagascar: "Medium",
+        Malawi: "Medium",
+        Malaysia: "Medium",
+        Maldives: "Low",
+        Mali: "High",
+        Malta: "Low",
+        Mauritania: "High",
+        Mauritius: "Low",
+        Mexico: "Medium",
+        Moldova: "Medium",
+        Monaco: "Low",
+        Mongolia: "Medium",
+        Montenegro: "Low",
+        Morocco: "Medium",
+        Mozambique: "Medium",
+        Myanmar: "High",
+        Namibia: "Low",
+        Nepal: "Low",
+        Netherlands: "Low",
+        "New Zealand": "Low",
+        Nicaragua: "Medium",
+        Niger: "High",
+        Nigeria: "High",
+        "North Korea": "High",
+        Norway: "Low",
+        Oman: "Low",
+        Pakistan: "High",
+        Palestine: "High",
+        Panama: "Low",
+        "Papua New Guinea": "Medium",
+        Paraguay: "Low",
+        Peru: "Medium",
+        Philippines: "Medium",
+        Poland: "Low",
+        Portugal: "Low",
+        Qatar: "Low",
+        Romania: "Low",
+        Russia: "High",
+        Rwanda: "Medium",
+        "Saudi Arabia": "Medium",
+        Senegal: "Medium",
+        Serbia: "Low",
+        Seychelles: "Low",
+        "Sierra Leone": "High",
+        Singapore: "Low",
+        Slovakia: "Low",
+        Slovenia: "Low",
+        "Solomon Islands": "Medium",
+        Somalia: "High",
+        "South Africa": "Medium",
+        "South Korea": "Low",
+        "South Sudan": "High",
+        Spain: "Low",
+        "Sri Lanka": "Medium",
+        Sudan: "High",
+        Suriname: "Medium",
+        Sweden: "Low",
+        Switzerland: "Low",
+        Syria: "High",
+        Taiwan: "Low",
+        Tajikistan: "Medium",
+        Tanzania: "Medium",
+        Thailand: "Medium",
+        Togo: "Medium",
+        Tunisia: "Medium",
+        Turkey: "Medium",
+        Turkmenistan: "Medium",
+        Uganda: "Medium",
+        Ukraine: "High",
+        "United Arab Emirates": "Low",
+        "United Kingdom": "Low",
+        "United States": "Low",
+        Uruguay: "Low",
+        Uzbekistan: "Medium",
+        Venezuela: "High",
+        Vietnam: "Medium",
+        Yemen: "High",
+        Zambia: "Medium",
+        Zimbabwe: "High",
+      };
+
+      // Category risk levels data
+      const categoryRiskLevels = {
+        "Live Animals & Animal Products": "Medium",
+        "Vegetable Products": "Low",
+        "Foodstuffs": "Low",
+        "Mineral Products": "Medium",
+        "Chemical & Pharmaceutical Products": "High",
+        "Plastics & Rubber": "Medium",
+        "Leather & Fur": "Low",
+        "Wood & Paper Products": "Low",
+        "Textiles & Clothing": "Medium",
+        "Footwear, Headgear, Umbrellas": "Medium",
+        "Stone, Glass, & Ceramics": "Low",
+        "Metals & Metal Products": "Medium",
+        "Machinery & Electrical Equipment": "Medium",
+        "Transport Vehicles": "Medium",
+        "Optical, Medical Instruments": "Medium",
+        "Arms & Ammunition": "High",
+        "Miscellaneous Manufactured Articles": "Low",
+        "Art, Collectibles, & Antiques": "Low",
+        "Special Transactions": "High",
+        "Energy & Environmental Goods": "Medium",
+        "Unclassified Trade Goods": "Medium",
+      };
+
+      // HS Code mapping for categories
+      const categoryHSCodeMap = {
+        "Live Animals & Animal Products": "0101",
+        "Vegetable Products": "0701",
+        "Foodstuffs": "2106",
+        "Mineral Products": "2501",
+        "Chemical & Pharmaceutical Products": "3001",
+        "Plastics & Rubber": "3901",
+        "Leather & Fur": "4101",
+        "Wood & Paper Products": "4801",
+        "Textiles & Clothing": "6201",
+        "Footwear, Headgear, Umbrellas": "6401",
+        "Stone, Glass, & Ceramics": "6801",
+        "Metals & Metal Products": "7201",
+        "Machinery & Electrical Equipment": "8401",
+        "Transport Vehicles": "8701",
+        "Optical, Medical Instruments": "9001",
+        "Arms & Ammunition": "9301",
+        "Miscellaneous Manufactured Articles": "9601",
+        "Art, Collectibles, & Antiques": "9701",
+        "Special Transactions": "9801",
+        "Energy & Environmental Goods": "9901",
+        "Unclassified Trade Goods": "9999",
+      };
+
+      // Populate country dropdown
+      function populateCountryDropdown() {
+        const countries = Object.keys(countryRiskLevels).sort();
+        countries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          option.textContent = country;
+          destinationSelect.appendChild(option);
         });
-    </script>
+      }
+
+      // Populate category dropdown
+      function populateCategoryDropdown() {
+        const categories = Object.keys(categoryRiskLevels).sort();
+        categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+      }
+
+      // Tab switching
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          
+          // Remove active class from all tabs
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to selected tab
+          btn.classList.add('active');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+
+      // Update form data
+      function handleInputChange(e) {
+        const { id, value } = e.target;
+        formData[id] = value;
+        updateFormProgress();
+      }
+
+      // Handle select changes
+      function handleSelectChange(id, value) {
+        formData[id] = value;
+
+        if (id === "destination") {
+          updateCountryRisk(value);
+          fetchTariff(formData.category, value);
+        }
+
+        if (id === "category") {
+          updateCategoryRisk(value);
+          formData.hsCode = categoryHSCodeMap[value] || "";
+          hsCodeInput.value = formData.hsCode;
+          fetchTariff(value, formData.destination);
+        }
+
+        updateFormProgress();
+      }
+
+      // Update country risk indicator
+      function updateCountryRisk(country) {
+        const riskLevel = countryRiskLevels[country];
+
+        if (riskLevel === "High") {
+          countryRisk = {
+            level: "high",
+            message: "🔴 High Compliance Risk: Strict checks required!",
+          };
+          countryRiskIndicator.className = "risk-indicator";
+          countryRiskIndicator.classList.add("alert-error");
+        } else if (riskLevel === "Medium") {
+          countryRisk = {
+            level: "medium",
+            message: "🟡 Moderate Compliance Risk: Some restrictions apply.",
+          };
+          countryRiskIndicator.className = "risk-indicator";
+          countryRiskIndicator.classList.add("alert-warning");
+        } else if (riskLevel === "Low") {
+          countryRisk = {
+            level: "low",
+            message: "🟢 Low Compliance Risk: Minimal compliance issues.",
+          };
+          countryRiskIndicator.className = "risk-indicator";
+          countryRiskIndicator.classList.add("alert-success");
+        } else {
+          countryRisk = { level: "", message: "" };
+          countryRiskIndicator.className = "risk-indicator";
+          countryRiskIndicator.textContent = "";
+        }
+
+        countryRiskIndicator.textContent = countryRisk.message;
+      }
+
+      // Update category risk indicator
+      function updateCategoryRisk(category) {
+        const riskLevel = categoryRiskLevels[category];
+
+        if (riskLevel === "High") {
+          categoryRisk = {
+            level: "high",
+            message: "🔴 High Risk: Requires strict regulations and approval.",
+          };
+          categoryRiskIndicator.className = "risk-indicator";
+          categoryRiskIndicator.classList.add("alert-error");
+          exportLicenseContainer.style.display = "block";
+        } else if (riskLevel === "Medium") {
+          categoryRisk = {
+            level: "medium",
+            message: "🟡 Medium Risk: Some restrictions apply, check compliance.",
+          };
+          categoryRiskIndicator.className = "risk-indicator";
+          categoryRiskIndicator.classList.add("alert-warning");
+          exportLicenseContainer.style.display = "none";
+        } else if (riskLevel === "Low") {
+          categoryRisk = {
+            level: "low",
+            message: "🟢 Low Risk: Minimal compliance issues.",
+          };
+          categoryRiskIndicator.className = "risk-indicator";
+          categoryRiskIndicator.classList.add("alert-success");
+          exportLicenseContainer.style.display = "none";
+        } else {
+          categoryRisk = { level: "", message: "" };
+          categoryRiskIndicator.className = "risk-indicator";
+          categoryRiskIndicator.textContent = "";
+          exportLicenseContainer.style.display = "none";
+        }
+
+        categoryRiskIndicator.textContent = categoryRisk.message;
+      }
+
+      // Fetch tariff information
+      function fetchTariff(category, destination) {
+        if (!category || !destination) return;
+
+        // Simulating API call with mock data
+        setTimeout(() => {
+          const mockTariffData = {
+            "United States": {
+              "Live Animals & Animal Products": 5.2,
+              "Chemical & Pharmaceutical Products": 7.8,
+              "Machinery & Electrical Equipment": 4.5,
+              // Add more categories as needed
+            },
+            "China": {
+              "Live Animals & Animal Products": 8.5,
+              "Chemical & Pharmaceutical Products": 12.3,
+              "Machinery & Electrical Equipment": 9.7,
+              // Add more categories as needed
+            },
+            // Add more countries as needed
+          };
+
+          // Default tariff rate if specific data not available
+          const defaultTariffRate = 6.5;
+
+          // Get tariff rate from mock data or use default
+          const tariffRate = mockTariffData[destination]?.[category] || defaultTariffRate;
+
+          // Calculate risk factors
+          let countryRiskFactor = 1; // Default to Low
+          if (countryRiskLevels[destination] === "Medium") countryRiskFactor = 2;
+          if (countryRiskLevels[destination] === "High") countryRiskFactor = 3;
+
+          let categoryRiskFactor = 1; // Default to Low
+          if (categoryRiskLevels[category] === "Medium") categoryRiskFactor = 2;
+          if (categoryRiskLevels[category] === "High") categoryRiskFactor = 3;
+
+          const totalRiskScore = countryRiskFactor + categoryRiskFactor;
+
+          // Define tax multipliers based on risk score
+          const taxMultipliers = {
+            2: 1.5, // Low-Low
+            3: 1.8, // Low-Medium or Medium-Low
+            4: 2.2, // Medium-Medium or Low-High
+            5: 2.8, // Medium-High or High-Medium
+            6: 3.5, // High-High
+          };
+
+          const taxMultiplier = taxMultipliers[totalRiskScore] || 1.0;
+
+          // Calculate total import tax
+          const totalImportTax = (tariffRate * taxMultiplier).toFixed(2);
+          const additionalTax = (totalImportTax - tariffRate).toFixed(2);
+
+          // Update tariff information
+          tariffInfo = {
+            tariffRate: `${tariffRate}%`,
+            additionalTax: `${additionalTax}%`,
+            totalTax: `${totalImportTax}%`,
+          };
+
+          // Update displays
+          tariffRateDisplay.textContent = tariffInfo.tariffRate;
+          additionalTaxDisplay.textContent = tariffInfo.additionalTax;
+          totalTaxDisplay.textContent = tariffInfo.totalTax;
+        }, 300);
+      }
+
+      // Handle file selection
+      function handleFileChange(e) {
+        if (e.target.files.length > 0) {
+          selectedFile = e.target.files[0];
+          selectedFileDisplay.textContent = `Selected file: ${selectedFile.name}`;
+        } else {
+          selectedFile = null;
+          selectedFileDisplay.textContent = "";
+        }
+      }
+
+      // Handle CSV file selection
+      function handleCsvChange(e) {
+        if (e.target.files.length > 0) {
+          csvFile = e.target.files[0];
+          csvFileDisplay.style.display = "flex";
+          csvFileDisplay.innerHTML = `
+            <span>${csvFile.name}</span>
+            <button class="btn-ghost" id="remove-csv">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          `;
+          
+          document.getElementById('remove-csv').addEventListener('click', () => {
+            csvFile = null;
+            csvFileDisplay.style.display = "none";
+            uploadCsvBtn.disabled = true;
+          });
+          
+          uploadCsvBtn.disabled = false;
+        } else {
+          csvFile = null;
+          csvFileDisplay.style.display = "none";
+          uploadCsvBtn.disabled = true;
+        }
+      }
+
+      // Handle form submission
+      function handleSubmit(e) {
+        e.preventDefault();
+
+        // Validate form
+        if (
+          !formData.exporterName ||
+          !formData.importerName ||
+          !formData.destination ||
+          !formData.productName ||
+          !formData.category ||
+          !formData.quantity ||
+          !formData.shipmentValue ||
+          !formData.weight ||
+          !formData.modeOfTransport
+        ) {
+          complianceResults = {
+            status: "error",
+            message: "Please fill in all required fields",
+            issues: ["Missing required information"],
+          };
+          renderComplianceResults();
+          return;
+        }
+
+        // Check if high-risk category requires export license
+        if (categoryRiskLevels[formData.category] === "High" && !formData.exportLicense) {
+          complianceResults = {
+            status: "error",
+            message: "Export license required for high-risk category",
+            issues: ["Missing export license for high-risk product"],
+          };
+          renderComplianceResults();
+          return;
+        }
+
+        // Simulate API call for compliance check
+        setTimeout(() => {
+          // Determine compliance based on risk levels
+          const countryRisk = countryRiskLevels[formData.destination] || "Low";
+          const categoryRisk = categoryRiskLevels[formData.category] || "Low";
+
+          if (countryRisk === "High" && categoryRisk === "High") {
+            complianceResults = {
+              status: "error",
+              message: "High compliance risk detected",
+              issues: [
+                "High-risk destination country",
+                "High-risk product category",
+                "Additional documentation required",
+                "Special approval needed before shipping",
+              ],
+            };
+          } else if (countryRisk === "High" || categoryRisk === "High") {
+            complianceResults = {
+              status: "warning",
+              message: "Medium compliance risk detected",
+              issues: [
+                countryRisk === "High" ? "High-risk destination country" : "High-risk product category",
+                "Additional documentation may be required",
+                "Review shipment details carefully",
+              ],
+            };
+          } else {
+            complianceResults = {
+              status: "success",
+              message: "Shipment is compliant!",
+              issues: [],
+            };
+
+            // Add to shipment history
+            const newShipment = {
+              id: Date.now(),
+              productName: formData.productName,
+              category: formData.category,
+              destination: formData.destination,
+              weight: formData.weight,
+              date: new Date().toISOString(),
+              invoice: selectedFile ? selectedFile.name : "No Invoice Uploaded",
+            };
+
+            shipments = [newShipment, ...shipments];
+            renderShipmentHistory();
+          }
+
+          renderComplianceResults();
+        }, 1000);
+      }
+
+      // Handle CSV upload
+      function handleCsvUpload() {
+        if (!csvFile) {
+          uploadMessage.textContent = "Please select a CSV file to upload";
+          return;
+        }
+
+        // Simulate API call for CSV upload
+        setTimeout(() => {
+          uploadMessage.textContent = "CSV uploaded successfully!";
+          csvFile = null;
+          csvFileDisplay.style.display = "none";
+          uploadCsvBtn.disabled = true;
+
+          // Simulate adding new shipments from CSV
+          const mockShipments = [
+            {
+              id: Date.now() + 1,
+              productName: "Bulk Electronics",
+              category: "Machinery & Electrical Equipment",
+              destination: "Germany",
+              weight: "250",
+              date: new Date().toISOString(),
+              invoice: "bulk_invoice_123.pdf",
+            },
+            {
+              id: Date.now() + 2,
+              productName: "Textile Samples",
+              category: "Textiles & Clothing",
+              destination: "France",
+              weight: "45",
+              date: new Date().toISOString(),
+              invoice: "textile_samples.pdf",
+            },
+          ];
+
+          shipments = [...mockShipments, ...shipments];
+          renderShipmentHistory();
+        }, 1000);
+      }
+
+      // Handle sending chat message
+      function handleSendChat() {
+        if (!chatbotInput.value.trim()) return;
+
+        // Add user message
+        const userMessage = {
+          sender: "user",
+          text: chatbotInput.value,
+        };
+
+        chatMessages.push(userMessage);
+        renderChatMessages();
+        chatbotInput.value = "";
+
+        // Simulate AI response
+        setTimeout(() => {
+          let aiResponse;
+
+          if (userMessage.text.toLowerCase().includes("tariff")) {
+            aiResponse = {
+              sender: "ai",
+              text: "Tariffs vary by country and product category. For specific rates, please provide the destination country and product category. Generally, high-risk countries and products have higher tariff rates.",
+            };
+          } else if (userMessage.text.toLowerCase().includes("document") || userMessage.text.toLowerCase().includes("required")) {
+            aiResponse = {
+              sender: "ai",
+              text: "Required documents typically include: Commercial Invoice, Packing List, Bill of Lading/Airway Bill, Certificate of Origin, and Import/Export Declarations. High-risk products may require additional permits or licenses.",
+            };
+          } else {
+            aiResponse = {
+              sender: "ai",
+              text: "I'm your export compliance assistant. I can help with questions about tariffs, required documentation, shipping regulations, and compliance requirements. How can I assist you today?",
+            };
+          }
+
+          chatMessages.push(aiResponse);
+          renderChatMessages();
+        }, 1000);
+      }
+
+      // Update form progress
+      function updateFormProgress() {
+        const totalFields = 10; // Total number of required fields
+        let filledFields = 0;
+
+        if (formData.exporterName) filledFields++;
+        if (formData.exporterAddress) filledFields++;
+        if (formData.importerName) filledFields++;
+        if (formData.destination) filledFields++;
+        if (formData.productName) filledFields++;
+        if (formData.category) filledFields++;
+        if (formData.quantity) filledFields++;
+        if (formData.shipmentValue) filledFields++;
+        if (formData.weight) filledFields++;
+        if (formData.modeOfTransport) filledFields++;
+
+        const progress = Math.round((filledFields / totalFields) * 100);
+        formProgress.style.width = `${progress}%`;
+        completionPercentage.textContent = `${progress}%`;
+      }
+
+      // Render compliance results
+      function renderComplianceResults() {
+        if (!complianceResults.status) {
+          complianceResultsContainer.innerHTML = "";
+          return;
+        }
+
+        let alertClass = "";
+        let icon = "";
+
+        if (complianceResults.status === "success") {
+          alertClass = "alert-success";
+          icon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+        } else if (complianceResults.status === "warning") {
+          alertClass = "alert-warning";
+          icon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+        } else {
+          alertClass = "alert-error";
+          icon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+        }
+
+        let issuesHtml = "";
+        if (complianceResults.issues.length > 0) {
+          issuesHtml = `
+            <div class="alert-description">
+              <ul>
+                ${complianceResults.issues.map(issue => `<li>${issue}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        }
+
+        complianceResultsContainer.innerHTML = `
+          <div class="alert ${alertClass}">
+            <div class="alert-title">
+              ${icon}
+              ${complianceResults.message}
+            </div>
+            ${issuesHtml}
+          </div>
+        `;
+      }
+
+      // Render shipment history
+      function renderShipmentHistory() {
+        if (shipments.length === 0) {
+          shipmentHistoryContainer.innerHTML = '<p class="no-shipments">No shipments recorded yet.</p>';
+          return;
+        }
+
+        shipmentHistoryContainer.innerHTML = shipments.map(shipment => {
+          const categoryRisk = categoryRiskLevels[shipment.category] || "Low";
+          let badgeClass = "";
+          
+          if (categoryRisk === "High") {
+            badgeClass = "badge-error";
+          } else if (categoryRisk === "Medium") {
+            badgeClass = "badge-warning";
+          } else {
+            badgeClass = "badge-success";
+          }
+
+          return `
+            <div class="shipment-item">
+              <div class="shipment-header">
+                <h4 class="shipment-title">${shipment.productName}</h4>
+                <span class="badge ${badgeClass}">${shipment.category}</span>
+              </div>
+              <div class="shipment-details">
+                <div class="shipment-detail">
+                  <span>Destination:</span>
+                  <span class="shipment-detail-value">${shipment.destination}</span>
+                </div>
+                <div class="shipment-detail">
+                  <span>Weight:</span>
+                  <span class="shipment-detail-value">${shipment.weight} kg</span>
+                </div>
+                <div class="shipment-detail">
+                  <span>Date:</span>
+                  <span class="shipment-detail-value">${new Date(shipment.date).toLocaleDateString()}</span>
+                </div>
+                <div class="shipment-detail">
+                  <span>Invoice:</span>
+                  <span class="shipment-detail-value">
+                    ${typeof shipment.invoice === "string" && shipment.invoice.includes(".pdf") ? 
+                      `<a href="#" class="shipment-detail-link">View</a>` : 
+                      shipment.invoice}
+                  </span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Render chat messages
+      function renderChatMessages() {
+        if (chatMessages.length === 0) {
+          chatbotMessages.innerHTML = `
+            <div class="chatbot-welcome">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <h3>How can I help you?</h3>
+              <p>Ask about compliance, tariffs, shipping requirements, or documentation.</p>
+            </div>
+          `;
+          return;
+        }
+
+        chatbotMessages.innerHTML = chatMessages.map(message => {
+          return `
+            <div class="chat-message chat-message-${message.sender}">
+              <div class="chat-bubble chat-bubble-${message.sender}">
+                ${message.text}
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        // Scroll to bottom
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }
+
+      // Load initial shipment history
+      function loadInitialShipments() {
+        // Simulate API call to load shipment history
+        setTimeout(() => {
+          shipments = [
+            {
+              id: 1,
+              productName: "Medical Supplies",
+              category: "Chemical & Pharmaceutical Products",
+              destination: "Canada",
+              weight: "120",
+              date: "2023-11-15T10:30:00Z",
+              invoice: "invoice_med_123.pdf",
+            },
+            {
+              id: 2,
+              productName: "Electronic Components",
+              category: "Machinery & Electrical Equipment",
+              destination: "Japan",
+              weight: "75",
+              date: "2023-11-10T14:45:00Z",
+              invoice: "invoice_elec_456.pdf",
+            },
+            {
+              id: 3,
+              productName: "Organic Food Products",
+              category: "Foodstuffs",
+              destination: "United Kingdom",
+              weight: "200",
+              date: "2023-11-05T09:15:00Z",
+              invoice: "invoice_food_789.pdf",
+            },
+          ];
+
+          renderShipmentHistory();
+        }, 500);
+      }
+
+      // PWA functionality
+      let deferredPrompt;
+
+      // Check if the app is installed
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent Chrome 67 and earlier from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later
+        deferredPrompt = e;
+        // Show the install banner
+        installBanner.style.display = 'flex';
+      });
+
+      // Install button click handler
+      installButton.addEventListener('click', () => {
+        // Hide the app provided install promotion
+        installBanner.style.display = 'none';
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+        });
+      });
+
+      // Check if the app is online/offline
+      window.addEventListener('online', () => {
+        offlineIndicator.style.display = 'none';
+      });
+
+      window.addEventListener('offline', () => {
+        offlineIndicator.style.display = 'block';
+      });
+
+      // Event listeners
+      document.querySelectorAll('input, select').forEach(element => {
+        if (element.id && element.id in formData) {
+          element.addEventListener('change', handleInputChange);
+        }
+      });
+
+      destinationSelect.addEventListener('change', () => {
+        handleSelectChange("destination", destinationSelect.value);
+      });
+
+      categorySelect.addEventListener('change', () => {
+        handleSelectChange("category", categorySelect.value);
+      });
+
+      document.getElementById('modeOfTransport').addEventListener('change', (e) => {
+        handleSelectChange("modeOfTransport", e.target.value);
+      });
+
+      complianceForm.addEventListener('submit', handleSubmit);
+      
+      fileUploadBtn.addEventListener('click', () => {
+        fileUpload.click();
+      });
+      
+      fileUpload.addEventListener('change', handleFileChange);
+      
+      csvUploadBtn.addEventListener('click', () => {
+        csvUpload.click();
+      });
+      
+      csvUpload.addEventListener('change', handleCsvChange);
+      
+      uploadCsvBtn.addEventListener('click', handleCsvUpload);
+      
+      chatbotToggle.addEventListener('click', () => {
+        chatbot.style.display = chatbot.style.display === 'none' ? 'block' : 'none';
+      });
+      
+      chatbotClose.addEventListener('click', () => {
+        chatbot.style.display = 'none';
+      });
+      
+      chatbotSend.addEventListener('click', handleSendChat);
+      
+      chatbotInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          handleSendChat();
+        }
+      });
+
+      // Initialize
+      populateCountryDropdown();
+      populateCategoryDropdown();
+      loadInitialShipments();
+      updateFormProgress();
+      chatbot.style.display = 'none';
+
+      // Hide splash screen after loading
+      setTimeout(() => {
+        splashScreen.style.opacity = '0';
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+        }, 500);
+      }, 1500);
+
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('ServiceWorker registration successful');
+          }).catch(error => {
+            console.log('ServiceWorker registration failed:', error);
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
