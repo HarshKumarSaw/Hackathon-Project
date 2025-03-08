@@ -1,10 +1,6 @@
 function toggleForm() {
-    const loginBox = document.getElementById("login-box");
-    const signupBox = document.getElementById("signup-box");
-
-    // Toggle visibility
-    loginBox.classList.toggle("hidden");
-    signupBox.classList.toggle("hidden");
+    document.getElementById("login-box").classList.toggle("hidden");
+    document.getElementById("signup-box").classList.toggle("hidden");
 }
 
 async function login() {
@@ -59,3 +55,4 @@ async function signup() {
         signupMessage.innerText = "❌ Server Error. Please try again.";
     }
 }
+
