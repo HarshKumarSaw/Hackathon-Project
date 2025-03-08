@@ -125,8 +125,17 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-const upload = multer({ storage: storage });
-
+//const upload = multer({ storage: storage });
+const upload = multer({ 
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype === "text/csv") {
+            cb(null, true);
+        } else {
+            cb(new Error("Only CSV files are allowed!"), false);
+        }
+    }
+});
 // 🚫 Compliance Checking Function (Blocks Restricted Shipments)
 function checkCompliance(productName, category, destination, weight) {
     let issues = [];
