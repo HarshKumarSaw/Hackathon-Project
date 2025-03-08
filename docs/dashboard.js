@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 // 📊 Function to Generate Charts Dynamically
 function generateChart(canvasId, type, labels, data, colors, labelText = "", legendAlign = "center") {
     const ctx = document.getElementById(canvasId).getContext("2d");
+    document.getElementById(canvasId).parentElement.style.maxWidth = "600px"; // Sets a fixed max width
     new Chart(ctx, {
         type: type,
         data: {
