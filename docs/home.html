@@ -7,65 +7,143 @@
 </head>
 <body class="bg-gray-100 text-gray-900">
 
-    <!-- 🔹 Navigation Bar with Hamburger Menu -->
-    <nav class="absolute top-4 right-4">
-        <div class="container mx-auto flex justify-between items-center px-6">
+    <!-- Fixed Navigation Bar at the top -->
+    <nav class="fixed top-0 left-0 right-0  py-4 px-6 z-50 ">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo/Brand -->
+            <div class="text-white text-xl font-bold">ExportEase</div>
             
-            <!-- Hamburger Menu Button -->
-            <button id="menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
-                ☰
-            </button>
-            
-            <!-- Navigation Links (Hidden on Mobile, Shown on Desktop) -->
-            <ul id="nav-menu" class="hidden md:flex space-x-6">
-                <li><a href="dashboard.html" class="hover:underline">Dashboard</a></li>
-                <li><a href="compliance.html" class="hover:underline">Compliance Checker</a></li>
-                <li><a href="history.html" class="hover:underline">Shipment History</a></li>
+            <!-- Desktop Navigation Links (center) -->
+            <ul class="hidden md:flex space-x-8">
+                <li><a href="dashboard.html" class="text-white hover:text-blue-300 transition-colors">Dashboard</a></li>
+                <li><a href="compliance.html" class="text-white hover:text-blue-300 transition-colors">Compliance Checker</a></li>
+                <!-- <li><a href="history.html" class="text-white hover:text-blue-300 transition-colors">Shipment History</a></li> -->
             </ul>
+            
+            <!-- Right Side (Login Button and Mobile Menu Toggle) -->
+            <div class="flex items-center space-x-4">
+                <!-- Login Button -->
+                <a href="auth.html" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-md hover:bg-blue-50 transition-colors">
+                    Login
+                </a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+                    ☰
+                </button>
+            </div>
         </div>
         
-        <!-- 🔹 Mobile Menu (Now Styled & Sized Properly) -->
-        <ul id="mobile-menu" class="hidden absolute right-4 top-16 bg-white shadow-lg rounded-lg w-48 text-black md:hidden">
-            <li class="border-b px-4 py-2 hover:bg-blue-100"><a href="dashboard.html">Dashboard</a></li>
-            <li class="border-b px-4 py-2 hover:bg-blue-100"><a href="compliance.html">Compliance Checker</a></li>
-            <li class="px-4 py-2 hover:bg-blue-100"><a href="history.html">Shipment History</a></li>
-        </ul>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden container mx-auto mt-4 bg-white rounded-lg shadow-lg overflow-hidden md:hidden">
+            <ul>
+                <li class="border-b"><a href="dashboard.html" class="block px-6 py-3 hover:bg-blue-50">Dashboard</a></li>
+                <li class="border-b"><a href="compliance.html" class="block px-6 py-3 hover:bg-blue-50">Compliance Checker</a></li>
+                <!-- <li><a href="history.html" class="block px-6 py-3 hover:bg-blue-50">Shipment History</a></li> -->
+            </ul>
+        </div>
     </nav>
 
-<!-- 🔹 JavaScript for Toggle Functionality -->
-<script>
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-        document.getElementById("mobile-menu").classList.toggle("hidden");
-    });
-</script>
-    <!-- 🔹 Hero Section -->
-    <header class="bg-blue-500 text-white text-center py-16">
-        <h1 class="text-4xl font-bold">Welcome to ExportEase</h1>
-        <p class="text-lg mt-2">Your one-stop solution for hassle-free international shipping.</p>
-        <a href="compliance.html" class="mt-6 inline-block bg-white text-blue-600 font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-gray-200 transition">
-            Check Compliance
-        </a>
+    <!-- JavaScript for Toggle Functionality -->
+    <script>
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            document.getElementById("mobile-menu").classList.toggle("hidden");
+        });
+    </script>
+
+    <!-- Enhanced Hero Section with Background Image (adjusted for fixed navbar) -->
+    <header class="relative text-white text-center pt-28 pb-16"> <!-- Added padding-top to account for navbar -->
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-blue-600 opacity-25"></div>
+            <img 
+                src="https://media-hosting.imagekit.io//6169b24125604ecf/pexels-hormel-media-1095814.jpg?Expires=1836032442&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=dMK-ZHifARJIBXE6HDrx8dHOPkMEnNbQJpGvr-pDqXlHW5WsA7UhhtTFz~9YCfTdmYzALCc8XdOtgVFwSBVwW4ktPrEAJnxFWQ-WeS-l-pIshWNO1yMh3knhNFUD9jbLIib2lwzvbrTKltvcbRgF4oXCEV1CZPyImxIvQGoQuMouQ4p2XCB~ZXzPrEHMrNF5vPX70gSVGPYRYpygUHu0erohLLHchaCrDDIgQWbw5mS71Ic1OD0bv8oE8-M7ZMZfruAW962eu3JjhDz~yjE4wMZwRDzSz9uGH2PskZiwa2AevvKqLDlCdcaGr7UJCA-SeK7gquGKJ0dcf8FauupoIA__"
+                alt="Shipping and Export Background" 
+                class="w-full h-full object-cover"
+            />
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 py-12">
+            <h1 class="text-5xl font-bold mb-4 drop-shadow-lg">Welcome to
+                <span class="text-blue-800 drop-shadow-md bg-white px-2 my-1 py-2 inline-block">
+                    ExportEase
+                </span>
+            </h1>
+            <p class="text-l mt-2 max-w-2xl mx-auto drop-shadow">Your one-stop solution for hassle-free international shipping.</p>
+            <a href="compliance.html" class="mt-8 inline-block bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-md 
+                hover:-translate-y-2 hover:shadow-[0_7px_0_-2px_#28196b,0_15px_0_-4px_#57a3f4] 
+                transition-all duration-400 
+                active:translate-y-0 active:shadow-[0_2px_0_-2px_#3b82f6,0_8px_0_-4px_#93c5fd]
+                focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+                Check Compliance
+            </a>
+        </div>
     </header>
 
-    <!-- 🔹 Features Section -->
+    <!-- Premium Features Section -->
     <section class="container mx-auto px-6 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold">🌍 Global Compliance</h2>
-                <p class="text-gray-600 mt-2">Ensure your shipments meet international trade regulations.</p>
+            <!-- Feature Card 1 -->
+            <div class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white border-l-4 border-blue-200 shadow-xl rounded-xl p-8 text-center transition-all duration-300 hover:border-l-8 hover:border-blue-400 hover:shadow-2xl group">
+                <div class="relative flex flex-col justify-between h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-3xl font-bold text-blue-800">01</span>
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition">
+                            <span class="text-2xl">🌍</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-900">Global Compliance</h3>
+                    <p class="text-gray-600 leading-relaxed">Expertly navigate international trade regulations with AI-powered compliance checks</p>
+                    <div class="mt-6 opacity-20 group-hover:opacity-40 transition-opacity">
+                        <svg class="w-20 h-20 mx-auto text-blue-200" fill="currentColor" viewBox="0 -960 960 960">
+                            <path d="m393-165 279-335H492l36-286-253 366h154l-36 255Zm-73 85 40-280H160l360-520h80l-40 320h240L400-80h-80Zm153-395Z"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold">📦 Easy Shipment Tracking</h2>
-                <p class="text-gray-600 mt-2">Keep track of all your exports in one place.</p>
+
+            <!-- Feature Card 2 -->
+            <div class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white border-l-4 border-blue-200 shadow-xl rounded-xl p-8 text-center transition-all duration-300 hover:border-l-8 hover:border-blue-400 hover:shadow-2xl group">
+                <div class="relative flex flex-col justify-between h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-3xl font-bold text-blue-800">02</span>
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition">
+                            <span class="text-2xl">📦</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-900">Shipment Tracking</h3>
+                    <p class="text-gray-600 leading-relaxed">Real-time global tracking with predictive analytics and milestone alerts</p>
+                    <div class="mt-6 opacity-20 group-hover:opacity-40 transition-opacity">
+                        <svg class="w-20 h-20 mx-auto text-blue-200" fill="currentColor" viewBox="0 -960 960 960">
+                            <path d="m393-165 279-335H492l36-286-253 366h154l-36 255Zm-73 85 40-280H160l360-520h80l-40 320h240L400-80h-80Zm153-395Z"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <h2 class="text-xl font-semibold">🚀 Fast Processing</h2>
-                <p class="text-gray-600 mt-2">Get real-time risk assessments and compliance checks.</p>
+
+            <!-- Feature Card 3 -->
+            <div class="bg-gradient-to-br from-indigo-50 via-blue-50 to-white border-l-4 border-blue-200 shadow-xl rounded-xl p-8 text-center transition-all duration-300 hover:border-l-8 hover:border-blue-400 hover:shadow-2xl group">
+                <div class="relative flex flex-col justify-between h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-3xl font-bold text-blue-800">03</span>
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition">
+                            <span class="text-2xl">🚀</span>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-900">Fast Processing</h3>
+                    <p class="text-gray-600 leading-relaxed">Instant compliance certification with automated document generation</p>
+                    <div class="mt-6 opacity-20 group-hover:opacity-40 transition-opacity">
+                        <svg class="w-20 h-20 mx-auto text-blue-200" fill="currentColor" viewBox="0 -960 960 960">
+                            <path d="m393-165 279-335H492l36-286-253 366h154l-36 255Zm-73 85 40-280H160l360-520h80l-40 320h240L400-80h-80Zm153-395Z"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 🔹 Footer -->
+    <!-- Footer -->
     <footer class="bg-gray-800 text-white text-center py-4 mt-8">
         <p>&copy; 2024 ExportEase | All Rights Reserved</p>
     </footer>
