@@ -1,0 +1,109 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height */
+    background: linear-gradient(to right, #4A90E2, #145DA0);
+}
+
+.auth-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 10px;
+    border: 3px solid #c7d2fe;
+    border-radius: 7px;
+    font-size: 1rem;
+}
+
+.auth-box button {
+    width: 100%;
+    background: #1E40AF;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.auth-box button:hover {
+    background: #1E3A8A;
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Ensure the page centers the login box */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full height to center vertically */
+    background: linear-gradient(to right, #3a7bd5, #3a6073); /* Gradient background */
+    font-family: Arial, sans-serif;
+}
+
+/* Style the login container */
+.login-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Set a fixed width */
+    text-align: center;
+}
+
+/* Title */
+.login-container h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+/* Input fields */
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Login Button */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1a3dc1; /* Dark blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Hover effect */
+.login-container button:hover {
+    background-color: #122f91; /* Slightly darker blue */
+}
+
+/* Sign-up text */
+.signup-text {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.signup-text a {
+    color: #1a3dc1;
+    text-decoration: none;
+    font-weight: bold;
+}
