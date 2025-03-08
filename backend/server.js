@@ -70,7 +70,6 @@ initializeUsersDB();
 
 app.use(express.json());
 
-const upload = multer({ storage: storage });
 const csv = require("csv-parser");
 
 // 📂 CSV Upload Endpoint
@@ -126,17 +125,17 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-//const upload = multer({ storage: storage });
-const upload = multer({ 
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype === "text/csv") {
-            cb(null, true);
-        } else {
-            cb(new Error("Only CSV files are allowed!"), false);
-        }
-    }
-});
+const upload = multer({ storage: storage });
+// const upload = multer({ 
+//     storage: storage,
+//     fileFilter: (req, file, cb) => {
+//         if (file.mimetype === "text/csv") {
+//             cb(null, true);
+//         } else {
+//             cb(new Error("Only CSV files are allowed!"), false);
+//         }
+//     }
+// });
 // 🚫 Compliance Checking Function (Blocks Restricted Shipments)
 function checkCompliance(productName, category, destination, weight) {
     let issues = [];
