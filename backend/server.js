@@ -215,6 +215,50 @@ app.post("/api/login", async (req, res) => {
     res.json({ message: "✅ Login successful!", token });
 });
 
+// 📂 API Route: Upload and Process CSV File
+app.post("/api/upload-csv", csvUpload.single("csv"), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "⚠️ No file uploaded. Please upload a valid CSV file." });
+    }
+
+    const filePath = path.join(__dirname, req.file.path);
+
+    try {
+        const csvData = fs.readFileSync(filePath, "utf-8");
+        const rows = csvData.split("\n").map(row => row.split(","));
+        
+        // Extract header and data
+        const headers = rows[0].map(header => header.trim());
+        const shipments = rows.slice(1).map(row => {
+            let shipment = {};
+            row.forEach((value, index) => {
+                shipment[headers[index]] = value.trim();
+            });
+            return shipment;
+        });
+
+        // Validate and Save Shipments
+        await db.read();
+        shipments.forEach(shipment => {
+            if (shipment.productName && shipment.category && shipment.destination && shipment.weight) {
+                db.data.shipments.push({
+                    ...shipment,
+                    date: new Date().toISOString(),
+                });
+            }
+        });
+        await db.write();
+
+        // Cleanup: Delete uploaded CSV file
+        fs.unlinkSync(filePath);
+
+        res.json({ message: `✅ ${shipments.length} shipments uploaded successfully!` });
+    } catch (error) {
+        console.error("CSV Processing Error:", error);
+        res.status(500).json({ message: "❌ Error processing CSV file." });
+    }
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
