@@ -12,8 +12,11 @@
         <div class="container mx-auto flex justify-between items-center px-6">
             
             <!-- Hamburger Menu Button -->
-            <button id="menu-toggle" class="md:hidden text-white text-3xl focus:outline-none">
-                ☰
+            <button id="menu-toggle" class="md:hidden flex flex-col justify-between w-8 h-6 focus:outline-none"
+                onclick="this.classList.toggle('open')">
+                <div class="w-8 h-1 bg-black rounded transition-all duration-300 origin-center"></div>
+                <div class="w-8 h-1 bg-black rounded transition-all duration-300"></div>
+                <div class="w-8 h-1 bg-black rounded transition-all duration-300 origin-center"></div>
             </button>
             
             <!-- Navigation Links (Hidden on Mobile, Shown on Desktop) -->
