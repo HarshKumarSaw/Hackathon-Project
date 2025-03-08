@@ -362,7 +362,7 @@ select {
 }
 
 /* Hide default input */
-#csv-upload {
+#invoice {
     display: none;
 }
 
