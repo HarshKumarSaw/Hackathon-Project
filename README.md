@@ -10,11 +10,11 @@
 
 
 
-**Smart Trade Compliance & Tariff Calculator** - Automating global trade compliance for small businesses!
+**ExSmart Trade Compliance & Tariff Calculator** - Automating global trade compliance for small businesses!
 
 ## 🌟 Overview
 
-The **Cross-Border Shipment Compliance Checker** is a powerful tool designed to simplify international trade for exporters. It automates tariff calculations, assesses trade risks, and ensures legal compliance, making global shipping accessible and efficient.
+The **ExportEase : Cross-Border Shipment Compliance Checker** is a powerful tool designed to simplify international trade for exporters. It automates tariff calculations, assesses trade risks, and ensures legal compliance, making global shipping accessible and efficient.
 
 **Key Features:**
 
