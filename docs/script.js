@@ -83,7 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
             "weight": "weight",
             "quantity": "quantity",
             "shipmentvalue": "shipment-value",
-            "modeoftransport": "mode-of-transport"
+            "modeoftransport": "mode-of-transport",
+            "importertaxid": "importer-tax-id",
+            "exportlicense": "export-license"
         };
 
         headers.forEach((header, index) => {
