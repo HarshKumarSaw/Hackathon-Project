@@ -15,16 +15,38 @@
 </head>
 <body class="bg-gray-100 text-gray-900">
 
-    <!-- ✅ Navigation Bar -->
-    <nav class="bg-blue-600 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <span class="text-lg font-bold">📦 Shipment Dashboard</span>
-            <ul class="hidden md:flex space-x-6">
-                <li><a href="/" class="hover:underline">Home</a></li>
-                <li><a href="/compliance" class="hover:underline">Compliance Checker</a></li>
-                <li><a href="/dashboard" class="hover:underline">Dashboard</a></li>
-                <li><a href="/about" class="hover:underline">About Us</a></li>
-                <li><a href="/contact" class="hover:underline">Contact</a></li>
+    <!-- Fixed Navigation Bar at the top -->
+    <nav class="fixed top-0 left-0 right-0  py-4 px-6 z-50 ">
+        <div class="container mx-auto flex justify-end items-center">
+            
+            
+            <!-- Desktop Navigation Links (center) -->
+            <ul class="hidden md:flex space-x-8">
+                <li><a href="dashboard.html" class="text-white hover:text-blue-300 transition-colors">Dashboard</a></li>
+                <li><a href="index.html" class="text-white hover:text-blue-300 transition-colors">Compliance Checker</a></li>
+                <!-- <li><a href="history.html" class="text-white hover:text-blue-300 transition-colors">Shipment History</a></li> -->
+            </ul>
+            
+            <!-- Right Side (Login Button and Mobile Menu Toggle) -->
+            <div class="flex items-center space-x-4 ml-8">
+                <!-- Login Button -->
+                <a href="auth.html" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-md hover:bg-blue-50 transition-colors">
+                    Login
+                </a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+                    ☰
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden container mx-auto mt-4 bg-white rounded-lg shadow-lg overflow-hidden md:hidden">
+            <ul>
+                <li class="border-b"><a href="dashboard.html" class="block px-6 py-3 hover:bg-blue-50">Dashboard</a></li>
+                <li class="border-b"><a href="compliance.html" class="block px-6 py-3 hover:bg-blue-50">Compliance Checker</a></li>
+                <!-- <li><a href="history.html" class="block px-6 py-3 hover:bg-blue-50">Shipment History</a></li> -->
             </ul>
         </div>
     </nav>
