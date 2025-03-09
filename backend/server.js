@@ -139,7 +139,7 @@ app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (
         modeOfTransport, 
         tariffRate, 
         additionalTaxes, 
-        totalImportTax
+        totalImportTax,
         invoice: invoicePath,
         date: new Date().toISOString()
     };
