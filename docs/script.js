@@ -367,6 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <strong>${shipment.productName}</strong> (${shipment.category})<br>
                     Destination: ${shipment.destination}<br>
                     Weight: ${shipment.weight}kg<br>
+                    Quantity: ${shipment.quantity}kg<br>
                     Date: ${new Date(shipment.date).toLocaleString()}<br>
                     Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
                     <hr>
