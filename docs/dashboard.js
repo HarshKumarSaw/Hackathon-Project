@@ -320,6 +320,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         doc.setFontSize(12);
                         doc.text(`${index + 1}. ${shipment.productName} (${shipment.category})`, 20, y);
                         doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 5);
+                        doc.text(`https://qrfy.io/b_dyV5B9qd`, 20, y + 10);
                         doc.text(`   Compliance: ${complianceStatus}`, 20, y + 10);
                         y += 20;
                         
