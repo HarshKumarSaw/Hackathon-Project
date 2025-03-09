@@ -318,7 +318,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.status === 400) {
                 resultsDiv.className = "red";
+                resultsDiv.style.textAlign = "center";  // Center text
+                resultsDiv.style.padding = "15px";      // Add padding
+                resultsDiv.style.margin = "20px auto";  // Center the box
+                resultsDiv.style.width = "60%";         // Set a reasonable width
+                resultsDiv.style.borderRadius = "10px"; // Rounded corners
+                resultsDiv.style.backgroundColor = "#f8d7da"; // Light red background
+                resultsDiv.style.color = "#721c24";     // Dark red text
+                resultsDiv.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.2)"; // Add shadow
+
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
+
             } else {
                 resultsDiv.className = "green";
                 resultsDiv.style.textAlign = "center";  // Center text
