@@ -327,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 35);
                         doc.text(`  https://qrfy.io/b_dyV5B9qd`, 20, y + 50);
                         doc.text(`   Compliance: ${complianceStatus}`, 20, y + 40);
-                        y += 20;
+                        y += 50;
                         
                         // Add new page if needed
                         if (y > 270) {
