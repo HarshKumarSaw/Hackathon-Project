@@ -324,8 +324,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         doc.text(`   HS Code: ${shipment.hsCode} | Shipment Value: ${shipment.shipmentValue}`, 20, y + 15);
                         doc.text(`   Mode Of Transport: ${shipment.modeOfTransport} | Tariff Rate: ${shipment.tariffRate}`, 20, y + 20);
                         doc.text(`   Additional Tax: ${shipment.additionalTaxes} | Total Tax: ${shipment.totalImportTax}`, 20, y + 25);
-                        doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 35);
-                        doc.text(`   https://qrfy.io/b_dyV5B9qd`, 20, y + 45);
+                        doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 30);
+                        doc.text(`   https://qrfy.io/b_dyV5B9qd`, 20, y + 40);
                         y += 50;
                         
                         // Add new page if needed
