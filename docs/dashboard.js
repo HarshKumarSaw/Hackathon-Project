@@ -318,14 +318,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         ) ? "❌ Non-Compliant" : "✅ Compliant";
                         
                         doc.setFontSize(12);
-                        doc.text(`   Company Name: ${shipment.exporterName} | Company Address: ${shipment.exporterAddress}`, 20, y);
+                        doc.text(`${index + 1}. ${shipment.productName} (${shipment.category})`, 20, y);
+                        doc.text(`   Company Name: ${shipment.exporterName} | Company Address: ${shipment.exporterAddress}`, 20, y+5);
                         doc.text(`   Importer Name: ${shipment.importerName}`, 20, y + 10);
                         doc.text(`   HS Code: ${shipment.hsCode} | Shipment Value: ${shipment.shipmentValue}`, 20, y + 15);
                         doc.text(`   Mode Of Transport: ${shipment.modeOfTransport} | Tariff Rate: ${shipment.tariffRate}`, 20, y + 20);
                         doc.text(`   Additional Tax: ${shipment.additionalTaxes} | Total Tax: ${shipment.totalImportTax}`, 20, y + 25);
-                        doc.text(`${index + 1}. ${shipment.productName} (${shipment.category})`, 20, y+30);
                         doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 35);
-                        doc.text(`  https://qrfy.io/b_dyV5B9qd`, 20, y + 50);
+                        doc.text(`  https://qrfy.io/b_dyV5B9qd`, 20, y + 45);
                         doc.text(`   Compliance: ${complianceStatus}`, 20, y + 40);
                         y += 50;
                         
