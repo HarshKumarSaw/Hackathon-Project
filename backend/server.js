@@ -109,11 +109,11 @@ function checkCompliance(productName, category, destination, weight) {
 
 // API Route to Submit a Shipment with Invoice Upload
 app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (req, res) => {
-    const { productName, category, destination, weight, quantity } = req.body;
+    const { productName, category, destination, weight, quantity, exporterName, exporterAddress, importerName, hsCode, shipmentValue, modeOfTransport, tariffRate, additionalTaxes, totalImportTax } = req.body;
     const user = req.user ? req.user.email : "Guest"; // Store user email or mark as "Guest"
     const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-    if (!productName || !category || !destination || !weight || !quantity) {
+    if (!productName || !category || !destination || !weight || !quantity || !exporterName|| !exporterAddress|| !importerName|| !hsCode|| !shipmentValue|| !modeOfTransport|| !tariffRate|| !additionalTaxes|| !totalImportTax ) {
         return res.status(400).json({ message: "All fields are required." });
     }
 
@@ -131,6 +131,15 @@ app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (
         destination,
         weight,
         quantity,
+        exporterName, 
+        exporterAddress, 
+        importerName, 
+        hsCode, 
+        shipmentValue, 
+        modeOfTransport, 
+        tariffRate, 
+        additionalTaxes, 
+        totalImportTax
         invoice: invoicePath,
         date: new Date().toISOString()
     };
