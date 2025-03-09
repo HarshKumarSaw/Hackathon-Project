@@ -321,6 +321,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = "⚠️ Compliance Issues Found:<br>" + result.issues.join("<br>");
             } else {
                 resultsDiv.className = "green";
+                resultsDiv.style.textAlign = "center";  // Center text
+                resultsDiv.style.padding = "15px";      // Add padding
+                resultsDiv.style.margin = "20px auto";  // Center the box
+                resultsDiv.style.width = "60%";         // Set a reasonable width
+                resultsDiv.style.borderRadius = "10px"; // Rounded corners
+                resultsDiv.style.backgroundColor = "#d4edda"; // Light green background
+                resultsDiv.style.color = "#155724";     // Dark green text
+                resultsDiv.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.2)"; // Add shadow      
+                resultsDiv.innerHTML = "✅ Shipment is compliant!";
+                
+                loadShipmentHistory();
+        
                 resultsDiv.innerHTML = "✅ Shipment is compliant!";
                 loadShipmentHistory();
             }
