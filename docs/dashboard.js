@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         doc.setFontSize(12);
                         doc.text(`   Company Name: ${shipment.exporterName} | Company Address: ${shipment.exporterAddress}`, 20, y);
-                        doc.text(`   Importer Name: ${shipment.importerName} | Importer Country: ${shipment.importerCountry}`, 20, y + 10);
+                        doc.text(`   Importer Name: ${shipment.importerName}`, 20, y + 10);
                         doc.text(`   HS Code: ${shipment.hsCode} | Shipment Value: ${shipment.shipmentValue}`, 20, y + 15);
                         doc.text(`   Mode Of Transport: ${shipment.modeOfTransport} | Tariff Rate: ${shipment.tariffRate}`, 20, y + 20);
                         doc.text(`   Additional Tax: ${shipment.additionalTaxes} | Total Tax: ${shipment.totalImportTax}`, 20, y + 25);
