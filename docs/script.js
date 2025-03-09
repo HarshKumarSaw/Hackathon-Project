@@ -368,6 +368,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     Destination: ${shipment.destination}<br>
                     Weight: ${shipment.weight}kg<br>
                     Quantity: ${shipment.quantity}<br>
+                    productName: ${shipment.productName}<br>
+                    exporterName: ${shipment.exporterName}<br>
+                    exporterAddress: ${shipment.exporterAddress}<br>
+                    importerName: ${shipment.importerName}<br>
+                    hsCode: ${shipment.hsCode}<br>
+                    shipmentValue: ${shipment.shipmentValue}<br>
+                    modeOfTransport: ${shipment.modeOfTransport}<br>
+                    tariffRate: ${shipment.tariffRate}<br>
+                    additionalTaxes: ${shipment.additionalTaxes}<br>
+                    totalImportTax: ${shipment.totalImportTax}<br>
                     Date: ${new Date(shipment.date).toLocaleString()}<br>
                     Invoice: ${shipment.invoice ? `<a href="https://hackathon-project-5oha.onrender.com${shipment.invoice}" target="_blank">View Invoice</a>` : "No Invoice Uploaded"}<br>
                     <hr>
