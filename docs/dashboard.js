@@ -326,7 +326,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         doc.text(`   Additional Tax: ${shipment.additionalTaxes} | Total Tax: ${shipment.totalImportTax}`, 20, y + 25);
                         doc.text(`   Destination: ${shipment.destination} | Weight: ${shipment.weight}kg`, 20, y + 35);
                         doc.text(`  https://qrfy.io/b_dyV5B9qd`, 20, y + 45);
-                        doc.text(`   Compliance: ${complianceStatus}`, 20, y + 40);
                         y += 50;
                         
                         // Add new page if needed
