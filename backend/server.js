@@ -113,12 +113,12 @@ app.post("/api/submit-shipment", optionalAuth, upload.single("invoice"), async (
     const user = req.user ? req.user.email : "Guest"; // Store user email or mark as "Guest"
     const invoicePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-    if (!productName || !category || !destination || !weight) {
+    if (!productName || !category || !destination || !weight || !quantity) {
         return res.status(400).json({ message: "All fields are required." });
     }
 
     // 🚫 Check Compliance Before Saving
-    const complianceIssues = checkCompliance(productName, category, destination, weight);
+    const complianceIssues = checkCompliance(productName, category, destination, weight, quantity);
     if (complianceIssues.length > 0) {
         return res.status(400).json({ message: "⚠️ Compliance Issues Found", issues: complianceIssues });
     }
